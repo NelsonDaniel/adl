@@ -1,18 +1,19 @@
+import { ApiModel } from "../model/api-model";
 import { Operation } from "../model/http/operation";
 import { Parameter } from "../model/http/parameter";
+import { Response } from "../model/http/response";
 import { Enum } from "../model/schema/enum";
 import { ObjectSchema, Property } from "../model/schema/object";
-import { LinterContext } from "./linter-context";
 
 export interface Rule {
   runOn: "edit" | "onDemand";
   meta: RuleMetaData;
-  onEnum?: (context: LinterContext, e: Enum) => RuleResult | void;
-  onObject?: (context: LinterContext, object: ObjectSchema) => RuleResult | void;
-  onProperty?: (context: LinterContext, property: Property) => RuleResult | void;
-  onOperation?: (context: LinterContext, operation: Operation) => RuleResult | void;
-  onParameter?: (context: LinterContext, parameter: Parameter) => RuleResult | void;
-  onResponse?: (context: LinterContext) => RuleResult | void;
+  onEnum?: (model: ApiModel, e: Enum) => RuleResult | void;
+  onObject?: (model: ApiModel, object: ObjectSchema) => RuleResult | void;
+  onProperty?: (cmodel: ApiModel, property: Property) => RuleResult | void;
+  onOperation?: (model: ApiModel, operation: Operation) => RuleResult | void;
+  onParameter?: (model: ApiModel, parameter: Parameter) => RuleResult | void;
+  onResponse?: (model: ApiModel, response: Response) => RuleResult | void;
 }
 
 export interface RuleMetaData {

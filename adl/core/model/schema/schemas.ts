@@ -96,7 +96,7 @@ export class Schemas extends Element {
   }
 
   objects = new Array<ObjectSchemaImpl>();
-  combinations = new Array<AndSchema | XorSchema | AnyOfSchema>();
+  combinations = new Array<Combination>();
   constants = new Array<Constant>();
   enums = new Array<Enum>();
   constraints = new Array<Constraint>();
@@ -105,3 +105,5 @@ export class Schemas extends Element {
   primitives = new Array<Primitive>();
 
 }
+
+export type Combination = AndSchema | XorSchema | AnyOfSchema;
