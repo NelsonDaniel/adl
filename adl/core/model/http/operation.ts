@@ -79,12 +79,6 @@ export function createOperation(
     groupNode = file.addInterface({ name: group, isExported: true });
   }
 
-  let count = 1;
-  const baseName = name;
-  while (groupNode.getMethod(name)) {
-    name = `${baseName}${count++}`;
-  }
-
   const operationNode = groupNode.addMethod({ name: normalizeIdentifier(name) });
   const operation = new OperationImpl(operationNode, initializer);
   operation.path = path;
@@ -183,7 +177,7 @@ class OperationImpl extends NamedElement<MethodSignature> implements Operation {
       const request = each instanceof Alias ? each.target : each;
       const name = normalizeName(request.name ?? 'body');
       const type = this.getRequestType(request, name);
-      
+
       structures.push({
         kind: StructureKind.Parameter,
         hasQuestionToken: !request.required,
@@ -191,17 +185,17 @@ class OperationImpl extends NamedElement<MethodSignature> implements Operation {
         type,
       });
     }
-    
+
     this.node.addParameters(structures);
   }
-  
+
   private getRequestType(request: Request, chosenName: string) {
     const innerType = this.project.getTypeReference(request.schema, this.node.getSourceFile());
     const outerType = 'Http.Body';
     const mediaTypeArg = `, '${request.mediaType}'`;
     const nameArg = (!request.name || request.name == chosenName) ? '' : `, '${request.name}'`;
     return `${outerType}<${innerType}${mediaTypeArg}${nameArg}>`;
-  } 
+  }
 
   private pushResponses(...responses: Array<Response | Alias<Response>>) {
     let returnType = this.node.getReturnType().getText();
