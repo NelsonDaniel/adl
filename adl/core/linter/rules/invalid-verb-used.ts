@@ -12,30 +12,19 @@ export default <Rule>{
     documentationUrl: "https://github.com/Azure/azure-rest-api-specs/blob/master/documentation/openapi-authoring-automated-guidelines.md#r2066-postoperationidcontainsurlverb",
     category: "ARM Error"
   },
-  onOperation: (context, operation) => {
-    let validMethods = [
-      "DELETE",
-      "GET",
-      "PUT",
-      "PATCH",
-      "HEAD",
-      "OPTIONS",
-      "POST",
-      "TRACE"
-    ];
+  onOperation: (model, operation) => {
+    // if (validMethods.includes(operation.method.toUpper())) {
+    //   let ruleResults = [];
+    //   for (method of validMethods) {
+    //     ruleResults.push({
+    //       message: `Replace method with ${method}`,
+    //       fix: () => {
+    //         operation.method = method;
+    //       }
+    //     })
+    //   }
 
-    if (validMethods.includes(operation.method.toUpper())) {
-      let ruleResults = [];
-      for (method of validMethods) {
-        ruleResults.push({
-          message: `Replace method with ${method}`,
-          fix: () => {
-            operation.method = method;
-          }
-        })
-      }
-
-      return ruleResults;
-    }
+    //   return ruleResults;
+    // }
   }
 }

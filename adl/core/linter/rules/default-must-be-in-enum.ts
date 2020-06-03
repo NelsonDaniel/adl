@@ -9,16 +9,16 @@ export default <Rule>{
     documentationUrl: "https://github.com/Azure/azure-rest-api-specs/blob/master/documentation/openapi-authoring-automated-guidelines.md#r2027-defaultmustbeinenum",
     category: "SDK Error"
   },
-  onEnum: (context, e) => {
-    if (!e.values.get().includes(e.default)) {
-      return [
-        {
-          message: "Include default in enum values.",
-          fix: () => {
-            e.values.push(e.default);
-          }
-        }
-      ]
-    }
+  onEnum: (model, e) => {
+    // if (!e.values.get().includes(e.default)) {
+    //   return [
+    //     {
+    //       message: "Include default in enum values.",
+    //       fix: () => {
+    //         e.values.push(e.default);
+    //       }
+    //     }
+    //   ]
+    // }
   }
 }

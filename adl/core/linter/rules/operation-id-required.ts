@@ -11,17 +11,20 @@ export default <Rule>{
     documentationUrl: "https://github.com/Azure/azure-rest-api-specs/blob/master/documentation/openapi-authoring-automated-guidelines.md#r4004-operationidrequired",
     category: "ARM Error"
   },
-  onOperation: (context, operation) => {
-    if (operation.id === undefined) {
-      return [
-        {
-          message: "Add the right operationId for each operation."
-          fix: () => {
-            // I would like to be able to prompt them to include the operation id interactively.
-          }
-        }
-      ]
-    }
+  onOperation: (model, operation) => {
+    //   if (operation.id === undefined) {
+    //     return [
+    //       {
+    //         message: "Add the right operationId for each operation."
+    //         fix: () => {
+    //           // I would like to be able to prompt them to include the operation id interactively.
+    //         }
+    //       }
+    //     ]
+    //   }
+    // }
   }
 }
-}
+
+// github, there are too many methods
+// group your stuff 

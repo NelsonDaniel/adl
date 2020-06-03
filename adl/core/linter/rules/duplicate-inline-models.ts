@@ -9,7 +9,7 @@ export default <Rule>{
     documentationUrl: "PLACEHOLDER",
     category: "SDK Warning"
   },
-  onObject: (context, object) => {
+  onObject: (model, object) => {
     // Find all inline duplicate objects and extract them, then prompt user to put them a name.
     // maybe walk through the ones that should be extracted...
   }

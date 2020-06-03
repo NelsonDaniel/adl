@@ -12,16 +12,16 @@ export default <Rule>{
     documentationUrl: "https://github.com/Azure/azure-rest-api-specs/blob/master/documentation/openapi-authoring-automated-guidelines.md#r2026-avoidanonymoustypes",
     category: "SDK Error"
   },
-  onObject: (context, object) => {
-    if (object.isInline) {
-      return [
-        {
-          message: "Extract contents and create a model definition for this type.",
-          fix: () => {
-            // TODO: Figure out how to do this.
-          }
-        }
-      ]
-    }
+  onObject: (model, object) => {
+    // if (object.isInline) {
+    //   return [
+    //     {
+    //       message: "Extract contents and create a model definition for this type.",
+    //       fix: () => {
+    //         // TODO: Figure out how to do this.
+    //       }
+    //     }
+    //   ]
+    // }
   }
 }
