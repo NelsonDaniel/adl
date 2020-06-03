@@ -1,27 +1,31 @@
 # Proposed Timeline: 
 
-### May 8
+### Completed
   - Abstract Model clearly defined 
   - OAI2, OAI3 input deserialization     
   - Sourcemap API 
+  - extension framework support
 
-### May 29
-  - TS serialization 
-  - TS deserialization full 
-  - ALPHA ADL Consumer API (load/save/manipulate model*)
-  - What's working: Able to generate models.
+### Jun 9
+  - TS serialization (able to save ADL model/enums/aliases/operations)
+  
+### Jun 12
+  - project metadata (`project.adl` )
+  - simple CLI functions
+  - TS Project loading (data from project file, generate tsconfig, restore packages)
+  - extension loading from project, 
+  - Hook up eventing for language extensions, linting/refactoring hooks
 
-### Jun 5
-  - OAI2, OAI3 output serialization 
-
-### Jun 12 
-  - CSDL investigations (design to support MS Graph/ASPNET+OData?)
-  - extension plugins support
+### Jun 19 
+  - ALPHA ADL Consumer API (load/save/manipulate models, eventing)
 
 ### Jun 26
+  - OAI2, OAI3 output serialization 
+  - CSDL investigations (design to support MS Graph/ASPNET+OData?)
+
+### Jul 10
   - BETA ADL consumer API complete
   - TS + C# bindings
-  - [Nelson] - initial integrated linting support
 
 
 ## Nelson Timeline:
