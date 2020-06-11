@@ -1,5 +1,5 @@
 import { Element } from '../element';
-import { Schema } from '../schema/schema';
+import { TypeReference } from '../schema/type';
 
 export class Header extends Element {
   // the header name in container. might not be unique in parent? 
@@ -12,10 +12,11 @@ export class Header extends Element {
   style: any;
 
   /** the schema for the header */
-  schema?: Schema;
+  typeRef?: TypeReference;
 
   constructor(initializer?: Partial<Header>) {
     super();
     this.initialize(initializer);
   }
 }
+

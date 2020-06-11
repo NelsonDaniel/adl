@@ -8,10 +8,10 @@ export interface PolicyDescriptionCollection {
      * @description Descriptions of APIM policies.
      * @since 2019-12-01
      */
-    value: Array<PolicyDescriptionContract>;
+    value?: Array<PolicyDescriptionContract>;
     /**
      * @description Total record count number.
      * @since 2019-12-01
      */
-    count: int64;
+    count?: int64;
 }

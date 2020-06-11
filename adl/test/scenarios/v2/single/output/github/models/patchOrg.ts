@@ -1,5 +1,6 @@
 
 /**
+ *
  * @since v3
  */
 export interface patchOrg {
@@ -7,22 +8,25 @@ export interface patchOrg {
      * @description Billing email address. This address is not publicized.
      * @since v3
      */
-    billing_email: string;
+    billing_email?: string;
     /**
+     *
      * @since v3
      */
-    company: string;
+    company?: string;
     /**
      * @description Publicly visible email address.
      * @since v3
      */
-    email: string;
+    email?: string;
     /**
+     *
      * @since v3
      */
-    location: string;
+    location?: string;
     /**
+     *
      * @since v3
      */
-    name: string;
+    name?: string;
 }

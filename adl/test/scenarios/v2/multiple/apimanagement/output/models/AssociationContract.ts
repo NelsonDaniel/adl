@@ -1,3 +1,4 @@
+import { ProvisioningState } from '../enums/ProvisioningState';
 import { Resource } from './Resource';
 /**
  * @description Association entity details.
@@ -8,11 +9,11 @@ export interface AssociationContract extends Resource {
      * @description Association entity contract properties.
      * @since 2019-12-01
      */
-    properties: {
+    properties?: {
         /**
          * @description Provisioning state.
          * @since 2019-12-01
          */
-        provisioningState: ProvisioningState;
+        provisioningState?: ProvisioningState;
     };
 }

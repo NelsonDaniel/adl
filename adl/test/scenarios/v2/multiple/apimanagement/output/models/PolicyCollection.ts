@@ -8,10 +8,10 @@ export interface PolicyCollection {
      * @description Policy Contract value.
      * @since 2019-12-01
      */
-    value: Array<PolicyContract>;
+    value?: Array<PolicyContract>;
     /**
      * @description Next page link if any.
      * @since 2019-12-01
      */
-    nextLink: string;
+    nextLink?: string;
 }

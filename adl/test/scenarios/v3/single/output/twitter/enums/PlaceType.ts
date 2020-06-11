@@ -1,5 +1,6 @@
 
 /**
+ *
  * @since 2.3
  */
 export enum PlaceType {

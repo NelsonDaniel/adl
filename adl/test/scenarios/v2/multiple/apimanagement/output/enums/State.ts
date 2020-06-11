@@ -5,14 +5,29 @@
  * @since 2019-12-01
  */
 export enum State {
-    /** The issue is proposed. */
+    /**
+     *
+     * @description The issue is proposed.
+     */
     proposed = 'proposed',
-    /** The issue is opened. */
+    /**
+     *
+     * @description The issue is opened.
+     */
     open = 'open',
-    /** The issue was removed. */
+    /**
+     *
+     * @description The issue was removed.
+     */
     removed = 'removed',
-    /** The issue is now resolved. */
+    /**
+     *
+     * @description The issue is now resolved.
+     */
     resolved = 'resolved',
-    /** The issue was closed. */
+    /**
+     *
+     * @description The issue was closed.
+     */
     closed = 'closed'
 }

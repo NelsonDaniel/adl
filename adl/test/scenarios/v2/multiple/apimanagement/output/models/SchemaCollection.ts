@@ -8,10 +8,10 @@ export interface SchemaCollection {
      * @description Api Schema Contract value.
      * @since 2019-12-01
      */
-    readonly value: Array<SchemaContract>;
+    readonly value?: Array<SchemaContract>;
     /**
      * @description Next page link if any.
      * @since 2019-12-01
      */
-    readonly nextLink: string & ;
+    readonly nextLink?: string;
 }

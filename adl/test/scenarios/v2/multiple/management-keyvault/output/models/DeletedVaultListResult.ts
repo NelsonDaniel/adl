@@ -8,10 +8,10 @@ export interface DeletedVaultListResult {
      * @description The list of deleted vaults.
      * @since 2019-09-01
      */
-    value: Array<DeletedVault>;
+    value?: Array<DeletedVault>;
     /**
      * @description The URL to get the next set of deleted vaults.
      * @since 2019-09-01
      */
-    nextLink: string;
+    nextLink?: string;
 }

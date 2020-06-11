@@ -8,5 +8,5 @@ export interface RecipientUsersContractProperties {
      * @description API Management UserId subscribed to notification.
      * @since 2019-12-01
      */
-    userId: string;
+    userId?: string;
 }

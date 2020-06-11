@@ -8,10 +8,10 @@ export interface ApiRevisionCollection {
      * @description Page values.
      * @since 2019-12-01
      */
-    readonly value: Array<ApiRevisionContract>;
+    readonly value?: Array<ApiRevisionContract>;
     /**
      * @description Next page link if any.
      * @since 2019-12-01
      */
-    readonly nextLink: string & ;
+    readonly nextLink?: string;
 }

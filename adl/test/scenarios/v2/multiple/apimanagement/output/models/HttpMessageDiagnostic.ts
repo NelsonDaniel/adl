@@ -8,10 +8,10 @@ export interface HttpMessageDiagnostic {
      * @description Array of HTTP Headers to log.
      * @since 2019-12-01
      */
-    headers: Array<string>;
+    headers?: Array<string>;
     /**
      * @description Body logging settings.
      * @since 2019-12-01
      */
-    body: BodyDiagnosticSettings;
+    body?: BodyDiagnosticSettings;
 }

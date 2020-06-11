@@ -1,22 +1,27 @@
 
 /**
+ *
  * @since v3
  */
 export interface user_keys_keyId {
     /**
+     *
      * @since v3
      */
-    id: int64;
+    id?: int64;
     /**
+     *
      * @since v3
      */
-    key: string;
+    key?: string;
     /**
+     *
      * @since v3
      */
-    title: string;
+    title?: string;
     /**
+     *
      * @since v3
      */
-    url: string;
+    url?: string;
 }

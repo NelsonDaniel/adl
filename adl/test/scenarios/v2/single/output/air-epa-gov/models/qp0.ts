@@ -5,13 +5,15 @@
  */
 export interface qp0 {
     /**
+     * Query Parameter
      * @description Query parameter
      * @since 0.0.0
      */
-    QP?: string;
+    QP: string;
     /**
+     * Query Value
      * @description Query value
      * @since 0.0.0
      */
-    QV?: string;
+    QV: string;
 }

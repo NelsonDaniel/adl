@@ -1,2 +1,2 @@
-import { repo } from '../models/repo';
-export type teamRepos = Array<repo>;
+import { repos } from './repos';
+export type teamRepos = repos;

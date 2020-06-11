@@ -6,11 +6,13 @@ import { ContextAnnotationEntityFields } from './ContextAnnotationEntityFields';
  */
 export interface ContextAnnotation {
     /**
+     *
      * @since 2.3
      */
-    domain?: ContextAnnotationDomainFields;
+    domain: ContextAnnotationDomainFields;
     /**
+     *
      * @since 2.3
      */
-    entity?: ContextAnnotationEntityFields;
+    entity: ContextAnnotationEntityFields;
 }

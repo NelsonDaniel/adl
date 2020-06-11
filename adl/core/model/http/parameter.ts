@@ -1,5 +1,5 @@
 import * as base from '../operation';
-import { Schema } from '../schema/schema';
+import { TypeReference } from '../schema/type';
 
 
 export enum RenderStyle {
@@ -49,11 +49,11 @@ export abstract class ParameterBase extends base.Parameter {
   
   /**
    * @param name the name of this parameter
-   * @param schema the type for the parameter
+   * @param typeRef the type for the parameter
    * @param initializer an object initializer
    */
-  constructor(name: string, public schema: Schema, initializer?: Partial<ParameterBase>) {
-    super(name, schema);
+  constructor(name: string, public typeRef: TypeReference, initializer?: Partial<ParameterBase>) {
+    super(name, typeRef);
     this.initialize(initializer);
   }
 }
@@ -69,12 +69,12 @@ export class PathParameter extends ParameterBase {
   /**
      * 
      * @param name the name of this parameter
-     * @param schema the type for the parameter
+     * @param typeRef the type for the parameter
      * @param expandParameterValues 	When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.
      * @param initializer an object initializer
      */
-  constructor(name: string, schema: Schema, public expandParameterValues: boolean, initializer?: Partial<PathParameter>) {
-    super(name, schema);
+  constructor(name: string, typeRef: TypeReference, public expandParameterValues: boolean, initializer?: Partial<PathParameter>) {
+    super(name, typeRef);
     this.initialize(initializer);
   }
 }
@@ -101,12 +101,12 @@ export class QueryParameter extends ParameterBase {
   /**
     * 
     * @param name the name of this parameter
-    * @param schema the type for the parameter
+    * @param typeRef the type for the parameter
     * @param expandParameterValues 	When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.
     * @param initializer an object initializer
     */
-  constructor(name: string, schema: Schema, public expandParameterValues: boolean, initializer?: Partial<QueryParameter>) {
-    super(name, schema, {
+  constructor(name: string, typeRef: TypeReference, public expandParameterValues: boolean, initializer?: Partial<QueryParameter>) {
+    super(name, typeRef, {
       renderStyle: RenderStyle.Simple
     });
     this.initialize(initializer);
@@ -126,12 +126,12 @@ export class FormDataParameter extends ParameterBase  {
   /**
     * 
     * @param name the name of this parameter
-    * @param schema the type for the parameter
+    * @param typeRef the type for the parameter
     * @param expandParameterValues 	When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.
     * @param initializer an object initializer
     */
-  constructor(name: string, schema: Schema, public expandParameterValues: boolean, initializer?: Partial<QueryParameter>) {
-    super(name, schema, {
+  constructor(name: string, typeRef: TypeReference, public expandParameterValues: boolean, initializer?: Partial<QueryParameter>) {
+    super(name, typeRef, {
       renderStyle: RenderStyle.Simple
     });
     this.initialize(initializer);
@@ -143,12 +143,12 @@ export class CookieParameter extends ParameterBase {
   /**
      * 
      * @param name the name of this parameter
-     * @param schema the type for the parameter
+     * @param typeRef the type for the parameter
      * @param expandParameterValues 	When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.
      * @param initializer an object initializer
      */
-  constructor(name: string, schema: Schema, public expandParameterValues: boolean, initializer?: Partial<PathParameter>) {
-    super(name, schema, {
+  constructor(name: string, typeRef: TypeReference, public expandParameterValues: boolean, initializer?: Partial<PathParameter>) {
+    super(name, typeRef, {
       renderStyle: RenderStyle.Simple
     });
     this.initialize(initializer);
@@ -166,12 +166,12 @@ export class HeaderParameter extends ParameterBase {
   /**
      * 
      * @param name the name of this parameter
-     * @param schema the type for the parameter
+     * @param typeRef the type for the parameter
      * @param expandParameterValues 	When this is true, parameter values of type array or object generate separate parameters for each value of the array or key-value pair of the map.
      * @param initializer an object initializer
      */
-  constructor(name: string, schema: Schema, public expandParameterValues: boolean, initializer?: Partial<HeaderParameter>) {
-    super(name, schema);
+  constructor(name: string, typeRef: TypeReference, public expandParameterValues: boolean, initializer?: Partial<HeaderParameter>) {
+    super(name, typeRef);
     this.initialize(initializer);
   }
 }

@@ -8,5 +8,5 @@ export interface ApiUpdateContract {
      * @description Properties of the API entity that can be updated.
      * @since 2019-12-01
      */
-    properties: ApiContractUpdateProperties;
+    properties?: ApiContractUpdateProperties;
 }

@@ -8,10 +8,10 @@ export interface OpenIdAuthenticationSettingsContract {
      * @description OAuth authorization server identifier.
      * @since 2019-12-01
      */
-    openidProviderId: string;
+    openidProviderId?: string;
     /**
      * @description How to send token to the server.
      * @since 2019-12-01
      */
-    bearerTokenSendingMethods: Array<bearerTokenSendingMethods>;
+    bearerTokenSendingMethods?: Array<bearerTokenSendingMethods>;
 }

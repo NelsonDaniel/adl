@@ -1,121 +1,150 @@
-
+import { user } from './user';
 /**
+ *
  * @since v3
  */
 export interface search_issues {
     /**
+     *
      * @since v3
      */
-    items: Array<{
+    items?: Array<{
         /**
+         *
          * @since v3
          */
-        assignee: any;
+        assignee?: any;
         /**
+         *
          * @since v3
          */
-        body: string;
+        body?: string;
         /**
+         *
          * @since v3
          */
-        closed_at: any;
+        closed_at?: any;
         /**
+         *
          * @since v3
          */
-        comments: int64;
+        comments?: int64;
         /**
+         *
          * @since v3
          */
-        comments_url: string;
+        comments_url?: string;
         /**
+         *
          * @since v3
          */
-        created_at: string;
+        created_at?: string;
         /**
+         *
          * @since v3
          */
-        events_url: string;
+        events_url?: string;
         /**
+         *
          * @since v3
          */
-        html_url: string;
+        html_url?: string;
         /**
+         *
          * @since v3
          */
-        id: int64;
+        id?: int64;
         /**
+         *
          * @since v3
          */
-        labels: Array<{
+        labels?: Array<{
             /**
+             *
              * @since v3
              */
-            color: string;
+            color?: string;
             /**
+             *
              * @since v3
              */
-            name: string;
+            name?: string;
             /**
+             *
              * @since v3
              */
-            url: string;
+            url?: string;
         }>;
         /**
+         *
          * @since v3
          */
-        labels_url: string;
+        labels_url?: string;
         /**
+         *
          * @since v3
          */
-        milestone: any;
+        milestone?: any;
         /**
+         *
          * @since v3
          */
-        number: int64;
+        number?: int64;
         /**
+         *
          * @since v3
          */
-        pull_request: {
+        pull_request?: {
             /**
+             *
              * @since v3
              */
-            diff_url: any;
+            diff_url?: any;
             /**
+             *
              * @since v3
              */
-            html_url: any;
+            html_url?: any;
             /**
+             *
              * @since v3
              */
-            patch_url: any;
+            patch_url?: any;
         };
         /**
+         *
          * @since v3
          */
-        score: double;
+        score?: double;
         /**
+         *
          * @since v3
          */
-        state: string;
+        state?: string;
         /**
+         *
          * @since v3
          */
-        title: string;
+        title?: string;
         /**
+         *
          * @since v3
          */
-        updated_at: string;
+        updated_at?: string;
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
         /**
+         *
          * @since v3
          */
-        user: user;
+        user?: user;
     }>;
     /**
+     *
      * @since v3
      */
-    total_count: int64;
+    total_count?: int64;
 }

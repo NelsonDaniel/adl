@@ -1,273 +1,338 @@
-
+import { repo } from './repo';
 /**
+ *
  * @since v3
  */
 export interface pullRequest {
     /**
+     *
      * @since v3
      */
-    _links: {
+    _links?: {
         /**
+         *
          * @since v3
          */
-        comments: {
+        comments?: {
             /**
+             *
              * @since v3
              */
-            href: string;
+            href?: string;
         };
         /**
+         *
          * @since v3
          */
-        html: {
+        html?: {
             /**
+             *
              * @since v3
              */
-            href: string;
+            href?: string;
         };
         /**
+         *
          * @since v3
          */
-        review_comments: {
+        review_comments?: {
             /**
+             *
              * @since v3
              */
-            href: string;
+            href?: string;
         };
         /**
+         *
          * @since v3
          */
-        self: {
+        self?: {
             /**
+             *
              * @since v3
              */
-            href: string;
-        };
-    };
-    /**
-     * @since v3
-     */
-    additions: int64;
-    /**
-     * @since v3
-     */
-    base: {
-        /**
-         * @since v3
-         */
-        label: string;
-        /**
-         * @since v3
-         */
-        ref: string;
-        /**
-         * @since v3
-         */
-        repo: repo;
-        /**
-         * @since v3
-         */
-        sha: string;
-        /**
-         * @since v3
-         */
-        user: {
-            /**
-             * @since v3
-             */
-            avatar_url: string;
-            /**
-             * @since v3
-             */
-            gravatar_id: string;
-            /**
-             * @since v3
-             */
-            id: int64;
-            /**
-             * @since v3
-             */
-            login: string;
-            /**
-             * @since v3
-             */
-            url: string;
+            href?: string;
         };
     };
     /**
+     *
      * @since v3
      */
-    body: string;
+    additions?: int64;
     /**
+     *
      * @since v3
      */
-    changed_files: int64;
-    /**
-     * @since v3
-     */
-    closed_at: string;
-    /**
-     * @since v3
-     */
-    comments: int64;
-    /**
-     * @since v3
-     */
-    commits: int64;
-    /**
-     * @since v3
-     */
-    created_at: string;
-    /**
-     * @since v3
-     */
-    deletions: int64;
-    /**
-     * @since v3
-     */
-    diff_url: string;
-    /**
-     * @since v3
-     */
-    head: {
+    base?: {
         /**
+         *
          * @since v3
          */
-        label: string;
+        label?: string;
         /**
+         *
          * @since v3
          */
-        ref: string;
+        ref?: string;
         /**
+         *
          * @since v3
          */
-        repo: repo;
+        repo?: repo;
         /**
+         *
          * @since v3
          */
-        sha: string;
+        sha?: string;
         /**
+         *
          * @since v3
          */
-        user: {
+        user?: {
             /**
+             *
              * @since v3
              */
-            avatar_url: string;
+            avatar_url?: string;
             /**
+             *
              * @since v3
              */
-            gravatar_id: string;
+            gravatar_id?: string;
             /**
+             *
              * @since v3
              */
-            id: int64;
+            id?: int64;
             /**
+             *
              * @since v3
              */
-            login: string;
+            login?: string;
             /**
+             *
              * @since v3
              */
-            url: string;
+            url?: string;
         };
     };
     /**
+     *
      * @since v3
      */
-    html_url: string;
+    body?: string;
     /**
+     *
      * @since v3
      */
-    issue_url: string;
+    changed_files?: int64;
     /**
+     *
      * @since v3
      */
-    merge_commit_sha: string;
+    closed_at?: string;
     /**
+     *
      * @since v3
      */
-    mergeable: boolean;
+    comments?: int64;
     /**
+     *
      * @since v3
      */
-    merged: boolean;
+    commits?: int64;
     /**
+     *
      * @since v3
      */
-    merged_at: string;
+    created_at?: string;
     /**
+     *
      * @since v3
      */
-    merged_by: {
+    deletions?: int64;
+    /**
+     *
+     * @since v3
+     */
+    diff_url?: string;
+    /**
+     *
+     * @since v3
+     */
+    head?: {
         /**
+         *
          * @since v3
          */
-        avatar_url: string;
+        label?: string;
         /**
+         *
          * @since v3
          */
-        gravatar_id: string;
+        ref?: string;
         /**
+         *
          * @since v3
          */
-        id: int64;
+        repo?: repo;
         /**
+         *
          * @since v3
          */
-        login: string;
+        sha?: string;
         /**
+         *
          * @since v3
          */
-        url: string;
+        user?: {
+            /**
+             *
+             * @since v3
+             */
+            avatar_url?: string;
+            /**
+             *
+             * @since v3
+             */
+            gravatar_id?: string;
+            /**
+             *
+             * @since v3
+             */
+            id?: int64;
+            /**
+             *
+             * @since v3
+             */
+            login?: string;
+            /**
+             *
+             * @since v3
+             */
+            url?: string;
+        };
     };
     /**
+     *
      * @since v3
      */
-    number: int64;
+    html_url?: string;
     /**
+     *
      * @since v3
      */
-    patch_url: string;
+    issue_url?: string;
     /**
+     *
      * @since v3
      */
-    state: string;
+    merge_commit_sha?: string;
     /**
+     *
      * @since v3
      */
-    title: string;
+    mergeable?: boolean;
     /**
+     *
      * @since v3
      */
-    updated_at: string;
+    merged?: boolean;
     /**
+     *
      * @since v3
      */
-    url: string;
+    merged_at?: string;
     /**
+     *
      * @since v3
      */
-    user: {
+    merged_by?: {
         /**
+         *
          * @since v3
          */
-        avatar_url: string;
+        avatar_url?: string;
         /**
+         *
          * @since v3
          */
-        gravatar_id: string;
+        gravatar_id?: string;
         /**
+         *
          * @since v3
          */
-        id: int64;
+        id?: int64;
         /**
+         *
          * @since v3
          */
-        login: string;
+        login?: string;
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
+    };
+    /**
+     *
+     * @since v3
+     */
+    number?: int64;
+    /**
+     *
+     * @since v3
+     */
+    patch_url?: string;
+    /**
+     *
+     * @since v3
+     */
+    state?: string;
+    /**
+     *
+     * @since v3
+     */
+    title?: string;
+    /**
+     *
+     * @since v3
+     */
+    updated_at?: string;
+    /**
+     *
+     * @since v3
+     */
+    url?: string;
+    /**
+     *
+     * @since v3
+     */
+    user?: {
+        /**
+         *
+         * @since v3
+         */
+        avatar_url?: string;
+        /**
+         *
+         * @since v3
+         */
+        gravatar_id?: string;
+        /**
+         *
+         * @since v3
+         */
+        id?: int64;
+        /**
+         *
+         * @since v3
+         */
+        login?: string;
+        /**
+         *
+         * @since v3
+         */
+        url?: string;
     };
 }

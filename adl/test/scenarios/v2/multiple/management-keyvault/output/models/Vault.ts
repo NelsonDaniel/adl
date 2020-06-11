@@ -8,30 +8,30 @@ export interface Vault {
      * @description Fully qualified identifier of the key vault resource.
      * @since 2019-09-01
      */
-    readonly id: string & ;
+    readonly id?: string;
     /**
      * @description Name of the key vault resource.
      * @since 2019-09-01
      */
-    readonly name: string & ;
+    readonly name?: string;
     /**
      * @description Resource type of the key vault resource.
      * @since 2019-09-01
      */
-    readonly type: string & ;
+    readonly type?: string;
     /**
      * @description Azure location of the key vault resource.
      * @since 2019-09-01
      */
-    location: string;
+    location?: string;
     /**
      * @description Tags assigned to the key vault resource.
      * @since 2019-09-01
      */
-    tags: Dictionary<string>;
+    tags?: Dictionary<string>;
     /**
      * @description Properties of the vault
      * @since 2019-09-01
      */
-    properties?: VaultProperties;
+    properties: VaultProperties;
 }

@@ -8,12 +8,12 @@ import { ObjectSchema, Property } from "../model/schema/object";
 export interface Rule {
   runOn: "edit" | "onDemand";
   meta: RuleMetaData;
-  onEnum?: (model: ApiModel, e: Enum) => RuleResult | undefined;
-  onObject?: (model: ApiModel, object: ObjectSchema) => RuleResult | undefined;
-  onProperty?: (model: ApiModel, property: Property) => RuleResult | undefined;
-  onOperation?: (model: ApiModel, operation: Operation) => RuleResult | undefined;
-  onParameter?: (model: ApiModel, parameter: Parameter) => RuleResult | undefined;
-  onResponse?: (model: ApiModel, response: Response) => RuleResult | undefined;
+  onEnum?: (model: ApiModel, e: Enum) => Array<RuleResult> | undefined;
+  onObject?: (model: ApiModel, object: ObjectSchema) => Array<RuleResult> | undefined;
+  onProperty?: (model: ApiModel, property: Property) => Array<RuleResult> | undefined;
+  onOperation?: (model: ApiModel, operation: Operation) => Array<RuleResult> | undefined;
+  onParameter?: (model: ApiModel, parameter: Parameter) => Array<RuleResult> | undefined;
+  onResponse?: (model: ApiModel, response: Response) => Array<RuleResult> | undefined;
 }
 
 export interface RuleMetaData {

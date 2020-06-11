@@ -1,18 +1,22 @@
 
 /**
+ *
  * @since v3
  */
 export interface deployment_statuses_create {
     /**
+     *
      * @since v3
      */
-    description: string;
+    description?: string;
     /**
+     *
      * @since v3
      */
-    state: string;
+    state?: string;
     /**
+     *
      * @since v3
      */
-    target_url: string;
+    target_url?: string;
 }

@@ -8,5 +8,5 @@ export interface ErrorResponse {
      * @description Properties of the Error Response.
      * @since 2019-12-01
      */
-    error: ErrorResponseBody;
+    error?: ErrorResponseBody;
 }

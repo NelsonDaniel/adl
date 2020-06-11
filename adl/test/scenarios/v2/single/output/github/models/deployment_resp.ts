@@ -1,42 +1,52 @@
 import { user } from './user';
 /**
+ *
  * @since v3
  */
 export interface deployment_resp {
     /**
+     *
      * @since v3
      */
-    created_at: string;
+    created_at?: string;
     /**
+     *
      * @since v3
      */
-    creator: user;
+    creator?: user;
     /**
+     *
      * @since v3
      */
-    description: string;
+    description?: string;
     /**
+     *
      * @since v3
      */
-    id: int64;
+    id?: int64;
     /**
+     *
      * @since v3
      */
-    payload: string;
+    payload?: string;
     /**
+     *
      * @since v3
      */
-    sha: string;
+    sha?: string;
     /**
+     *
      * @since v3
      */
-    statuses_url: string;
+    statuses_url?: string;
     /**
+     *
      * @since v3
      */
-    updated_at: string;
+    updated_at?: string;
     /**
+     *
      * @since v3
      */
-    url: string;
+    url?: string;
 }

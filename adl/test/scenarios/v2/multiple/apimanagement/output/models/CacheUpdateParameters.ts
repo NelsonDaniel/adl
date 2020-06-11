@@ -8,5 +8,5 @@ export interface CacheUpdateParameters {
      * @description Cache update properties details.
      * @since 2019-12-01
      */
-    properties: CacheUpdateProperties;
+    properties?: CacheUpdateProperties;
 }

@@ -2,16 +2,17 @@ import { writeFile } from '@azure-tools/async-io';
 import { linq } from '@azure-tools/linq';
 import { readdirSync, statSync } from 'fs';
 import { describe, it } from 'mocha';
+import { resolve } from 'path';
 import { Linter } from '../linter/linter';
 import { ApiModel } from '../model/api-model';
-import { deserializeOpenAPI3 } from '../serialization/openapi/v3/serializer';
+import { deserializeOpenAPI2 } from '../serialization/openapi/v2/serializer';
 import { createHost } from './common';
 import { Errors } from './errors';
 import { serialize } from './serialization';
 
 require('source-map-support').install();
 
-const scenarios = `${__dirname}/../../../test/scenarios/v3`;
+const scenarios = `${__dirname}/../../../test/scenarios/v2`;
 
 async function checkAttic(api: ApiModel, errors: Errors, atticOutput: string) {
   if (api.attic) {
@@ -32,10 +33,10 @@ describe('Run rules', () => {
     it(`Processes '${file}'`, async () => {
       console.log('\n');
       const host = createHost(inputRoot);
-      const api = await deserializeOpenAPI3(host, file);
+      const api = await deserializeOpenAPI2(host, file);
       const linter = new Linter();
-      //   linter.on('property', rule.default.onProperty);
-      //   linter.run(api);
+      // linter.on('property', rule.default.onProperty);
+      // linter.run(api);
 
       //   const name = basename(file, '.yaml');
 
@@ -70,4 +71,46 @@ describe('Run rules', () => {
       //   }
     });
   }
+
+  describe('Load Multiple OAI2 files', () => {
+    const root = `${scenarios}/multiple`;
+    const folders = linq.values(readdirSync(root)).where(each => statSync(`${root}/${each}`).isDirectory()).toArray();
+
+    for (const folder of folders) {
+      const inputRoot = resolve(root, folder, 'input');
+      const adlOutput = resolve(`${inputRoot}/../output/`);
+
+      it(`Processes folder '${folder}'`, async () => {
+        console.log('\n');
+        const host = createHost(inputRoot);
+
+        const files = linq.values(readdirSync(inputRoot)).where(each => statSync(`${inputRoot}/${each}`).isFile()).toArray();
+        const api = await deserializeOpenAPI2(host, ...files);
+
+        // clean the folder and write out ts files
+        await api.saveADL(adlOutput, true);
+
+
+        // const apiOutput = resolve(`${adlOutput}/${folder}.api.yaml`);
+        // const atticOutput = resolve(`${adlOutput}/${folder}.attic.yaml`);
+
+        // const errors = new AccumulateErrors();
+
+        // await clean(apiOutput, atticOutput);
+        // await checkAttic(api, errors, atticOutput);
+
+        // const stopwatch = new Stopwatch();
+        // const content = serialize(api);
+        // console.log(chalk.cyan(`      serialize: '${folder}' ${formatDuration(stopwatch.time)} `));
+
+        // await writeFile(apiOutput, content);
+        // console.log(chalk.cyan(`      save: '${folder}' ${formatDuration(stopwatch.time)} `));
+
+        // equal(await isFile(apiOutput), true, `Should write file ${apiOutput} `);
+        // if (errors.count > 0) {
+        //   fail(`Should not report errors: \n      ${errors.summary}\n`);
+        // }
+      });
+    }
+  });
 });

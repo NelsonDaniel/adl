@@ -5,7 +5,8 @@ import { ProblemFields } from './ProblemFields';
  */
 export interface UnsupportedAuthenticationProblem extends ProblemFields {
     /**
+     *
      * @since 2.3
      */
-    type: "https://api.twitter.com/labs/2/problems/unsupported-authentication";
+    type?: "https://api.twitter.com/labs/2/problems/unsupported-authentication";
 }

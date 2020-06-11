@@ -8,5 +8,5 @@ export interface ProductContractProperties extends ProductEntityBaseParameters {
      * @description Product name.
      * @since 2019-12-01
      */
-    displayName?: string & MaxLength<300> & MinLength<1>;
+    displayName: string & MaxLength<300> & MinLength<1>;
 }

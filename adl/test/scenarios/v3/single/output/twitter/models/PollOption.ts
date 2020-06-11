@@ -8,15 +8,15 @@ export interface PollOption {
      * @description The text of a poll choice.
      * @since 2.3
      */
-    label?: string;
+    label: string;
     /**
      * @description Position of this choice in the poll.
      * @since 2.3
      */
-    position?: int64;
+    position: int64;
     /**
      * @description Number of users who voted for this choice.
      * @since 2.3
      */
-    votes?: int64;
+    votes: int64;
 }

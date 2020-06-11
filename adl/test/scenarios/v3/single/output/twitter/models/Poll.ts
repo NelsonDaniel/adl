@@ -1,3 +1,4 @@
+import { PollId } from '../aliases/PollId';
 import { PollOption } from './PollOption';
 /**
  * @description Represent a Poll attached to a Tweet
@@ -5,23 +6,28 @@ import { PollOption } from './PollOption';
  */
 export interface Poll {
     /**
+     *
      * @since 2.3
      */
-    duration_minutes: int64;
+    duration_minutes?: int64;
     /**
+     *
      * @since 2.3
      */
-    end_datetime: dateTime;
+    end_datetime?: dateTime;
     /**
+     *
      * @since 2.3
      */
-    id?: string & RegularExpression<"^[0-9]{1,19}$">;
+    id: PollId;
     /**
+     *
      * @since 2.3
      */
-    options?: Array<PollOption> & MaximumElements<4> & MinimumElements<2>;
+    options: Array<PollOption> & MaximumElements<4> & MinimumElements<2>;
     /**
+     *
      * @since 2.3
      */
-    voting_status: "open" | "closed";
+    voting_status?: "open" | "closed";
 }

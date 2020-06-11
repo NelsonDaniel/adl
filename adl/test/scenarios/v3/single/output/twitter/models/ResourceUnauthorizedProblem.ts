@@ -5,19 +5,23 @@ import { ProblemFields } from './ProblemFields';
  */
 export interface ResourceUnauthorizedProblem extends ProblemFields {
     /**
+     *
      * @since 2.3
      */
-    resource_id?: string;
+    resource_id: string;
     /**
+     *
      * @since 2.3
      */
-    resource_type?: "tweet";
+    resource_type: "tweet";
     /**
+     *
      * @since 2.3
      */
-    section?: "data" | "includes";
+    section: "data" | "includes";
     /**
+     *
      * @since 2.3
      */
-    type: "https://api.twitter.com/labs/2/problems/not-authorized-for-resource";
+    type?: "https://api.twitter.com/labs/2/problems/not-authorized-for-resource";
 }

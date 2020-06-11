@@ -8,5 +8,5 @@ export interface OpenidConnectProviderUpdateContract {
      * @description OpenId Connect Provider Update contract properties.
      * @since 2019-12-01
      */
-    properties: OpenidConnectProviderUpdateContractProperties;
+    properties?: OpenidConnectProviderUpdateContractProperties;
 }

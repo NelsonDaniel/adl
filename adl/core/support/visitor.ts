@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 /* eslint-disable @typescript-eslint/ban-types */
 import { items, keys, values } from '@azure-tools/linq';
-import { common, Dictionary, Info, isReference, isVendorExtension, JsonReference } from '@azure-tools/openapi';
+import { common, Dictionary, Info, isReference, isVendorExtension, JsonPointer, JsonReference } from '@azure-tools/openapi';
 import { anonymous, getSourceFile, isAnonymous, nameOf, Path, refTo, TrackedSource } from '@azure-tools/sourcemap';
 import { fail } from 'assert';
 import { parse } from 'yaml';
 import { Alias } from '../model/alias';
 import { ApiModel } from '../model/api-model';
 import { Element } from '../model/element';
+import { ParameterReference, TypeReference } from '../model/schema/type';
 import { Host } from './file-system';
 import { Stopwatch } from './stopwatch';
 
@@ -52,10 +53,17 @@ class RefMap {
   }
 }
 
+export class ReferenceMap {
+  schema = new Map<JsonPointer, TypeReference>();
+  parameter = new Map<JsonPointer, ParameterReference> ();
+  
+}
+
 export class Visitor<TSourceModel extends OAIModel> {
   key = '';
   sourceFiles = new Map<string, Promise<Context<TSourceModel>>>();
   $refs = new RefMap();
+  references = new ReferenceMap();
 
   constructor(
     public api: ApiModel,
@@ -137,7 +145,7 @@ export class Visitor<TSourceModel extends OAIModel> {
     throw new Error(`Unable to process Ref ${sourceFile}#/${path}`);
   }
 
-  async resolveReference(sourceFile: string, path: Path): Promise<any> {
+  async resolveReference(sourceFile: string, path: Path): Promise<{ node: any; context: Context<TSourceModel> }> {
     let targetContext = await this.sourceFiles.get(sourceFile);
     if (!targetContext) {
       // the file we're looking for isn't there
@@ -146,8 +154,15 @@ export class Visitor<TSourceModel extends OAIModel> {
       this.sourceFiles.set(sourceFile, t);
       targetContext = await t;
     }
-    const node = this.findNode(path, targetContext.sourceModel);
-    return node || fail(`Unable to process Ref ${sourceFile}#/${path}`);
+    const node = targetContext.visitor.findNode(path, targetContext.sourceModel);
+    if( !node ) {
+      fail(`Unable to process Ref ${sourceFile}#/${path}`);
+    }
+    
+    return {
+      node, 
+      context: targetContext
+    }; 
   }
 }
 
@@ -182,7 +197,7 @@ export class Context<TSourceModel extends OAIModel> {
     return undefined;
   }
 
-  forbiddenProperties<T extends Dictionary<any>>(instance: T, ...properties: Array<keyof T>) {
+  assertNoForbiddenProperties<T extends Dictionary<any>>(instance: T, ...properties: Array<keyof T>) {
     let result = false;
     for (const each of keys(instance)) {
       if (properties.indexOf(each) > -1) {
@@ -190,7 +205,10 @@ export class Context<TSourceModel extends OAIModel> {
         result = true;
       }
     }
-    return result;
+    if( result) {
+      throw new Error('Forbidden Properties');
+    }
+    return;
   }
 
   get api() {
@@ -362,7 +380,7 @@ export class Context<TSourceModel extends OAIModel> {
     return {
       file: file,
       path: path.split('/'),
-      $ref: `${file}#${path}`,
+      $ref: `${file}#/${path.trim()}`,
     };
   }
 }

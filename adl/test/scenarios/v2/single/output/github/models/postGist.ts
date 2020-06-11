@@ -1,28 +1,34 @@
 
 /**
+ *
  * @since v3
  */
 export interface postGist {
     /**
+     *
      * @since v3
      */
-    description: string;
+    description?: string;
     /**
+     *
      * @since v3
      */
-    files: {
+    files?: {
         /**
+         *
          * @since v3
          */
-        'file1.txt': {
+        'file1.txt'?: {
             /**
+             *
              * @since v3
              */
-            content: string;
+            content?: string;
         };
     };
     /**
+     *
      * @since v3
      */
-    public: boolean;
+    public?: boolean;
 }

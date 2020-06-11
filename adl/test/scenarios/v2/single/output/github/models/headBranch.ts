@@ -1,31 +1,38 @@
 
 /**
+ *
  * @since v3
  */
 export interface headBranch {
     /**
+     *
      * @since v3
      */
-    object: {
+    object?: {
         /**
+         *
          * @since v3
          */
-        sha: string;
+        sha?: string;
         /**
+         *
          * @since v3
          */
-        type: string;
+        type?: string;
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
     };
     /**
+     *
      * @since v3
      */
-    ref: string;
+    ref?: string;
     /**
+     *
      * @since v3
      */
-    url: string;
+    url?: string;
 }

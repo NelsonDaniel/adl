@@ -8,10 +8,10 @@ export interface EntityIndices {
      * @description Index (zero-based) at which position this entity ends.
      * @since 2.3
      */
-    end?: int64 & Minimum<0>;
+    end: int64 & Minimum<0>;
     /**
      * @description Index (zero-based) at which position this entity starts.
      * @since 2.3
      */
-    start?: int64 & Minimum<0>;
+    start: int64 & Minimum<0>;
 }

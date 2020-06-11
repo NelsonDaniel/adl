@@ -8,5 +8,5 @@ export interface NamedValueUpdateParameters {
      * @description NamedValue entity Update contract properties.
      * @since 2019-12-01
      */
-    properties: NamedValueUpdateParameterProperties;
+    properties?: NamedValueUpdateParameterProperties;
 }

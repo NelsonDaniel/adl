@@ -8,10 +8,10 @@ export interface VaultPatchParameters {
      * @description The tags that will be assigned to the key vault.
      * @since 2019-09-01
      */
-    tags: Dictionary<string>;
+    tags?: Dictionary<string>;
     /**
      * @description Properties of the vault
      * @since 2019-09-01
      */
-    properties: VaultPatchProperties;
+    properties?: VaultPatchProperties;
 }

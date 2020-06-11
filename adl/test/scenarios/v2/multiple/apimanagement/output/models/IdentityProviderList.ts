@@ -8,10 +8,10 @@ export interface IdentityProviderList {
      * @description Identity Provider configuration values.
      * @since 2019-12-01
      */
-    value: Array<IdentityProviderContract>;
+    value?: Array<IdentityProviderContract>;
     /**
      * @description Next page link if any.
      * @since 2019-12-01
      */
-    nextLink: string;
+    nextLink?: string;
 }

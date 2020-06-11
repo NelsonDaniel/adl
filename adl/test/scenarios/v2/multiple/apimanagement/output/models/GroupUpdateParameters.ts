@@ -8,5 +8,5 @@ export interface GroupUpdateParameters {
      * @description Group entity update contract properties.
      * @since 2019-12-01
      */
-    properties: GroupUpdateParametersProperties;
+    properties?: GroupUpdateParametersProperties;
 }

@@ -5,20 +5,24 @@ import { ProblemFields } from './ProblemFields';
  */
 export interface InvalidRequestProblem extends ProblemFields {
     /**
+     *
      * @since 2.3
      */
-    errors: Array<{
+    errors?: Array<{
         /**
+         *
          * @since 2.3
          */
-        message: string;
+        message?: string;
         /**
+         *
          * @since 2.3
          */
-        parameters: Dictionary<Array<string>>;
+        parameters?: Dictionary<Array<string>>;
     }>;
     /**
+     *
      * @since 2.3
      */
-    type: "https://api.twitter.com/labs/2/problems/invalid-request";
+    type?: "https://api.twitter.com/labs/2/problems/invalid-request";
 }

@@ -8,10 +8,10 @@ export interface CertificateCollection {
      * @description Page values.
      * @since 2019-12-01
      */
-    value: Array<CertificateContract>;
+    value?: Array<CertificateContract>;
     /**
      * @description Next page link if any.
      * @since 2019-12-01
      */
-    nextLink: string;
+    nextLink?: string;
 }

@@ -8,5 +8,5 @@ export interface DeployConfigurationParameters {
      * @description Deploy Configuration Parameter contract properties.
      * @since 2019-12-01
      */
-    properties: DeployConfigurationParameterProperties;
+    properties?: DeployConfigurationParameterProperties;
 }

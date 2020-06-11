@@ -1,18 +1,22 @@
 
 /**
+ *
  * @since v3
  */
 export interface merge {
     /**
+     *
      * @since v3
      */
-    merged: boolean;
+    merged?: boolean;
     /**
+     *
      * @since v3
      */
-    message: string;
+    message?: string;
     /**
+     *
      * @since v3
      */
-    sha: string;
+    sha?: string;
 }

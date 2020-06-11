@@ -8,10 +8,10 @@ export interface GatewayCollection {
      * @description Page values.
      * @since 2019-12-01
      */
-    readonly value: Array<GatewayContract>;
+    readonly value?: Array<GatewayContract>;
     /**
      * @description Next page link if any.
      * @since 2019-12-01
      */
-    readonly nextLink: string & ;
+    readonly nextLink?: string;
 }

@@ -8,10 +8,10 @@ export interface RequestReportCollection {
      * @description Page values.
      * @since 2019-12-01
      */
-    value: Array<RequestReportRecordContract>;
+    value?: Array<RequestReportRecordContract>;
     /**
      * @description Total record count number across all pages.
      * @since 2019-12-01
      */
-    count: int64;
+    count?: int64;
 }

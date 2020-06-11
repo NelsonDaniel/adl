@@ -8,5 +8,5 @@ export interface PrivateLinkResourceListResult {
      * @description Array of private link resources
      * @since 2019-09-01
      */
-    value: Array<PrivateLinkResource>;
+    value?: Array<PrivateLinkResource>;
 }

@@ -8,5 +8,5 @@ export interface SubscriptionsDelegationSettingsProperties {
      * @description Enable or disable delegation for subscriptions.
      * @since 2019-12-01
      */
-    enabled: boolean;
+    enabled?: boolean;
 }

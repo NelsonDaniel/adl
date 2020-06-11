@@ -1,10 +1,13 @@
+import { isAnonymous } from '@azure-tools/sourcemap';
 import { TypeAliasDeclaration } from 'ts-morph';
-import { TypeDeclaration } from '../../support/typescript';
+import { addImportsTo, TypeDeclaration } from '../../support/typescript';
 import { ApiModel } from '../api-model';
 import { Collection, CollectionImpl, Identity } from '../types';
 import { Constraint } from './constraint';
 import { Default } from './default';
-import { Schema, TSSchema } from './schema';
+import { SchemaInitializer } from './object';
+import { TSSchema } from './schema';
+import { TypeReference } from './type';
 
 
 export class Alias extends TSSchema<TypeAliasDeclaration> {
@@ -13,9 +16,7 @@ export class Alias extends TSSchema<TypeAliasDeclaration> {
   defaults: Collection<Default>;
   
   addConstraint(...constraint: Array<Constraint>) {
-    //todo
-    this.node.setType(`${this.node.getTypeNode()?.getText()} & ${constraint.map( c => c.typeDefinition ).join('&')}` );
-    
+    // todo
   }
   removeConstraint(constraint: Constraint) {
     //todo
@@ -61,15 +62,26 @@ export class Alias extends TSSchema<TypeAliasDeclaration> {
   }
 }
 
-export function createAlias(api: ApiModel, identity: Identity, targetSchema: Schema, initializer?: Partial<Alias>): Alias {
+export function createTypeAlias(api: ApiModel, identity: Identity, typeReference: TypeReference, initializer?: Partial<SchemaInitializer>): TypeReference {
+  if (isAnonymous(identity)) {
+    // if it doesn't have a name, just return the type reference instead.
+    return typeReference;
+  }
   const { name, file } = api.getNameAndFile(identity, 'alias');
-  const type = api.getTypeReference(targetSchema, file);
+ 
+  // we have to add the imports of the target to this file
+  addImportsTo(file, typeReference);
 
-  const result = new Alias(file.addTypeAlias({
+  new Alias(file.addTypeAlias({
     name,
-    type,
+    type: typeReference.declaration,
     isExported: true,
   }));
-
-  return result;
+  
+  return {
+    declaration: name,
+    sourceFile: file,
+    requiredReferences: [],
+  };
 }
+

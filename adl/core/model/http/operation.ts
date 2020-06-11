@@ -1,11 +1,12 @@
 import { isAnonymous } from '@azure-tools/sourcemap';
-import { InterfaceDeclaration, MethodSignature, ParameterDeclarationStructure, StructureKind } from 'ts-morph';
+import { InterfaceDeclaration, JSDocTagStructure, MethodSignature, MethodSignatureStructure, ParameterDeclarationStructure, StructureKind } from 'ts-morph';
 import { normalizeIdentifier, normalizeName } from '../../support/codegen';
-import { appendTag, getTagValue, setTag } from '../../support/doc-tag';
+import { createDocs, getLastDoc, getTagValue, setTag } from '../../support/doc-tag';
 import { Alias } from '../alias';
 import { ApiModel } from '../api-model';
 import * as base from '../operation';
 import { Reference } from '../reference';
+import { VersionedEntity } from '../schema/object';
 import { NamedElement } from '../schema/schema';
 import { ArrayCollectionImpl, Collection, CollectionImpl } from '../types';
 import { Parameter, ParameterType } from './parameter';
@@ -65,30 +66,216 @@ export interface Operation extends base.Operation {
   readonly connections: Collection<Connection>;
 }
 
-export function createOperation(
+export interface OperationInitializer extends VersionedEntity {
+  description: string;
+  summary: string;
+  tags: Array<string>;
+  parameters: Array<Parameter | Alias<Parameter>>;
+  requests: Array<Request | Alias<Request>>;
+  responses: Array<Response | Alias<Response>>;
+  references: Array<Reference>;
+}
+
+export interface OperationStructure extends MethodSignatureStructure {
+  group: string;
+}
+
+export function createOperationGroup(
+  api: ApiModel,
+  group: string,
+  operations: Array<MethodSignatureStructure>
+) {
+  const file = api.getFile(group, 'group');
+  file.addInterface({
+    name: group,
+    isExported: true,
+    methods: operations,
+  });
+}
+
+export function createOperationStructure(
   api: ApiModel,
   path: Path,
   group: string,
   name: string,
-  initializer: Partial<Operation>
-): Operation {
+  initializer: Partial<OperationInitializer>
+): OperationStructure {
 
-  let groupNode = api.getGroup(group);
-  if (!groupNode) {
-    const file = api.getFile(group, 'group');
-    groupNode = file.addInterface({ name: group, isExported: true });
+  const parameterStructures = createParameterStructures(initializer.parameters);
+  const requestStructures = createRequestStructures(initializer.requests);
+  const responseStructures = createResponseStructures(initializer.responses);
+  const tagStructures = createTagStructures(initializer.tags);
+  const pathStructure = createPathStructure(path);
+
+  return {
+    kind: StructureKind.MethodSignature,
+    group: normalizeIdentifier(group),
+    name: normalizeIdentifier(name),
+    returnType: responseStructures.type,
+    parameters: [
+      ...parameterStructures.parameters,
+      ...requestStructures.parameters
+    ],
+    docs: createDocs(initializer, [
+      pathStructure,
+      ...tagStructures,
+      ...parameterStructures.tags,
+      ...requestStructures.tags,
+      ...responseStructures.tags
+    ]),
+  };
+}
+
+function createPathStructure(path: Path): JSDocTagStructure {
+  return {
+    kind: StructureKind.JSDocTag,
+    tagName: 'http',
+    text: `${path.method.toUpperCase()} ${path.path}`,
+  };
+}
+
+function createTagStructures(tags?: Array<string>) {
+  const tagStructures = new Array<JSDocTagStructure>();
+
+  for (const each of tags ?? []) {
+    tagStructures.push({
+      kind: StructureKind.JSDocTag,
+      tagName: 'tag',
+      text: each
+    });
   }
 
-  let count = 1;
-  const baseName = name;
-  while (groupNode.getMethod(name)) {
-    name = `${baseName}${count++}`;
+  return tagStructures;
+}
+
+function createParameterStructures(parameters?: Array<Parameter | Alias<Parameter>>) {
+  const parameterStructures = new Array<ParameterDeclarationStructure>();
+  const tagStructures = new Array<JSDocTagStructure>();
+
+  for (const each of parameters ?? []) {
+    const parameter = each instanceof Alias ? each.target : each;
+    const name = normalizeName(parameter.name);
+    const type = getParameterType(parameter, name);
+
+    parameterStructures.push({
+      kind: StructureKind.Parameter,
+      hasQuestionToken: !parameter.required,
+      name,
+      type,
+    });
+
+    if (parameter.description) {
+      const doc = `${name} - ${parameter.description}`;
+      tagStructures.push({
+        kind: StructureKind.JSDocTag,
+        tagName: 'param',
+        text: doc,
+      });
+    }
   }
 
-  const operationNode = groupNode.addMethod({ name: normalizeIdentifier(name) });
-  const operation = new OperationImpl(operationNode, initializer);
-  operation.path = path;
-  return operation;
+  return { parameters: parameterStructures, tags: tagStructures };
+}
+
+function createRequestStructures(requests?: Array<Request | Alias<Request>>) {
+  const parameterStructures = new Array<ParameterDeclarationStructure>();
+  const tagStructures = new Array<JSDocTagStructure>();
+
+  for (const each of requests ?? []) {
+    const request = each instanceof Alias ? each.target : each;
+    const name = normalizeName(request.name ?? 'body');
+    const type = getRequestType(request, name);
+
+    parameterStructures.push({
+      kind: StructureKind.Parameter,
+      hasQuestionToken: !request.required,
+      name,
+      type,
+    });
+
+    if (request.description) {
+      const doc = `${name} - ${request.description}`;
+      tagStructures.push({
+        kind: StructureKind.JSDocTag,
+        tagName: 'param',
+        text: doc,
+      });
+    }
+  }
+
+  return { parameters: parameterStructures, tags: tagStructures };
+}
+
+function createResponseStructures(responses?: Array<Response | Alias<Response>>, currentReturnType = '') {
+  let returnType = currentReturnType;
+  const tagStructures = new Array<JSDocTagStructure>();
+
+  for (const each of responses ?? []) {
+    if (returnType != '') {
+      returnType += ' | ';
+    }
+    const response = each instanceof Alias ? each.target : each;
+    const type = getResponseType(response);
+
+    if (response.description) {
+      const doc = `${response.name} - ${response.description}`;
+      tagStructures.push({
+        kind: StructureKind.JSDocTag,
+        tagName: 'return',
+        text: doc,
+      });
+    }
+
+    returnType += type;
+  }
+
+  return { type: returnType, tags: tagStructures };
+}
+
+function getParameterType(parameter: Parameter, chosenName: string) {
+  const innerType = parameter.typeRef.declaration;
+  const outerType = getOuterParameterType(parameter.type);
+  const nameArg = parameter.name == chosenName ? '' : `, '${parameter.name}'`;
+  return `${outerType}<${innerType}${nameArg}>`;
+}
+
+function getOuterParameterType(parameterType: ParameterType) {
+  switch (parameterType) {
+    case ParameterType.Cookie:
+      return 'Http.Cookie';
+    case ParameterType.FormData:
+      return 'Http.FormData';
+    case ParameterType.Header:
+      return 'Http.Header';
+    case ParameterType.Path:
+      return 'Http.Path';
+    case ParameterType.Query:
+      return 'Http.Query';
+    default:
+      throw new Error(`Invalid parameter type '${parameterType}'`);
+  }
+}
+
+function getRequestType(request: Request, chosenName: string) {
+  const innerType = request.typeRef.declaration;
+  const outerType = 'Http.Body';
+  const mediaTypeArg = `, '${request.mediaType}'`;
+  const nameArg = (!request.name || request.name == chosenName) ? '' : `, '${request.name}'`;
+  return `${outerType}<${innerType}${mediaTypeArg}${nameArg}>`;
+}
+
+function getResponseType(response: Response) {
+  const outerType = response.isException ? 'Http.Exception' : 'Http.Response';
+  const statusArg = getStatusArg(response);
+  const schema = response.typeref;
+  const schemaArg = schema ? `, ${schema}` : response.mediaType ? ', none' : '';
+  const mediaTypeArg = response.mediaType ? `, '${response.mediaType}'` : '';
+  return `${outerType}<${statusArg}${schemaArg}${mediaTypeArg}>`;
+}
+
+function getStatusArg(response: Response) {
+  const status = isAnonymous(response.name) ? 'default' : response.name;
+  return status == 'default' ? 'Http.Default' : `'${status}'`;
 }
 
 class OperationImpl extends NamedElement<MethodSignature> implements Operation {
@@ -100,13 +287,12 @@ class OperationImpl extends NamedElement<MethodSignature> implements Operation {
   readonly authenticationRequirements = new ArrayCollectionImpl<AuthenticationRequirement>();
   readonly connections = new ArrayCollectionImpl<Connection>();
 
-  constructor(node: MethodSignature, initializer?: Partial<Operation>) {
+  constructor(node: MethodSignature) {
     super(node);
     this.parameters = new CollectionImpl(this, this.pushParameters, undefined!, undefined!);
     this.requests = new CollectionImpl(this, this.pushRequests, undefined!, undefined!);
     this.responses = new CollectionImpl(this, this.pushResponses, undefined!, undefined!);
     this.tags = new CollectionImpl(this, this.pushTags, undefined!, undefined!);
-    this.initialize(initializer);
   }
 
   get group() {
@@ -130,108 +316,28 @@ class OperationImpl extends NamedElement<MethodSignature> implements Operation {
   }
 
   private pushTags(...tags: Array<string>) {
-    for (const each of tags) {
-      appendTag(this.node, 'tag', each);
-    }
+    const tagStructures = createTagStructures(tags);
+    getLastDoc(this.node).addTags(tagStructures);
   }
 
   private pushParameters(...parameters: Array<Parameter | Alias<Parameter>>) {
-    const structures = new Array<ParameterDeclarationStructure>();
-    for (const each of parameters) {
-      const parameter = each instanceof Alias ? each.target : each;
-      const name = normalizeName(parameter.name);
-      const type = this.getParameterType(parameter, name);
-
-      structures.push({
-        kind: StructureKind.Parameter,
-        hasQuestionToken: !parameter.required,
-        name,
-        type,
-      });
-    }
-
-    this.node.addParameters(structures);
-  }
-
-  private getParameterType(parameter: Parameter, chosenName: string) {
-    const innerType = this.project.getTypeReference(parameter.schema, this.node.getSourceFile());
-    const outerType = this.getOuterParameterType(parameter.type);
-    const nameArg = parameter.name == chosenName ? '' : `, '${parameter.name}'`;
-    return `${outerType}<${innerType}${nameArg}>`;
-  }
-
-  private getOuterParameterType(parameterType: ParameterType) {
-    switch (parameterType) {
-      case ParameterType.Cookie:
-        return 'Http.Cookie';
-      case ParameterType.FormData:
-        return 'Http.FormData';
-      case ParameterType.Header:
-        return 'Http.Header';
-      case ParameterType.Path:
-        return 'Http.Path';
-      case ParameterType.Query:
-        return 'Http.Query';
-      default:
-        throw new Error(`Invalid parameter type '${parameterType}'`);
-    }
+    const parameterStructures = createParameterStructures(parameters);
+    this.node.addParameters(parameterStructures.parameters);
+    getLastDoc(this.node).addTags(parameterStructures.tags);
   }
 
   private pushRequests(...requests: Array<Request | Alias<Request>>) {
-    const structures = new Array<ParameterDeclarationStructure>();
-    for (const each of requests) {
-      const request = each instanceof Alias ? each.target : each;
-      const name = normalizeName(request.name ?? 'body');
-      const type = this.getRequestType(request, name);
-      
-      structures.push({
-        kind: StructureKind.Parameter,
-        hasQuestionToken: !request.required,
-        name,
-        type,
-      });
-    }
-    
-    this.node.addParameters(structures);
+    const requestStructures = createRequestStructures(requests);
+    this.node.addParameters(requestStructures.parameters);
+    getLastDoc(this.node).addTags(requestStructures.tags);
   }
-  
-  private getRequestType(request: Request, chosenName: string) {
-    const innerType = this.project.getTypeReference(request.schema, this.node.getSourceFile());
-    const outerType = 'Http.Body';
-    const mediaTypeArg = `, '${request.mediaType}'`;
-    const nameArg = (!request.name || request.name == chosenName) ? '' : `, '${request.name}'`;
-    return `${outerType}<${innerType}${mediaTypeArg}${nameArg}>`;
-  } 
 
   private pushResponses(...responses: Array<Response | Alias<Response>>) {
-    let returnType = this.node.getReturnType().getText();
+    const responseStructures = createResponseStructures(
+      responses,
+      this.node.getReturnTypeNode()?.getText() ?? '');
 
-    if (returnType == 'any') {
-      returnType = '';
-    }
-
-    for (const each of responses) {
-      if (returnType != '') {
-        returnType += ' | ';
-      }
-      const response = each instanceof Alias ? each.target : each;
-      returnType += this.getResponseType(response);
-    }
-
-    this.node.setReturnType(returnType);
-  }
-
-  private getResponseType(response: Response) {
-    const outerType = response.isException ? 'Http.Exception' : 'Http.Response';
-    const statusArg = this.getStatusArg(response);
-    const schema = response.schema ? this.project.getTypeReference(response.schema, this.node.getSourceFile()) : undefined;
-    const schemaArg = schema ? `, ${schema}` : response.mediaType ? ', none' : '';
-    const mediaTypeArg = response.mediaType ? `, '${response.mediaType}'` : '';
-    return `${outerType}<${statusArg}${schemaArg}${mediaTypeArg}>`;
-  }
-
-  private getStatusArg(response: Response) {
-    const status = isAnonymous(response.name) ? 'default' : response.name;
-    return status == 'default' ? 'Http.Default' : `'${status}'`;
+    this.node.setReturnType(responseStructures.type);
+    getLastDoc(this.node).addTags(responseStructures.tags);
   }
 }

@@ -1,50 +1,61 @@
 
 /**
+ *
  * @since v3
  */
 export interface patchGist {
     /**
+     *
      * @since v3
      */
-    description: string;
+    description?: string;
     /**
+     *
      * @since v3
      */
-    files: {
+    files?: {
         /**
+         *
          * @since v3
          */
-        'delete_this_file.txt': string;
+        'delete_this_file.txt'?: string;
         /**
+         *
          * @since v3
          */
-        'file1.txt': {
+        'file1.txt'?: {
             /**
+             *
              * @since v3
              */
-            content: string;
+            content?: string;
         };
         /**
+         *
          * @since v3
          */
-        'new_file.txt': {
+        'new_file.txt'?: {
             /**
+             *
              * @since v3
              */
-            content: string;
+            content?: string;
         };
         /**
+         *
          * @since v3
          */
-        'old_name.txt': {
+        'old_name.txt'?: {
             /**
+             *
              * @since v3
              */
-            content: string;
+            content?: string;
             /**
+             *
              * @since v3
              */
-            filename: string;
+            filename?: string;
         };
     };
 }

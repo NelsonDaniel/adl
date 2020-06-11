@@ -1,27 +1,33 @@
 
 /**
+ *
  * @since v3
  */
 export interface organizationAsTeamMember {
     /**
+     *
      * @since v3
      */
-    errors: Array<{
+    errors?: Array<{
         /**
+         *
          * @since v3
          */
-        code: string;
+        code?: string;
         /**
+         *
          * @since v3
          */
-        field: string;
+        field?: string;
         /**
+         *
          * @since v3
          */
-        resource: string;
+        resource?: string;
     }>;
     /**
+     *
      * @since v3
      */
-    message: string;
+    message?: string;
 }

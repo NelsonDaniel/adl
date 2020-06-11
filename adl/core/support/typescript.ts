@@ -1,7 +1,8 @@
 import { Path } from '@azure-tools/sourcemap';
 import { fail } from 'assert';
-import { ClassDeclaration, EnumDeclaration, EnumMember, InterfaceDeclaration, Node, Project, SyntaxList, TypeAliasDeclaration } from 'ts-morph';
+import { ClassDeclaration, EnumDeclaration, EnumMember, ImportDeclarationStructure, InterfaceDeclaration, Node, Project, SourceFile, StructureKind, SyntaxList, TypeAliasDeclaration } from 'ts-morph';
 import { ApiModel } from '../model/api-model';
+import { TypeReference } from '../model/schema/type';
 import { createSandbox } from './sandbox';
 
 /**
@@ -22,9 +23,9 @@ export function getNodeIdentifier(node: Node) {
   // effectively find the node we're looking for.
   // this can be far more reliable than using the name or index 
   // as a means to find something.
-  switch( node.getKindName() ) {
+  switch (node.getKindName()) {
     case 'SourceFile':
-      return  (<any>node).getFilePath();
+      return (<any>node).getFilePath();
 
     case 'EnumMember':
       return `$.getMember(${quote((<EnumMember>node).getName())})`;
@@ -34,40 +35,40 @@ export function getNodeIdentifier(node: Node) {
   }
 
   // otherwise, just use the name of the node, or the value, or the index in the list of children
-  return (<any>node).getName ? (<any>node).getName() : 
-    (<any>node).getValue ? (<any>node).getValue() : 
-      node.getChildIndex(); 
+  return (<any>node).getName ? (<any>node).getName() :
+    (<any>node).getValue ? (<any>node).getValue() :
+      node.getChildIndex();
 }
 /**
  * returns a Path to the node that we can use to find it again.
  * 
  * @param node the node to create the path for.
  */
-export function getPath(node: Node, ...args: Path ): Path{
-  return [...node.getAncestors().map(getNodeIdentifier),getNodeIdentifier(node),...args];
+export function getPath(node: Node, ...args: Path): Path {
+  return [...node.getAncestors().map(getNodeIdentifier), getNodeIdentifier(node), ...args];
 }
 
 /**
  * gets the node, given the path and the node/project it is relative to.
  */
-export function getNode(path: Path, from: Node|Project ): Node | undefined {
+export function getNode(path: Path, from: Node | Project): Node | undefined {
   let index = path.shift();
-  if( from instanceof Project) {
+  if (from instanceof Project) {
     from = from.getSourceFile(<string>index)?.getChildAtIndex(0) || fail(`SourceFile ${<string>index} is not in the project`);
     index = path.shift();
   }
-  let result: Node|undefined;
+  let result: Node | undefined;
 
   // if the path leads us to an expression that needs to evaluate
-  if( typeof index === 'string' && index.startsWith('$.')) {
-    console.log( `executing ${index}`);
-    result = evaluateExpression( index, {$: from instanceof SyntaxList ? from.getParent() : from});
+  if (typeof index === 'string' && index.startsWith('$.')) {
+    console.log(`executing ${index}`);
+    result = evaluateExpression(index, { $: from instanceof SyntaxList ? from.getParent() : from });
   }
 
   // otherwise, just try to find it in the children
-  if( result === undefined ) {
-    result = from.getChildren().find((each: any) => { 
-      if ((<any>each).getName && (<any>each).getName() === index ) {
+  if (result === undefined) {
+    result = from.getChildren().find((each: any) => {
+      if ((<any>each).getName && (<any>each).getName() === index) {
         return true;
       }
       if ((<any>each).getValue && (<any>each).getValue() === index) {
@@ -77,7 +78,7 @@ export function getNode(path: Path, from: Node|Project ): Node | undefined {
     }) || (typeof index === 'number' ? from.getChildAtIndex(index) : undefined);
   }
 
-  return result && path.length ? getNode( path, result) : result;
+  return result && path.length ? getNode(path, result) : result;
 }
 
 /**
@@ -85,13 +86,13 @@ export function getNode(path: Path, from: Node|Project ): Node | undefined {
  * 
  * @param input the node to create a reference for.
  */
-export function referenceTo<T extends Node>(input: T): T { 
+export function referenceTo<T extends Node>(input: T): T {
   const project = input.getProject();
   let current = input;
   const path = getPath(input);
 
-  return new Proxy(input,{
-    get:(originalTarget: T, property: keyof T, proxy: T): any => {
+  return new Proxy(input, {
+    get: (originalTarget: T, property: keyof T, proxy: T): any => {
       return Reflect.get(current.wasForgotten() ? (current = <T>getNode([...path], project)) : current, property);
     },
     getOwnPropertyDescriptor: (originalTarget: T, property: keyof T) => {
@@ -100,7 +101,7 @@ export function referenceTo<T extends Node>(input: T): T {
     has: (originalTarget: T, property: keyof T): boolean => {
       return Reflect.has(current.wasForgotten() ? (current = <T>getNode([...path], project)) : current, property);
     },
-    set: (originalTarget: T, property: keyof T, value: any, receiver: any)=> {
+    set: (originalTarget: T, property: keyof T, value: any, receiver: any) => {
       return Reflect.set(current.wasForgotten() ? (current = <T>getNode([...path], project)) : current, property, value);
     }
   });
@@ -112,4 +113,62 @@ export function project<T extends Node>(input: T): ApiModel {
 
 export function IsTypeDeclaration(node?: Node): node is TypeDeclaration {
   return node instanceof TypeAliasDeclaration || node instanceof ClassDeclaration || node instanceof InterfaceDeclaration || node instanceof EnumDeclaration;
+}
+
+export function getImportFor(type: EnumDeclaration|InterfaceDeclaration|TypeAliasDeclaration, relativeToSourceFile: SourceFile): ImportDeclarationStructure {
+  return {
+    kind: StructureKind.ImportDeclaration,
+    namedImports: [type.getName()],
+    moduleSpecifier: relativeToSourceFile.getRelativePathAsModuleSpecifierTo(type.getSourceFile())
+  };
+}
+
+export function createImportFor(name: string, sourceFile: SourceFile, relativeToSourceFile: SourceFile): ImportDeclarationStructure {
+  return {
+    kind: StructureKind.ImportDeclaration,
+    namedImports: [name],
+    moduleSpecifier: relativeToSourceFile.getRelativePathAsModuleSpecifierTo(sourceFile)
+  };
+}
+
+export function addImportsTo(sourceFile: SourceFile,typeReference: TypeReference ) {
+  if (typeReference.sourceFile && sourceFile !== typeReference.sourceFile ) {
+    const typeName = typeReference.declaration;
+
+    const importDecls = sourceFile.getImportDeclarations();
+    let found = false;
+
+    for (const importDecl of importDecls) {
+      if (importDecl.getModuleSpecifierSourceFile() === typeReference.sourceFile) {
+        // we've got imports from that sourcefile 
+        if (!importDecl.getNamedImports().find(imp => imp.getName() === typeName)) {
+          // we've referenced the file, but not imported the type.
+          importDecl.addNamedImport(typeName);
+        }
+        // it's imported now
+        found = true;
+        break;
+      }
+
+      // wasn't that file
+    }
+    // wasn't imported yet. Let's add it.
+    if( !found) {
+      sourceFile.addImportDeclaration(createImportFor(typeName, typeReference.sourceFile, sourceFile));
+    }
+  }
+
+  // now, add any requiredTypes to this file too.
+  for( const each of typeReference.requiredReferences) {
+    addImportsTo( sourceFile, each);
+  }
+}
+
+export function addNullable(declaration: string) {
+  return declaration.endsWith('| null') ?declaration:`${declaration} | null`;
+}
+
+export function getInnerText(declaration: InterfaceDeclaration) {
+  const text = declaration.getText(); 
+  return text.substring(text.indexOf('{'));
 }

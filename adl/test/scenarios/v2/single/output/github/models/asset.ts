@@ -1,50 +1,62 @@
 import { user } from './user';
 /**
+ *
  * @since v3
  */
 export interface asset {
     /**
+     *
      * @since v3
      */
-    content_type: string;
+    content_type?: string;
     /**
+     *
      * @since v3
      */
-    created_at: string;
+    created_at?: string;
     /**
+     *
      * @since v3
      */
-    download_count: double;
+    download_count?: double;
     /**
+     *
      * @since v3
      */
-    id: double;
+    id?: double;
     /**
+     *
      * @since v3
      */
-    label: string;
+    label?: string;
     /**
+     *
      * @since v3
      */
-    name: string;
+    name?: string;
     /**
+     *
      * @since v3
      */
-    size: double;
+    size?: double;
     /**
+     *
      * @since v3
      */
-    state: string;
+    state?: string;
     /**
+     *
      * @since v3
      */
-    updated_at: string;
+    updated_at?: string;
     /**
+     *
      * @since v3
      */
-    uploader: user;
+    uploader?: user;
     /**
+     *
      * @since v3
      */
-    url: string;
+    url?: string;
 }

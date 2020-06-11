@@ -8,5 +8,5 @@ export interface ApiCreateOrUpdateParameter {
      * @description Api entity create of update properties.
      * @since 2019-12-01
      */
-    properties: ApiCreateOrUpdateProperties;
+    properties?: ApiCreateOrUpdateProperties;
 }

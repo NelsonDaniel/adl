@@ -1,52 +1,64 @@
 import { actor } from './actor';
 import { organization } from './organization';
 /**
+ *
  * @since v3
  */
 export interface event {
     /**
+     *
      * @since v3
      */
-    actor: actor;
+    actor?: actor;
     /**
+     *
      * @since v3
      */
-    created_at: {};
+    created_at?: {};
     /**
+     *
      * @since v3
      */
-    id: int64;
+    id?: int64;
     /**
+     *
      * @since v3
      */
-    org: organization;
+    org?: organization;
     /**
+     *
      * @since v3
      */
-    payload: {};
+    payload?: {};
     /**
+     *
      * @since v3
      */
-    public: boolean;
+    public?: boolean;
     /**
+     *
      * @since v3
      */
-    repo: {
+    repo?: {
         /**
+         *
          * @since v3
          */
-        id: int64;
+        id?: int64;
         /**
+         *
          * @since v3
          */
-        name: string;
+        name?: string;
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
     };
     /**
+     *
      * @since v3
      */
-    type: string;
+    type?: string;
 }

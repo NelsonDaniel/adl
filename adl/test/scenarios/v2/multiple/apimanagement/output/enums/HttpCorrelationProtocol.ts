@@ -5,10 +5,19 @@
  * @since 2019-12-01
  */
 export enum HttpCorrelationProtocol {
-    /** Do not read and inject correlation headers. */
+    /**
+     *
+     * @description Do not read and inject correlation headers.
+     */
     None = 'None',
-    /** Inject Request-Id and Request-Context headers with request correlation data. See https://github.com/dotnet/corefx/blob/master/src/System.Diagnostics.DiagnosticSource/src/HttpCorrelationProtocol.md. */
+    /**
+     *
+     * @description Inject Request-Id and Request-Context headers with request correlation data. See https://github.com/dotnet/corefx/blob/master/src/System.Diagnostics.DiagnosticSource/src/HttpCorrelationProtocol.md.
+     */
     Legacy = 'Legacy',
-    /** Inject Trace Context headers. See https://w3c.github.io/trace-context. */
+    /**
+     *
+     * @description Inject Trace Context headers. See https://w3c.github.io/trace-context.
+     */
     W3C = 'W3C'
 }

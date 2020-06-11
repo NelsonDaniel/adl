@@ -8,5 +8,5 @@ export interface EmailTemplateUpdateParameters {
      * @description Email Template Update contract properties.
      * @since 2019-12-01
      */
-    properties: EmailTemplateUpdateParameterProperties;
+    properties?: EmailTemplateUpdateParameterProperties;
 }

@@ -8,15 +8,15 @@ export interface SecretPatchProperties {
      * @description The value of the secret.
      * @since 2019-09-01
      */
-    value: string;
+    value?: string;
     /**
      * @description The content type of the secret.
      * @since 2019-09-01
      */
-    contentType: string;
+    contentType?: string;
     /**
      * @description The attributes of the secret.
      * @since 2019-09-01
      */
-    attributes: SecretAttributes;
+    attributes?: SecretAttributes;
 }

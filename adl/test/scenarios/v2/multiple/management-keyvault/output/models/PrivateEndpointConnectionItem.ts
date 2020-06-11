@@ -8,5 +8,5 @@ export interface PrivateEndpointConnectionItem {
      * @description Private endpoint connection properties.
      * @since 2019-09-01
      */
-    properties: PrivateEndpointConnectionProperties;
+    properties?: PrivateEndpointConnectionProperties;
 }

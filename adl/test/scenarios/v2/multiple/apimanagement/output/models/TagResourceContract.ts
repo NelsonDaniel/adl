@@ -11,20 +11,20 @@ export interface TagResourceContract {
      * @description Tag associated with the resource.
      * @since 2019-12-01
      */
-    tag?: TagTagResourceContractProperties;
+    tag: TagTagResourceContractProperties;
     /**
      * @description Api associated with the tag.
      * @since 2019-12-01
      */
-    api: ApiTagResourceContractProperties;
+    api?: ApiTagResourceContractProperties;
     /**
      * @description Operation associated with the tag.
      * @since 2019-12-01
      */
-    operation: OperationTagResourceContractProperties;
+    operation?: OperationTagResourceContractProperties;
     /**
      * @description Product associated with the tag.
      * @since 2019-12-01
      */
-    product: ProductTagResourceContractProperties;
+    product?: ProductTagResourceContractProperties;
 }

@@ -8,10 +8,10 @@ export interface IssueCommentCollection {
      * @description Issue Comment values.
      * @since 2019-12-01
      */
-    readonly value: Array<IssueCommentContract>;
+    readonly value?: Array<IssueCommentContract>;
     /**
      * @description Next page link if any.
      * @since 2019-12-01
      */
-    readonly nextLink: string & ;
+    readonly nextLink?: string;
 }

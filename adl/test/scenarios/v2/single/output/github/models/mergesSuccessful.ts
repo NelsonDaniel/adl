@@ -1,111 +1,137 @@
 import { user } from './user';
 /**
+ *
  * @since v3
  */
 export interface mergesSuccessful {
     /**
+     *
      * @since v3
      */
-    author: user;
+    author?: user;
     /**
+     *
      * @since v3
      */
-    comments_url: string;
+    comments_url?: string;
     /**
+     *
      * @since v3
      */
-    commit: {
+    commit?: {
         /**
+         *
          * @since v3
          */
-        author: {
+        author?: {
             /**
+             *
              * @since v3
              */
-            date: string;
+            date?: string;
             /**
+             *
              * @since v3
              */
-            email: string;
+            email?: string;
             /**
+             *
              * @since v3
              */
-            name: string;
+            name?: string;
         };
         /**
+         *
          * @since v3
          */
-        comment_count: int64;
+        comment_count?: int64;
         /**
+         *
          * @since v3
          */
-        committer: {
+        committer?: {
             /**
+             *
              * @since v3
              */
-            date: string;
+            date?: string;
             /**
+             *
              * @since v3
              */
-            email: string;
+            email?: string;
             /**
+             *
              * @since v3
              */
-            name: string;
+            name?: string;
         };
         /**
+         *
          * @since v3
          */
-        message: string;
+        message?: string;
         /**
+         *
          * @since v3
          */
-        tree: {
+        tree?: {
             /**
+             *
              * @since v3
              */
-            sha: string;
+            sha?: string;
             /**
+             *
              * @since v3
              */
-            url: string;
+            url?: string;
         };
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
     };
     /**
+     *
      * @since v3
      */
-    committer: user;
+    committer?: user;
     /**
+     *
      * @since v3
      */
-    merged: boolean;
+    merged?: boolean;
     /**
+     *
      * @since v3
      */
-    message: string;
+    message?: string;
     /**
+     *
      * @since v3
      */
-    parents: Array<{
+    parents?: Array<{
         /**
+         *
          * @since v3
          */
-        sha: string;
+        sha?: string;
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
     }>;
     /**
+     *
      * @since v3
      */
-    sha: string;
+    sha?: string;
     /**
+     *
      * @since v3
      */
-    url: string;
+    url?: string;
 }

@@ -1,10 +1,10 @@
-import { v2, v3, XMSEnumValue } from '@azure-tools/openapi';
+import { IntegerFormat, NumberFormat, v2, v3, XMSEnumValue } from '@azure-tools/openapi';
 import { anonymous, nameOf } from '@azure-tools/sourcemap';
-import { createAlias } from '../../../model/schema/alias';
-import { NullableModifier, ReadOnlyModifier } from '../../../model/schema/constraint';
-import { ServerDefaultValue } from '../../../model/schema/default';
+import { createTypeAlias } from '../../../model/schema/alias';
+import { addEncoding, EncodingReference } from '../../../model/schema/constraint';
+import { addDefault } from '../../../model/schema/default';
 import { createEnum } from '../../../model/schema/enum';
-import { Schema } from '../../../model/schema/schema';
+import { TypeReference } from '../../../model/schema/type';
 import { Context, OAIModel } from '../../../support/visitor';
 
 
@@ -37,135 +37,168 @@ export function commonProperties(schema: v3.Schema|v2.Schema) {
     clientName: (<any>schema)['x-ms-client-name'],
 
     // todo: I'm not fond of having this in schema -- we should strongly consider refactoring this so the consumer gets it (ie, the property)
-    nullable: (<any>schema).nullable || schema['x-nullable']
+    nullable: (<any>schema).nullable || schema['x-nullable'],
+    readOnly: (<any>schema).readOnly,
   };
 }
 
-export async function* processCharSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): AsyncGenerator<Schema> {
-  if ($.forbiddenProperties(schema, ...<any>notPrimitiveProperties)) {
-    return;
-  }
-
-  return yield addAliasWithDefault(schema, $.api.schemas.Char, $);
+export function versionInfo<T extends OAIModel>($: Context<T>, versionedElement: any) {
+  return {
+    since: $.apiVersion,
+    deprecated: versionedElement.deprecated ? $.apiVersion : undefined,
+  };
 }
 
-export async function* processDateSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): AsyncGenerator<Schema> {
-  if ($.forbiddenProperties(schema, ...<any>notPrimitiveProperties)) {
-    return;
-  }
+export async function processCharSchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>): Promise<TypeReference> {
+  $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return yield addAliasWithDefault(schema, $.api.schemas.Date, $);
+  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.char, $);
 }
 
-export async function* processTimeSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): AsyncGenerator<Schema> {
-  if ($.forbiddenProperties(schema, ...<any>notPrimitiveProperties)) {
-    return;
-  }
 
-  return yield addAliasWithDefault(schema, $.api.schemas.Time, $);
+export async function processDateSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
+  $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
+
+  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.date, $);
 }
 
-export async function* processDateTimeSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): AsyncGenerator<Schema> {
-  if ($.forbiddenProperties(schema, ...<any>notPrimitiveProperties)) {
-    return;
-  }
+export async function processTimeSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
+  $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return yield addAliasWithDefault(schema, $.api.schemas.DateTime, $);
+  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.time, $);
 }
 
-export async function* processDurationSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): AsyncGenerator<Schema> {
-  if ($.forbiddenProperties(schema, ...<any>notPrimitiveProperties)) {
-    return;
-  }
+export async function processDateTimeSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>, encoding?: EncodingReference): Promise<TypeReference> {
+  $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return yield addAliasWithDefault(schema, $.api.schemas.Duration, $);
+  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.dateTime, $, encoding);
 }
 
-export async function* processUuidSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): AsyncGenerator<Schema> {
-  if ($.forbiddenProperties(schema, ...<any>notPrimitiveProperties)) {
-    return;
-  }
+export async function processDurationSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
+  $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return yield addAliasWithDefault(schema, $.api.schemas.Uuid, $);
+  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.duration, $);
 }
 
-export async function* processUriSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): AsyncGenerator<Schema> {
-  if ($.forbiddenProperties(schema, ...<any>notPrimitiveProperties)) {
-    return;
-  }
+export async function processUuidSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
+  $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return yield addAliasWithDefault(schema, $.api.schemas.Uri, $);
+  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.uuid, $);
 }
 
-export async function* processPasswordSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): AsyncGenerator<Schema> {
-  if ($.forbiddenProperties(schema, ...<any>notPrimitiveProperties)) {
-    return;
-  }
+export async function processUriSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
+  $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return yield addAliasWithDefault(schema, $.api.schemas.Password, $);
+  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.uri, $);
 }
 
-export async function* processOdataSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): AsyncGenerator<Schema> {
-  if ($.forbiddenProperties(schema, ...<any>notPrimitiveProperties)) {
-    return;
-  }
+export async function processPasswordSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
+  $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return yield addAliasWithDefault(schema, $.api.schemas.OData, $);
+  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.password, $);
 }
 
-export async function* processBooleanSchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>): AsyncGenerator<Schema> {
-  if ($.forbiddenProperties(schema, ...<any>notPrimitiveProperties)) {
-    return;
-  }
+export async function processOdataSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
+  $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return yield addAliasWithDefault(schema, $.api.schemas.Boolean, $);
+  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.odata, $);
 }
 
-export async function* processByteArraySchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>): AsyncGenerator<Schema> {
-  if ($.forbiddenProperties(schema, ...<any>stringProperties, ...<any>objectProperties, ...<any>numberProperties)) {
-    return;
-  }
+export async function processBooleanSchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>, options?: Options): Promise<TypeReference> {
+  $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  yield $.api.schemas.ByteArray;
+  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.boolean, $);
 }
 
-export function addAliasWithDefault<T extends OAIModel>(schema: v3.Schema | v2.Schema, resultSchema: Schema, $: Context<T>) {
-  if (schema.default || schema.description || schema.title || (<any>schema).nullable || schema['x-nullable'] || (<any>schema).readOnly) {
-    const alias = createAlias($.api, anonymous(resultSchema.name), resultSchema, commonProperties(schema));
+export async function processByteArraySchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>): Promise<TypeReference> {
+  // throws on error.
+  $.assertNoForbiddenProperties(schema, ...<any>stringProperties, ...<any>objectProperties, ...<any>numberProperties);
+    
+  return $.api.schemas.primitives.byteArray;
+}
+
+export function wrapWithAliasIfNeeded<T extends OAIModel>(schema: v3.Schema | v2.Schema, type: TypeReference, $: Context<T>, encoding?: EncodingReference) {
+  if (schema.default || schema.description || schema.title || (<any>schema).nullable || schema['x-nullable'] || (<any>schema).readOnly || encoding) {
+    let alias = createTypeAlias($.api, anonymous(nameOf(schema)), type, commonProperties(schema));
+    
+    if( encoding) {
+      alias = addEncoding(alias, encoding);
+    }
+    
     if (schema.default) {
-      alias.defaults.push(new ServerDefaultValue(schema.default));
+      alias = addDefault(alias, schema.default);
     }
 
     if ((<any>schema).readOnly) {
-      alias.constraints.push(new ReadOnlyModifier());
+      // alias.constraints.push(new ReadOnlyModifier());
     }
 
-    if ((<any>schema).nullable || schema['x-nullable'] ) {
-      alias.constraints.push(new NullableModifier((<any>schema).readOnly));
+    if ((<any>schema).nullable || schema['x-nullable']) {
+      // alias.constraints.push(new NullableModifier((<any>schema).readOnly));
     }
     return alias;
   }
-  return resultSchema;
+  return type;
+}
+
+export async function processNumberSchema<T extends OAIModel>(schema: v2.Schema|v3.Schema, $: Context<T>, options?: Options ): Promise<TypeReference> {
+  $.assertNoForbiddenProperties(schema, ...<any>stringProperties, ...<any>objectProperties, ...<any>arrayProperties);
+  
+  switch (schema.format) {
+    case NumberFormat.Float:
+      return $.api.schemas.primitives.float;
+
+    case undefined:
+    case NumberFormat.Double:
+      return $.api.schemas.primitives.double;
+
+    default:
+      throw new Error(`Unexpected number format: ${schema.format}`);
+  }
 }
 
 
-export async function* processFileSchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>): AsyncGenerator<Schema> {
-  return yield $.api.schemas.File;
+export async function processIntegerSchema<T extends OAIModel>(schema: v2.Schema | v3.Schema, $: Context<T>, options?: Options ): Promise<TypeReference> {
+  $.assertNoForbiddenProperties(schema, ...<any>stringProperties, ...<any>objectProperties, ...<any>arrayProperties);
+
+  switch (schema.format) {
+    case IntegerFormat.Int32:
+      return $.api.schemas.primitives.int32;
+
+    case undefined:
+    case IntegerFormat.Int64:
+      return $.api.schemas.primitives.int64;
+
+    case IntegerFormat.UnixTime:
+      return $.api.schemas.primitives.time;
+
+    default:
+      throw new Error(`Unexpected integer format: ${schema.format}`);
+  }
 }
 
-export async function* processAnySchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): AsyncGenerator<Schema> {
-  return yield $.api.schemas.Any;
+export async function processFileSchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>, options?: Options): Promise<TypeReference> {
+  return $.api.schemas.primitives.file;
 }
 
-export async function* processEnumSchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>, options?: Options): AsyncGenerator<Schema> {
+export async function processAnySchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
+  return $.api.schemas.primitives.any;
+}
+
+export async function processEnumSchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>, options?: Options): Promise<TypeReference> {
   const schemaEnum = schema.enum || [];
   const xmsEnum = schema['x-ms-enum'] || {};
-  const values: Array<XMSEnumValue> = xmsEnum.values|| schemaEnum.map(value => ({ value }));
+  const values: Array<XMSEnumValue> = xmsEnum.values || schemaEnum.map(value => ({ value }));
   const name = xmsEnum.name || (options?.isAnonymous ? anonymous('enum') : nameOf(schema));
   const extensible = xmsEnum.modelAsString;
 
-  yield createEnum($.api, name, values, { 
-    extensible, 
-    ...commonProperties(schema) 
+  // enums are a bit funny -- they can define their name inside the x-ms-enum declaration 
+  // which means there can be multiple declarations for the same enum 
+  const result = createEnum($.api, name, values, {
+    extensible,
+    ...commonProperties(schema),
+    ...versionInfo($, schema),
   });
+
+  return result;
 }

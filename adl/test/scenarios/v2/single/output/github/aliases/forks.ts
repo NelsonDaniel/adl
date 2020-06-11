@@ -1,2 +1,2 @@
-import { repo } from '../models/repo';
-export type forks = Array<repo>;
+import { repos } from './repos';
+export type forks = repos;

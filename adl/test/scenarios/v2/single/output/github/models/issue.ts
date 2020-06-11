@@ -1,26 +1,32 @@
 
 /**
+ *
  * @since v3
  */
 export interface issue {
     /**
+     *
      * @since v3
      */
-    assignee: string;
+    assignee?: string;
     /**
+     *
      * @since v3
      */
-    body: string;
+    body?: string;
     /**
+     *
      * @since v3
      */
-    labels: Array<string>;
+    labels?: Array<string>;
     /**
+     *
      * @since v3
      */
-    milestone: double;
+    milestone?: double;
     /**
+     *
      * @since v3
      */
-    title: string;
+    title?: string;
 }

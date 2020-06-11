@@ -8,5 +8,5 @@ export interface UserTokenResult {
      * @description Shared Access Authorization token for the User.
      * @since 2019-12-01
      */
-    value: string;
+    value?: string;
 }

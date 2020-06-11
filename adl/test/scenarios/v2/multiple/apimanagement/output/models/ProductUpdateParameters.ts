@@ -8,5 +8,5 @@ export interface ProductUpdateParameters {
      * @description Product entity Update contract properties.
      * @since 2019-12-01
      */
-    properties: ProductUpdateProperties;
+    properties?: ProductUpdateProperties;
 }

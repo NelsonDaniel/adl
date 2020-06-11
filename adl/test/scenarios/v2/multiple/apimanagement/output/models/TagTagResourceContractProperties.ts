@@ -8,10 +8,10 @@ export interface TagTagResourceContractProperties {
      * @description Tag identifier
      * @since 2019-12-01
      */
-    id: string;
+    id?: string;
     /**
      * @description Tag Name
      * @since 2019-12-01
      */
-    name: string & MaxLength<160> & MinLength<1>;
+    name?: string & MaxLength<160> & MinLength<1>;
 }

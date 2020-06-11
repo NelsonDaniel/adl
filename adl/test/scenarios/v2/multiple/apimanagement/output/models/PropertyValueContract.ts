@@ -8,5 +8,5 @@ export interface PropertyValueContract {
      * @description This is secret value of the NamedValue entity.
      * @since 2019-12-01
      */
-    value: string;
+    value?: string;
 }

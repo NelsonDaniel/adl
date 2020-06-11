@@ -1,151 +1,184 @@
 import { user } from './user';
 /**
+ *
  * @since v3
  */
 export interface commit {
     /**
+     *
      * @since v3
      */
-    author: user;
+    author?: user;
     /**
+     *
      * @since v3
      */
-    commit: {
+    commit?: {
         /**
+         *
          * @since v3
          */
-        author: {
+        author?: {
             /**
              * @description ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
              * @since v3
              */
-            date: string;
+            date?: string;
             /**
+             *
              * @since v3
              */
-            email: string;
+            email?: string;
             /**
+             *
              * @since v3
              */
-            name: string;
+            name?: string;
         };
         /**
+         *
          * @since v3
          */
-        committer: {
+        committer?: {
             /**
              * @description ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
              * @since v3
              */
-            date: string;
+            date?: string;
             /**
+             *
              * @since v3
              */
-            email: string;
+            email?: string;
             /**
+             *
              * @since v3
              */
-            name: string;
+            name?: string;
         };
         /**
+         *
          * @since v3
          */
-        message: string;
+        message?: string;
         /**
+         *
          * @since v3
          */
-        tree: {
+        tree?: {
             /**
+             *
              * @since v3
              */
-            sha: string;
+            sha?: string;
             /**
+             *
              * @since v3
              */
-            url: string;
+            url?: string;
         };
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
     };
     /**
+     *
      * @since v3
      */
-    committer: user;
+    committer?: user;
     /**
+     *
      * @since v3
      */
-    files: Array<{
+    files?: Array<{
         /**
+         *
          * @since v3
          */
-        additions: int64;
+        additions?: int64;
         /**
+         *
          * @since v3
          */
-        blob_url: string;
+        blob_url?: string;
         /**
+         *
          * @since v3
          */
-        changes: int64;
+        changes?: int64;
         /**
+         *
          * @since v3
          */
-        deletions: int64;
+        deletions?: int64;
         /**
+         *
          * @since v3
          */
-        filename: string;
+        filename?: string;
         /**
+         *
          * @since v3
          */
-        patch: string;
+        patch?: string;
         /**
+         *
          * @since v3
          */
-        raw_url: string;
+        raw_url?: string;
         /**
+         *
          * @since v3
          */
-        status: string;
+        status?: string;
     }>;
     /**
+     *
      * @since v3
      */
-    parents: Array<{
+    parents?: Array<{
         /**
+         *
          * @since v3
          */
-        sha: string;
+        sha?: string;
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
     }>;
     /**
+     *
      * @since v3
      */
-    sha: string;
+    sha?: string;
     /**
+     *
      * @since v3
      */
-    stats: {
+    stats?: {
         /**
+         *
          * @since v3
          */
-        additions: int64;
+        additions?: int64;
         /**
+         *
          * @since v3
          */
-        deletions: int64;
+        deletions?: int64;
         /**
+         *
          * @since v3
          */
-        total: int64;
+        total?: int64;
     };
     /**
+     *
      * @since v3
      */
-    url: string;
+    url?: string;
 }

@@ -8,5 +8,5 @@ export interface SubscriptionCreateParameters {
      * @description Subscription contract properties.
      * @since 2019-12-01
      */
-    properties: SubscriptionCreateParameterProperties;
+    properties?: SubscriptionCreateParameterProperties;
 }

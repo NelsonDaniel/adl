@@ -1,6 +1,6 @@
 import { Alias } from './alias';
 import { Element } from './element';
-import { Schema } from './schema/schema';
+import { TypeReference } from './schema/type';
 import { ReadOnlyCollection } from './types';
 
 export interface Operation extends Element {
@@ -27,7 +27,7 @@ export class Response extends Element {
   isException?:  boolean;
 
   /** schema for the response content */
-  schema?: Schema;
+  typeref?: TypeReference;
   /**
    * 
    * @param initializer the object initializer for this response
@@ -51,7 +51,7 @@ export class Parameter extends Element {
    */
   required?: boolean;
 
-  constructor(public name: string, public schema: Schema, initializer?: Partial<Parameter>) {
+  constructor(public name: string, public typeRef: TypeReference, initializer?: Partial<Parameter>) {
     super();
     this.initialize(initializer);
   }

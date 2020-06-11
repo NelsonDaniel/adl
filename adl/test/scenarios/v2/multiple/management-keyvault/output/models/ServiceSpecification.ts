@@ -8,5 +8,5 @@ export interface ServiceSpecification {
      * @description Log specifications of operation.
      * @since 2019-09-01
      */
-    logSpecifications: Array<LogSpecification>;
+    logSpecifications?: Array<LogSpecification>;
 }

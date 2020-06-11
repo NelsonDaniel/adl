@@ -1,18 +1,22 @@
 
 /**
+ *
  * @since 2.3
  */
 export interface ProblemFields {
     /**
+     *
      * @since 2.3
      */
-    detail?: string;
+    detail: string;
     /**
+     *
      * @since 2.3
      */
-    title?: string;
+    title: string;
     /**
+     *
      * @since 2.3
      */
-    type?: string;
+    type: string;
 }

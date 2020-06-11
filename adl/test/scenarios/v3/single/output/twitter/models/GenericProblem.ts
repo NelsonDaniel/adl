@@ -5,11 +5,13 @@ import { ProblemFields } from './ProblemFields';
  */
 export interface GenericProblem extends ProblemFields {
     /**
+     *
      * @since 2.3
      */
-    status?: int64;
+    status: int64;
     /**
+     *
      * @since 2.3
      */
-    type: "about:blank";
+    type?: "about:blank";
 }

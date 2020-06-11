@@ -1,22 +1,27 @@
 
 /**
+ *
  * @since v3
  */
 export interface pullsCommentPost {
     /**
+     *
      * @since v3
      */
-    body: string;
+    body?: string;
     /**
+     *
      * @since v3
      */
-    commit_id: string;
+    commit_id?: string;
     /**
+     *
      * @since v3
      */
-    path: string;
+    path?: string;
     /**
+     *
      * @since v3
      */
-    position: double;
+    position?: double;
 }

@@ -8,5 +8,5 @@ export interface OperationUpdateContract {
      * @description Properties of the API Operation entity that can be updated.
      * @since 2019-12-01
      */
-    properties: OperationUpdateContractProperties;
+    properties?: OperationUpdateContractProperties;
 }

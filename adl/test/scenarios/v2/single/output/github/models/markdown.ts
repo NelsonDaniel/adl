@@ -1,18 +1,22 @@
 
 /**
+ *
  * @since v3
  */
 export interface markdown {
     /**
+     *
      * @since v3
      */
-    context: string;
+    context?: string;
     /**
+     *
      * @since v3
      */
-    mode: string;
+    mode?: string;
     /**
+     *
      * @since v3
      */
-    text: string;
+    text?: string;
 }

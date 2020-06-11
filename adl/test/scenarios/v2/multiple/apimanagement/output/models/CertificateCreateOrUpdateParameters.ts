@@ -8,5 +8,5 @@ export interface CertificateCreateOrUpdateParameters {
      * @description Certificate create or update properties details.
      * @since 2019-12-01
      */
-    properties: CertificateCreateOrUpdateProperties;
+    properties?: CertificateCreateOrUpdateProperties;
 }

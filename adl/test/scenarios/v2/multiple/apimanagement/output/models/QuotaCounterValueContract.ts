@@ -8,5 +8,5 @@ export interface QuotaCounterValueContract {
      * @description Quota counter Value Properties.
      * @since 2019-12-01
      */
-    value: QuotaCounterValueContractProperties;
+    value?: QuotaCounterValueContractProperties;
 }

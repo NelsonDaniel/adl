@@ -1,14 +1,17 @@
 
 /**
+ *
  * @since v3
  */
 export interface refsBody {
     /**
+     *
      * @since v3
      */
-    ref: string;
+    ref?: string;
     /**
+     *
      * @since v3
      */
-    sha: string;
+    sha?: string;
 }

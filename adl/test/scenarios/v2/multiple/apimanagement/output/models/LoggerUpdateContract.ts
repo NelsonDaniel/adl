@@ -8,5 +8,5 @@ export interface LoggerUpdateContract {
      * @description Logger entity update contract properties.
      * @since 2019-12-01
      */
-    properties: LoggerUpdateParameters;
+    properties?: LoggerUpdateParameters;
 }

@@ -8,10 +8,10 @@ export interface ProductCollection {
      * @description Page values.
      * @since 2019-12-01
      */
-    value: Array<ProductContract>;
+    value?: Array<ProductContract>;
     /**
      * @description Next page link if any.
      * @since 2019-12-01
      */
-    nextLink: string;
+    nextLink?: string;
 }

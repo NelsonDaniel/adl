@@ -8,5 +8,5 @@ export interface BackendProperties {
      * @description Backend Service Fabric Cluster Properties
      * @since 2019-12-01
      */
-    serviceFabricCluster: BackendServiceFabricClusterProperties;
+    serviceFabricCluster?: BackendServiceFabricClusterProperties;
 }

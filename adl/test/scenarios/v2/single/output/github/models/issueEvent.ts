@@ -1,164 +1,197 @@
 import { actor } from './actor';
+import { user } from './user';
 /**
+ *
  * @since v3
  */
 export interface issueEvent {
     /**
+     *
      * @since v3
      */
-    actor: actor;
+    actor?: actor;
     /**
+     *
      * @since v3
      */
-    commit_id: string;
+    commit_id?: string;
     /**
      * @description ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
      * @since v3
      */
-    created_at: string;
+    created_at?: string;
     /**
+     *
      * @since v3
      */
-    event: string;
+    event?: string;
     /**
+     *
      * @since v3
      */
-    issue: {
+    issue?: {
         /**
+         *
          * @since v3
          */
-        assignee: user;
+        assignee?: user;
         /**
+         *
          * @since v3
          */
-        body: string;
+        body?: string;
         /**
          * @description ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
          * @since v3
          */
-        closed_at: string;
+        closed_at?: string;
         /**
+         *
          * @since v3
          */
-        comments: int64;
+        comments?: int64;
         /**
          * @description ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
          * @since v3
          */
-        created_at: string;
+        created_at?: string;
         /**
+         *
          * @since v3
          */
-        html_url: string;
+        html_url?: string;
         /**
+         *
          * @since v3
          */
-        labels: Array<{
+        labels?: Array<{
             /**
+             *
              * @since v3
              */
-            color: string;
+            color?: string;
             /**
+             *
              * @since v3
              */
-            name: string;
+            name?: string;
             /**
+             *
              * @since v3
              */
-            url: string;
+            url?: string;
         }>;
         /**
+         *
          * @since v3
          */
-        milestone: {
+        milestone?: {
             /**
+             *
              * @since v3
              */
-            closed_issues: int64;
+            closed_issues?: int64;
             /**
              * @description ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
              * @since v3
              */
-            created_at: string;
+            created_at?: string;
             /**
+             *
              * @since v3
              */
-            creator: user;
+            creator?: user;
             /**
+             *
              * @since v3
              */
-            description: string;
+            description?: string;
             /**
              * @description ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
              * @since v3
              */
-            due_on: string;
+            due_on?: string;
             /**
+             *
              * @since v3
              */
-            number: int64;
+            number?: int64;
             /**
+             *
              * @since v3
              */
-            open_issues: int64;
+            open_issues?: int64;
             /**
+             *
              * @since v3
              */
-            state: "open" | "closed";
+            state?: "open" | "closed";
             /**
+             *
              * @since v3
              */
-            title: string;
+            title?: string;
             /**
+             *
              * @since v3
              */
-            url: string;
+            url?: string;
         };
         /**
+         *
          * @since v3
          */
-        number: int64;
+        number?: int64;
         /**
+         *
          * @since v3
          */
-        pull_request: {
+        pull_request?: {
             /**
+             *
              * @since v3
              */
-            diff_url: string;
+            diff_url?: string;
             /**
+             *
              * @since v3
              */
-            html_url: string;
+            html_url?: string;
             /**
+             *
              * @since v3
              */
-            patch_url: string;
+            patch_url?: string;
         };
         /**
+         *
          * @since v3
          */
-        state: "open" | "closed";
+        state?: "open" | "closed";
         /**
+         *
          * @since v3
          */
-        title: string;
+        title?: string;
         /**
          * @description ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
          * @since v3
          */
-        updated_at: string;
+        updated_at?: string;
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
         /**
+         *
          * @since v3
          */
-        user: user;
+        user?: user;
     };
     /**
+     *
      * @since v3
      */
-    url: string;
+    url?: string;
 }

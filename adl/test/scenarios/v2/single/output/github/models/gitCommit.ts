@@ -1,35 +1,43 @@
 
 /**
+ *
  * @since v3
  */
 export interface gitCommit {
     /**
+     *
      * @since v3
      */
-    author: {
+    author?: {
         /**
+         *
          * @since v3
          */
-        date: string;
+        date?: string;
         /**
+         *
          * @since v3
          */
-        email: string;
+        email?: string;
         /**
+         *
          * @since v3
          */
-        name: string;
+        name?: string;
     };
     /**
+     *
      * @since v3
      */
-    message: string;
+    message?: string;
     /**
+     *
      * @since v3
      */
-    parents: string;
+    parents?: string;
     /**
+     *
      * @since v3
      */
-    tree: string;
+    tree?: string;
 }

@@ -8,15 +8,15 @@ export interface OperationResultLogItemContract {
      * @description The type of entity contract.
      * @since 2019-12-01
      */
-    objectType: string;
+    objectType?: string;
     /**
      * @description Action like create/update/delete.
      * @since 2019-12-01
      */
-    action: string;
+    action?: string;
     /**
      * @description Identifier of the entity being created/updated/deleted.
      * @since 2019-12-01
      */
-    objectKey: string;
+    objectKey?: string;
 }

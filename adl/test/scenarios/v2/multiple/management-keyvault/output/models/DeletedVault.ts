@@ -8,20 +8,20 @@ export interface DeletedVault {
      * @description The resource ID for the deleted key vault.
      * @since 2019-09-01
      */
-    readonly id: string & ;
+    readonly id?: string;
     /**
      * @description The name of the key vault.
      * @since 2019-09-01
      */
-    readonly name: string & ;
+    readonly name?: string;
     /**
      * @description The resource type of the key vault.
      * @since 2019-09-01
      */
-    readonly type: string & ;
+    readonly type?: string;
     /**
      * @description Properties of the vault
      * @since 2019-09-01
      */
-    properties: DeletedVaultProperties;
+    properties?: DeletedVaultProperties;
 }

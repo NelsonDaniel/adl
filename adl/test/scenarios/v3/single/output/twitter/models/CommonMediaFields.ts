@@ -1,19 +1,24 @@
-
+import { MediaHeight } from '../aliases/MediaHeight';
+import { MediaKey } from '../aliases/MediaKey';
+import { MediaWidth } from '../aliases/MediaWidth';
 /**
  * @description This contains the list of the fields that are common to all media returned.
  * @since 2.3
  */
 export interface CommonMediaFields {
     /**
+     *
      * @since 2.3
      */
-    height: int64 & Minimum<0>;
+    height?: MediaHeight;
     /**
+     *
      * @since 2.3
      */
-    media_key: string & RegularExpression<"^([0-9]+)_([0-9]+)$">;
+    media_key?: MediaKey;
     /**
+     *
      * @since 2.3
      */
-    width: int64 & Minimum<0>;
+    width?: MediaWidth;
 }

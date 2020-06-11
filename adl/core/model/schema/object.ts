@@ -1,10 +1,13 @@
-import { InterfaceDeclaration, PropertySignature } from 'ts-morph';
+import { Dictionary, values } from '@azure-tools/linq';
+import { isAnonymous } from '@azure-tools/sourcemap';
+import { InterfaceDeclaration, PropertySignature, PropertySignatureStructure, StructureKind } from 'ts-morph';
 import { normalizeIdentifier } from '../../support/codegen';
-import { getTagValue, setTag } from '../../support/doc-tag';
-import { TypeDeclaration } from '../../support/typescript';
+import { createDocs, getTagValue, setTag } from '../../support/doc-tag';
+import { addImportsTo, addNullable, getInnerText, TypeDeclaration } from '../../support/typescript';
 import { ApiModel } from '../api-model';
 import { Collection, CollectionImpl, Identity, ReadOnlyCollection, ReadOnlyCollectionImpl } from '../types';
 import { NamedElement, Schema, TSSchema } from './schema';
+import { TypeReference } from './type';
 
 export interface ObjectSchema extends Schema {
   /** schemas that this object extends */
@@ -102,6 +105,70 @@ export class ObjectSchemaImpl extends TSSchema<InterfaceDeclaration> implements 
   }
 }
 
+export function createPropertySignature(name: string, typeReference: TypeReference, initializer?: PropertyInitializer): PropertySignatureStructure {
+  return {
+    kind: StructureKind.PropertySignature,
+    //todo: do a better 'fix-the-bad-name' (ie, perks/codegen)
+    name: normalizeIdentifier(name),
+    type: initializer?.nullable ? addNullable(typeReference.declaration) : typeReference.declaration,
+    isReadonly: initializer?.readOnly,
+    hasQuestionToken: !(initializer?.required),
+    docs: createDocs(initializer),
+  };
+}
+
+export interface PropertyInitializer extends SchemaInitializer { 
+  required?: boolean;
+}
+
+export interface VersionedEntity { 
+  since?: string;
+  deprecated?: string;
+  deleted?: string;
+  renamed?: string;
+}
+
+export interface SchemaInitializer extends VersionedEntity {
+  description?: string;
+  summary?: string;
+  clientName?: string;
+  nullable?: boolean;
+  readOnly?: boolean;
+  tags?: Dictionary<string|undefined>;
+}
+
+export interface ObjectSchemaInitializer extends SchemaInitializer { 
+  parents: Array<TypeReference>;
+  properties: Array<PropertySignatureStructure>;
+  requiredReferences: Array<TypeReference>;
+}
+
+export function createInterface(api: ApiModel, identity: Identity, initializer?: Partial<ObjectSchemaInitializer> ): TypeReference {
+  const { name, file } = api.getNameAndFile(identity, 'model');
+
+  const iface = file.addInterface( {
+    name,
+    properties: initializer?.properties || [],
+    extends: initializer?.parents ? initializer?.parents.map( each => each.declaration):[],
+    docs: createDocs(initializer),
+    isExported: true,
+  });
+  for (const each of values(initializer?.requiredReferences )) {
+   
+    addImportsTo(file,each);
+   
+  }
+  
+  return isAnonymous(identity) ? {
+    declaration: getInnerText(iface),
+    requiredReferences: initializer?.requiredReferences || [],
+  } :  {
+    declaration: name,
+    sourceFile: file,
+    requiredReferences: []
+  };
+}
+
 export function createObjectSchema(api: ApiModel, identity: Identity, initializer?: Partial<ObjectSchema>): ObjectSchema {
   const {name, file} = api.getNameAndFile(identity, 'model');
   
@@ -114,6 +181,20 @@ export function createObjectSchema(api: ApiModel, identity: Identity, initialize
   result.initialize(initializer);
 
   return result;
+}
+
+export function createDictionary(elementTypeReference: TypeReference): TypeReference{
+  return {
+    declaration: `Dictionary<${elementTypeReference.declaration}>`,
+    requiredReferences: [...elementTypeReference.requiredReferences, elementTypeReference],
+  };
+}
+
+export function createArray(elementTypeReference: TypeReference): TypeReference {
+  return {
+    declaration: `Array<${elementTypeReference.declaration}>`,
+    requiredReferences: [...elementTypeReference.requiredReferences, elementTypeReference],
+  };
 }
 
 export interface Property extends PropertyImpl {

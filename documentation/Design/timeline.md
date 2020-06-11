@@ -6,24 +6,24 @@
   - Sourcemap API 
   - extension framework support
 
-### Jun 9
+### Jun 17
   - TS serialization (able to save ADL model/enums/aliases/operations)
+  - Hook up eventing for language extensions, linting/refactoring hooks
   
-### Jun 12
+### Jun 26
   - project metadata (`project.adl` )
   - simple CLI functions
-  - TS Project loading (data from project file, generate tsconfig, restore packages)
   - extension loading from project, 
-  - Hook up eventing for language extensions, linting/refactoring hooks
-
-### Jun 19 
+  - TS Project loading (data from project file, generate tsconfig, restore packages)
+  
+### Jul 3 
   - ALPHA ADL Consumer API (load/save/manipulate models, eventing)
 
-### Jun 26
+### Jul 17
   - OAI2, OAI3 output serialization 
   - CSDL investigations (design to support MS Graph/ASPNET+OData?)
 
-### Jul 10
+### Jul 31
   - BETA ADL consumer API complete
   - TS + C# bindings
 

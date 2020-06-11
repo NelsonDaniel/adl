@@ -8,15 +8,15 @@ export interface RegionContract {
      * @description Region name.
      * @since 2019-12-01
      */
-    readonly name: string & ;
+    readonly name?: string;
     /**
      * @description whether Region is the master region.
      * @since 2019-12-01
      */
-    isMasterRegion: boolean;
+    isMasterRegion?: boolean;
     /**
      * @description whether Region is deleted.
      * @since 2019-12-01
      */
-    isDeleted: boolean;
+    isDeleted?: boolean;
 }

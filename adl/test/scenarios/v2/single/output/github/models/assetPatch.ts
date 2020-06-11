@@ -1,14 +1,17 @@
 
 /**
+ *
  * @since v3
  */
 export interface assetPatch {
     /**
+     *
      * @since v3
      */
-    label: string;
+    label?: string;
     /**
+     *
      * @since v3
      */
-    name?: string;
+    name: string;
 }

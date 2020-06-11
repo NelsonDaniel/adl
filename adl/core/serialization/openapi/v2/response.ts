@@ -2,9 +2,9 @@ import { length, values } from '@azure-tools/linq';
 import { v2 } from '@azure-tools/openapi';
 import { anonymous, nameOf } from '@azure-tools/sourcemap';
 import { Response } from '../../../model/http/response';
-import { addExtensionsToAttic, singleOrDefault } from '../common';
+import { addExtensionsToAttic } from '../common';
 import { header } from './header';
-import { processInline } from './schema';
+import { processSchema } from './schema';
 import { Context } from './serializer';
 
 
@@ -30,7 +30,7 @@ export async function* response(response: v2.Response, $: Context, options?: { i
   for (const mediaType of values(produces)) {
     const result = new Response(responseName, mediaType, {
       description: response.description,
-      schema: (await singleOrDefault(processInline(response.schema, $))) || $.api.schemas.Any,
+      typeref: response.schema ? (await processSchema(response.schema, $, {isAnonymous: true})) : undefined,
     });
 
     for (const value of values(response.headers)) {

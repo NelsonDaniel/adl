@@ -9,20 +9,20 @@ export interface ResponseContract {
      * @description Operation response HTTP status code.
      * @since 2019-12-01
      */
-    statusCode?: int32;
+    statusCode: int32;
     /**
      * @description Operation response description.
      * @since 2019-12-01
      */
-    description: string;
+    description?: string;
     /**
      * @description Collection of operation response representations.
      * @since 2019-12-01
      */
-    representations: Array<RepresentationContract>;
+    representations?: Array<RepresentationContract>;
     /**
      * @description Collection of operation response headers.
      * @since 2019-12-01
      */
-    headers: Array<ParameterContract>;
+    headers?: Array<ParameterContract>;
 }

@@ -8,10 +8,10 @@ export interface IssueAttachmentCollection {
      * @description Issue Attachment values.
      * @since 2019-12-01
      */
-    readonly value: Array<IssueAttachmentContract>;
+    readonly value?: Array<IssueAttachmentContract>;
     /**
      * @description Next page link if any.
      * @since 2019-12-01
      */
-    readonly nextLink: string & ;
+    readonly nextLink?: string;
 }

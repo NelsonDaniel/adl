@@ -47,7 +47,7 @@ export interface IterableWithLinq<T> extends Iterable<T> {
 
 /* eslint-disable */
 
-function linqify<T>(iterable: Iterable<T>|IterableIterator<T>): IterableWithLinq<T> {
+function linqify<T>(iterable: Iterable<T> | IterableIterator<T>): IterableWithLinq<T> {
   if ((<any>iterable)['linq'] === iterable) {
     return <IterableWithLinq<T>>iterable;
   }
@@ -156,18 +156,18 @@ export function values<K, T, TSrc extends (Array<T> | Dictionary<T> | Map<K, T>)
   // null/undefined
   return [];
 }
-export const linq ={
-  values: _values, 
-  items: _items, 
+export const linq = {
+  values: _values,
+  items: _items,
   keys: _keys
 };
- 
+
 /** returns an IterableWithLinq<> for values in the collection 
  * 
  * @note - null/undefined/empty values are considered 'empty'
 */
 function _values<K, T, TSrc extends (Array<T> | Dictionary<T> | Map<K, T>)>(source: (Iterable<T> | Array<T> | Dictionary<T> | Map<K, T> | Set<T>) | null | undefined): IterableWithLinq<T> {
-  return (source)? linqify(values(source)) : linqify([]);
+  return (source) ? linqify(values(source)) : linqify([]);
 }
 
 export function items<K, T, TSrc extends (Array<T> | Dictionary<T> | Map<K, T> | undefined | null)>(source: TSrc & (Array<T> | Dictionary<T> | Map<K, T>) | null | undefined): Iterable<[IndexOf<TSrc>, T]> {
@@ -188,11 +188,11 @@ export function items<K, T, TSrc extends (Array<T> | Dictionary<T> | Map<K, T> |
   }
   // undefined/null
   return [];
-} 
+}
 
 /** returns an IterableWithLinq<{key,value}> for the source */
-function _items<K, T, TSrc extends (Array<T> | Dictionary<T> | Map<K, T> | undefined | null)>(source: TSrc & (Array<T> | Dictionary<T> | Map<K, T>) | null | undefined): IterableWithLinq<[IndexOf<TSrc>,T]> {
-  return <any>linqify (source ? items(<any>source) : [])
+function _items<K, T, TSrc extends (Array<T> | Dictionary<T> | Map<K, T> | undefined | null)>(source: TSrc & (Array<T> | Dictionary<T> | Map<K, T>) | null | undefined): IterableWithLinq<[IndexOf<TSrc>, T]> {
+  return <any>linqify(source ? items(<any>source) : [])
 }
 
 export function length<T, K>(source?: string | Iterable<T> | Dictionary<T> | Array<T> | Map<K, T> | Set<T>): number {

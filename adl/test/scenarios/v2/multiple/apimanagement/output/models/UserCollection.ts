@@ -8,10 +8,10 @@ export interface UserCollection {
      * @description Page values.
      * @since 2019-12-01
      */
-    value: Array<UserContract>;
+    value?: Array<UserContract>;
     /**
      * @description Next page link if any.
      * @since 2019-12-01
      */
-    nextLink: string;
+    nextLink?: string;
 }

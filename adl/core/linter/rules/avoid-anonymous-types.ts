@@ -12,16 +12,27 @@ export default <Rule>{
     documentationUrl: "https://github.com/Azure/azure-rest-api-specs/blob/master/documentation/openapi-authoring-automated-guidelines.md#r2026-avoidanonymoustypes",
     category: "SDK Error"
   },
-  onObject: (model, object) => {
-    // if (object.isInline) {
+  onProperty: (model, property) => {
+    //  const t = property.type;
+    //  if (isInterface(t) && isInline(t)) {
+    //  create a new model based on the inline definition
+    //  replace the inline defintion with the type reference
+    // 
     //   return [
     //     {
     //       message: "Extract contents and create a model definition for this type.",
     //       fix: () => {
-    //         // TODO: Figure out how to do this.
+    //          const tref = createInterface(model, getUniqueName(property.name), {declaration: t.declaration});
+    //          property.type = tref;
+    //          figure out position
+    //          emit('new-type-created', position);
     //       }
     //     }
     //   ]
     // }
+    // 
+    // return;
+    //
+    // how do they trigger events when there is a physical file change.
   }
 }

@@ -8,10 +8,10 @@ export interface ProductTagResourceContractProperties extends ProductEntityBaseP
      * @description Identifier of the product in the form of /products/{productId}
      * @since 2019-12-01
      */
-    id: string;
+    id?: string;
     /**
      * @description Product name.
      * @since 2019-12-01
      */
-    name?: string & MaxLength<300> & MinLength<1>;
+    name: string & MaxLength<300> & MinLength<1>;
 }

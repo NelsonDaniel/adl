@@ -8,15 +8,15 @@ export interface VaultCreateOrUpdateParameters {
      * @description The supported Azure location where the key vault should be created.
      * @since 2019-09-01
      */
-    location?: string;
+    location: string;
     /**
      * @description The tags that will be assigned to the key vault.
      * @since 2019-09-01
      */
-    tags: Dictionary<string>;
+    tags?: Dictionary<string>;
     /**
      * @description Properties of the vault
      * @since 2019-09-01
      */
-    properties?: VaultProperties;
+    properties: VaultProperties;
 }

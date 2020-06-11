@@ -1,18 +1,22 @@
 
 /**
+ *
  * @since v3
  */
 export interface pullUpdate {
     /**
+     *
      * @since v3
      */
-    body: string;
+    body?: string;
     /**
+     *
      * @since v3
      */
-    state: string;
+    state?: string;
     /**
+     *
      * @since v3
      */
-    title: string;
+    title?: string;
 }

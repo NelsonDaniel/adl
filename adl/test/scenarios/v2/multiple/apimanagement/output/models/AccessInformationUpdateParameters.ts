@@ -8,5 +8,5 @@ export interface AccessInformationUpdateParameters {
      * @description Tenant access information update parameter properties.
      * @since 2019-12-01
      */
-    properties: AccessInformationUpdateParameterProperties;
+    properties?: AccessInformationUpdateParameterProperties;
 }

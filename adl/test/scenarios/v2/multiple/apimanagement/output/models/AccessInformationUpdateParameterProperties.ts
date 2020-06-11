@@ -8,5 +8,5 @@ export interface AccessInformationUpdateParameterProperties {
      * @description Determines whether direct access is enabled.
      * @since 2019-12-01
      */
-    enabled: boolean;
+    enabled?: boolean;
 }

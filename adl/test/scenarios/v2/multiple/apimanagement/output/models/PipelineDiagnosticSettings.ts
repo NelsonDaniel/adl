@@ -8,10 +8,10 @@ export interface PipelineDiagnosticSettings {
      * @description Diagnostic settings for request.
      * @since 2019-12-01
      */
-    request: HttpMessageDiagnostic;
+    request?: HttpMessageDiagnostic;
     /**
      * @description Diagnostic settings for response.
      * @since 2019-12-01
      */
-    response: HttpMessageDiagnostic;
+    response?: HttpMessageDiagnostic;
 }

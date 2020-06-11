@@ -1,92 +1,114 @@
-
+import { actor } from './actor';
 /**
+ *
  * @since v3
  */
 export interface notifications {
     /**
+     *
      * @since v3
      */
-    id: int64;
+    id?: int64;
     /**
+     *
      * @since v3
      */
-    last_read_at: string;
+    last_read_at?: string;
     /**
+     *
      * @since v3
      */
-    reason: string;
+    reason?: string;
     /**
+     *
      * @since v3
      */
-    repository: {
+    repository?: {
         /**
+         *
          * @since v3
          */
-        description: string;
+        description?: string;
         /**
+         *
          * @since v3
          */
-        fork: boolean;
+        fork?: boolean;
         /**
+         *
          * @since v3
          */
-        full_name: string;
+        full_name?: string;
         /**
+         *
          * @since v3
          */
-        html_url: string;
+        html_url?: string;
         /**
+         *
          * @since v3
          */
-        id: int64;
+        id?: int64;
         /**
+         *
          * @since v3
          */
-        name: string;
+        name?: string;
         /**
+         *
          * @since v3
          */
-        owner: actor;
+        owner?: actor;
         /**
+         *
          * @since v3
          */
-        private: boolean;
+        private?: boolean;
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
     };
     /**
+     *
      * @since v3
      */
-    subject: {
+    subject?: {
         /**
+         *
          * @since v3
          */
-        latest_comment_url: string;
+        latest_comment_url?: string;
         /**
+         *
          * @since v3
          */
-        title: string;
+        title?: string;
         /**
+         *
          * @since v3
          */
-        type: string;
+        type?: string;
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
     };
     /**
+     *
      * @since v3
      */
-    unread: boolean;
+    unread?: boolean;
     /**
+     *
      * @since v3
      */
-    updated_at: string;
+    updated_at?: string;
     /**
+     *
      * @since v3
      */
-    url: string;
+    url?: string;
 }

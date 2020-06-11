@@ -8,5 +8,5 @@ export interface RecipientEmailContractProperties {
      * @description User Email subscribed to notification.
      * @since 2019-12-01
      */
-    email: string;
+    email?: string;
 }

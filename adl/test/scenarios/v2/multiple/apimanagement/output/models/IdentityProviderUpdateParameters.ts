@@ -8,5 +8,5 @@ export interface IdentityProviderUpdateParameters {
      * @description Identity Provider update properties.
      * @since 2019-12-01
      */
-    properties: IdentityProviderUpdateProperties;
+    properties?: IdentityProviderUpdateProperties;
 }

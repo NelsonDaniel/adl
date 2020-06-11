@@ -8,10 +8,10 @@ export interface NamedValueCollection {
      * @description Page values.
      * @since 2019-12-01
      */
-    value: Array<NamedValueContract>;
+    value?: Array<NamedValueContract>;
     /**
      * @description Next page link if any.
      * @since 2019-12-01
      */
-    nextLink: string;
+    nextLink?: string;
 }

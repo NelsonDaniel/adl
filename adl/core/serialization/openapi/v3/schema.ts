@@ -1,141 +1,49 @@
-import { items, length, values } from '@azure-tools/linq';
-import { IntegerFormat, NumberFormat, StringFormat, v3 } from '@azure-tools/openapi';
-import { anonymous, nameOf, using } from '@azure-tools/sourcemap';
-import { Alias as GenericAlias } from '../../../model/alias';
-import { createAlias } from '../../../model/schema/alias';
-import { ExclusiveMaximumConstraint, ExclusiveMinimumConstraint, MaximumConstraint, MaximumElementsConstraint, MaximumPropertiesConstraint, MaxLengthConstraint, MinimumConstraint, MinimumElementsConstraint, MinimumPropertiesConstraint, MinLengthConstraint, MultipleOfConstraint, RegularExpressionConstraint, UniqueElementsConstraint } from '../../../model/schema/constraint';
-import { ServerDefaultValue } from '../../../model/schema/default';
-import { AndSchema, AnyOfSchema, XorSchema } from '../../../model/schema/group';
-import { createObjectSchema } from '../../../model/schema/object';
-import { ArraySchema, DictionarySchema } from '../../../model/schema/primitive';
-import { Schema } from '../../../model/schema/schema';
+import { items, length } from '@azure-tools/linq';
+import { isReference, StringFormat, v3 } from '@azure-tools/openapi';
+import { anonymous, nameOf, refTo } from '@azure-tools/sourcemap';
+import { PropertySignatureStructure } from 'ts-morph';
+import { createTypeAlias } from '../../../model/schema/alias';
+import { addConstraint, addEncoding, Constraints, Encodings } from '../../../model/schema/constraint';
+import { addDefault } from '../../../model/schema/default';
+import { createArray, createDictionary, createInterface, createPropertySignature } from '../../../model/schema/object';
+import { TypeReference } from '../../../model/schema/type';
 import { Identity } from '../../../model/types';
-import { isEnumSchema, isObjectSchema, isPrimitiveSchema, singleOrDefault, toArray } from '../common';
-import { arrayProperties, commonProperties, numberProperties, objectProperties, Options, processAnySchema, processBooleanSchema, processByteArraySchema, processCharSchema, processDateSchema, processDateTimeSchema, processDurationSchema, processEnumSchema, processFileSchema, processOdataSchema, processPasswordSchema, processTimeSchema, processUriSchema, processUuidSchema, stringProperties } from '../common/schema';
-import { Context } from './serializer';
+import { Context } from '../../../support/visitor';
+import { isEnumSchema, isObjectSchema, isPrimitiveSchema } from '../common';
+import { arrayProperties, commonProperties, notObject, numberProperties, objectProperties, Options, processBooleanSchema, processByteArraySchema, processCharSchema, processDateSchema, processDateTimeSchema, processDurationSchema, processEnumSchema, processFileSchema, processIntegerSchema, processNumberSchema, processOdataSchema, processPasswordSchema, processTimeSchema, processUriSchema, processUuidSchema, stringProperties, versionInfo } from '../common/schema';
 
-export const notObject = <Array<keyof v3.Schema>> [...arrayProperties, ...numberProperties, ...stringProperties];
+export async function processSchema(schema: v3.Schema|v3.SchemaReference, $: Context<v3.Model>, options?: { isAnonymous?: boolean }): Promise<TypeReference> {
+  const here = $.normalizeReference(refTo(schema)).$ref;
 
-export async function* processInline(schema: v3.Schema | v3.SchemaReference | undefined, $: Context, options?: Options): AsyncGenerator<Schema> {
-  if (schema) {
-    for await (const result of $.processInline(processSchema, schema, options)) {
-      if (result) {
-        if (options?.isAnonymous) {
-          // if this was anonymous, we just want back the target object 
-          yield result instanceof GenericAlias ? result.target : result;
-        } else {
-          yield result instanceof GenericAlias ? createAlias($.api,result.name, result.target, commonProperties(<any>schema)) : result;
-        }
+  // did we already process this because we went thru a $ref earlier?
+  let typeRef = $.visitor.references.schema.get(here);
+  if( typeRef ) {
+    return typeRef;
+  }
+  
+  const impl = async () => {
+    if( isReference(schema) ) {
+      // this is a type reference, we need to process the target first.
+
+      typeRef = $.visitor.references.schema.get($.normalizeReference(schema.$ref).$ref);
+      // have we already got a reference for the target?
+      if( !typeRef )  {
+        // nope, not handled yet.
+        const resolvedReference = await $.resolveReference(schema.$ref);
+        typeRef = await processSchema(resolvedReference.node, resolvedReference.context);
       }
+
+      if( !(options?.isAnonymous)) {
+        // it has a name (which means it is intended to be a type alias at the top level) 
+        typeRef = createTypeAlias($.api, nameOf(schema), typeRef, commonProperties(<v3.Schema><unknown>schema));
+      }
+      
+      // return the target.
+      return typeRef;
     }
-  }
-}
 
-async function* getSchemas(schemas: Array<v3.Schema | v3.SchemaReference> | undefined, $: Context): AsyncGenerator<Schema> {
-  for (const each of values(schemas)) {
-    for await (const schema of $.processInline(processSchema, each, { isAnonymous: true })) {
-      yield schema instanceof GenericAlias ? schema.target : schema;
-    }
-  }
-}
-
-export async function* processAnyOf(schema: v3.Schema, $: Context, options?: Options): AsyncGenerator<Schema> {
-  // anyof[A,B,C] literally means [A] or [B] or [C] or [A & B] or [A & C] or [B & C] or [A & B & C]
-  // NOTE: "An instance validates successfully against this keyword if it validates successfully against at least one schema defined by this keyword's value."
-  //
-  // anyof Car, Cat
-  // type aoCarCat = Car | Cat | (Car & Cat)
-  //
-  // if they have anyOf, that means it has to be one or more 
-  // of those types, but they could also have other properties
-  // in here too.
-  //
-  // if there is more to the object than that, we're going to create that part first, and do an union with that. 
-  // 
-  if (isPrimitiveSchema(schema)) {
-    return $.error(`Schema of type '${schema.type}' may not be in an anyOf`, schema);
-  }
-  if (isEnumSchema(schema)) {
-    return $.error('Enum schema may not be in an anyOf', schema);
-  }
-  if ($.forbiddenProperties(schema, ...notObject)) {
-    return undefined;
-  }
-
-  // they are looking to make a THIS & anyOf[...] 
-  // let's process the object first, and then we can process the anyof.
-  const objectSchema = (isObjectSchema(schema) ? await singleOrDefault(processObjectSchema(schema, $, { isAnonymous: true, justTargetType: true })) : undefined);
-  const oneOf = (schema.oneOf ? await singleOrDefault(processOneOf(schema, $, { isAnonymous: true, justTargetType: true })) : undefined);
-
-  const schemaName = options?.isAnonymous ? anonymous('anyOf') : nameOf(schema);
-  const combineWith = new Array<Schema>();
-  if (objectSchema) {
-    combineWith.push(objectSchema);
-  }
-  if (oneOf) {
-    combineWith.push(oneOf);
-  }
-
-  const schemas = getSchemas(schema.anyOf, $);
-
-  // if this is combined with anything
-  if (combineWith.length > 0) {
-    const anon = new AnyOfSchema(anonymous(schemaName), await toArray(schemas));
-    const result = new AndSchema(schemaName, [anon, ...combineWith], commonProperties(schema));
-    return yield result;
-  }
-
-  const result = new AnyOfSchema(schemaName, await toArray(schemas), commonProperties(schema));
-  yield result;
-}
-
-
-export async function* processOneOf(schema: v3.Schema, $: Context, options?: Options): AsyncGenerator<Schema> {
-  // oneof[A,B,C] literally means [A] or [B] or [C]
-  //
-  // oneOf Car, Cat
-  // type CarOrCat = Car | Cat
-  //
-  //
-  // if they have oneOf, that means it has to be one 
-  // of those types, but they could also have other properties
-  // in here too.
-
-  if (isPrimitiveSchema(schema)) {
-    return $.error(`Schema of type '${schema.type}' may not be in an oneOf`, schema);
-  }
-  if (isEnumSchema(schema)) {
-    return $.error('Enum schema may not be in an oneOf', schema);
-  }
-  if ($.forbiddenProperties(schema, ...notObject)) {
-    return undefined;
-  }
-
-  const schemaName = options?.isAnonymous ? anonymous('oneOf') : nameOf(schema);
-  const objectSchema = options?.justTargetType ? undefined : await (isObjectSchema(schema) ? await singleOrDefault(processObjectSchema(schema, $, { isAnonymous: true, justTargetType: true })) : undefined);
-  const schemas = getSchemas(schema.oneOf, $);
-
-  if (objectSchema) {
-    const result = new XorSchema(schemaName, [...await toArray(schemas), objectSchema], commonProperties(schema));
-    return yield result;
-  }
-
-  // no object combinations
-  const result = new XorSchema(schemaName, await toArray(schemas), commonProperties(schema));
-  yield result;
-}
-
-// eslint-disable-next-line require-yield
-export async function* processSillyRef(schema: v3.Schema, $: Context, options?: { isAnonymous?: boolean }): AsyncGenerator<Schema> {
-  throw new Error('TODO: process silly references');
-
-}
-
-export async function* processSchema(schema: v3.Schema, $: Context, options?: { isAnonymous?: boolean }): AsyncGenerator<Schema> {
-  // mark this used once.
-
-  const impl = () => {
-    // if enum or x-ms-enum is specified, process as enum
+    // returns a TypeReference for the type that we're processing
+    // if it has to create the type, it should create it and store it in the api itself
     if (isEnumSchema(schema)) {
       return processEnumSchema(schema, $, options);
     }
@@ -158,10 +66,10 @@ export async function* processSchema(schema: v3.Schema, $: Context, options?: { 
       //  
       // or a back-door way to $ref 
       if (length(schema.allOf) === 1) {
-        if (!schema.properties) {
-          // no properties, but inheritance,
-          return processSillyRef(schema, $, options);
-        }
+        // if (!schema.properties) {
+        // no properties, but inheritance,
+        // return processSillyRef(schema, $, options);
+        // }
       }
       // process schemas with allOf as objects 
       return processObjectSchema(schema, $, options);
@@ -169,22 +77,22 @@ export async function* processSchema(schema: v3.Schema, $: Context, options?: { 
 
     switch (schema.type) {
       case v3.JsonType.String:
-        return processStringSchema(schema, $);
+        return processStringSchema(schema, $, options);
 
       case v3.JsonType.Boolean:
-        return processBooleanSchema(schema, $);
+        return processBooleanSchema(schema, $, options);
 
       case v3.JsonType.Array:
-        return processArraySchema(schema, $);
+        return processArraySchema(schema, $, options);
 
       case v3.JsonType.Number:
-        return processNumberSchema(schema, $);
+        return constrainNumericSchema(schema, $, options, await processNumberSchema(schema, $, options));
 
       case v3.JsonType.Integer:
-        return processIntegerSchema(schema, $);
+        return constrainNumericSchema(schema, $, options, await processIntegerSchema(schema, $, options));
 
       case v3.JsonType.File:
-        return processFileSchema(schema, $);
+        return processFileSchema(schema, $, options);
 
       case v3.JsonType.Object:
         return processObjectSchema(schema, $, options);
@@ -207,328 +115,395 @@ export async function* processSchema(schema: v3.Schema, $: Context, options?: { 
 
         if (schema.items || schema.maxItems !== undefined || schema.uniqueItems) {
           // these only apply to arrays
-          return processArraySchema(schema, $);
+          return processArraySchema(schema, $, options);
         }
 
         if (schema.pattern || schema.maxLength !== undefined || schema.minLength !== undefined) {
           // these only apply to strings
-          return processStringSchema(schema, $);
+          return processStringSchema(schema, $,options);
         }
 
         if (schema.minimum !== undefined || schema.maximum !== undefined || schema.exclusiveMaximum !== undefined || schema.exclusiveMinimum !== undefined || schema.multipleOf !== undefined) {
           // these only apply to numbers
-          return processNumberSchema(schema, $);
+          return constrainNumericSchema(schema, $, options, await processNumberSchema(schema, $));
         }
         break;
     }
-    // if we didn't catch what it could be, they could be aiming for 'any' (grrrrr)
-    return processAnySchema(schema, $);
+    return $.api.schemas.primitives.any;
   };
-  for await (const result of impl()) {
-    if (result && schema.example) {
-      result.addToAttic('example', schema.example);
-    }
-    yield result;
-  }
+  const result = await impl();
+  
+  // in most cases, we're not setting it during the processing.
+  $.visitor.references.schema.set(here, result);
+  
+  // and we're done.
+  return result;
 }
 
-export async function* processStringSchema(schema: v3.Schema, $: Context): AsyncGenerator<Schema> {
+
+export async function processAnyOf(schema: v3.Schema,$: Context<v3.Model>, options?: Options): Promise<TypeReference> {
+  // anyof[A,B,C] literally means [A] or [B] or [C] or [A & B] or [A & C] or [B & C] or [A & B & C]
+  // NOTE: "An instance validates successfully against this keyword if it validates successfully against at least one schema defined by this keyword's value."
+  //
+  // anyof Car, Cat
+  // type aoCarCat = Car | Cat | (Car & Cat)
+  //
+  // if they have anyOf, that means it has to be one or more 
+  // of those types, but they could also have other properties
+  // in here too.
+  //
+  // if there is more to the object than that, we're going to create that part first, and do an union with that. 
+  // 
+  if (isPrimitiveSchema(schema)) {
+    $.error(`Schema of type '${schema.type}' may not be in an anyOf`, schema);
+    throw new Error('Fatal Error');
+  }
+  if (isEnumSchema(schema)) {
+    $.error('Enum schema may not be in an anyOf', schema);
+    throw new Error('Fatal Error');
+  }
+  $.assertNoForbiddenProperties(schema, ...<any>notObject);
+
+  // they are looking to make a THIS & anyOf[...] 
+  // let's process the object first, and then we can process the anyof.
+  const objectSchema = isObjectSchema(schema) ? await processObjectSchema(schema, $, { isAnonymous: true, justTargetType: true }) : undefined;
+
+  const oneOf = schema.oneOf ? await processOneOf(schema, $, { isAnonymous: true, justTargetType: true }) : undefined;
+
+  const schemaName = options?.isAnonymous ? anonymous('anyOf') : nameOf(schema);
+  const combineWith = new Array<TypeReference>();
+  if (objectSchema) {
+    combineWith.push(objectSchema);
+  }
+  if (oneOf) {
+    combineWith.push(oneOf);
+  }
+
+  const requiredReferences = new Array<TypeReference>();
+
+  const schemas =  schema.anyOf ? await Promise.all(schema.anyOf.map(async parent => {
+    const result = await processSchema(parent, $, { isAnonymous: true });
+    requiredReferences.push(result);
+    return result;
+  })) : [];
+
+  // if this is combined with anything
+  if (combineWith.length > 0) {
+    return createTypeAlias($.api, anonymous(schemaName), { declaration: `${schemas.map(each => each.declaration).join(' | ')} & ${combineWith.map(each => each.declaration).join(' & ')}` , requiredReferences }, commonProperties(schema)  );
+  }
+
+  return createTypeAlias($.api, anonymous(schemaName), {declaration:  schemas.map(each => each.declaration).join(' | '), requiredReferences}, commonProperties(schema));
+}
+
+
+export async function processOneOf(schema: v3.Schema,$: Context<v3.Model>, options?: Options): Promise<TypeReference> {
+  // oneof[A,B,C] literally means [A] or [B] or [C]
+  //
+  // oneOf Car, Cat
+  // type CarOrCat = Car | Cat
+  //
+  //
+  // if they have oneOf, that means it has to be one 
+  // of those types, but they could also have other properties
+  // in here too.
+
+  if (isPrimitiveSchema(schema)) {
+    $.error(`Schema of type '${schema.type}' may not be in an oneOf`, schema);
+    throw new Error('Fatal Error');
+  }
+  if (isEnumSchema(schema)) {
+    $.error('Enum schema may not be in an oneOf', schema);
+    throw new Error('Fatal Error');
+  }
+  $.assertNoForbiddenProperties(schema, ...<any>notObject);
+    
+
+  const schemaName = options?.isAnonymous ? anonymous('oneOf') : nameOf(schema);
+  const objectSchema = options?.justTargetType ? undefined : (isObjectSchema(schema) ? await processObjectSchema(schema, $, { isAnonymous: true, justTargetType: true }) : undefined);
   
+  const requiredReferences = new Array<TypeReference>();
+  const schemas = schema.oneOf ? await Promise.all(schema.oneOf.map(async parent => {
+    const result = await processSchema(parent, $, { isAnonymous: true });
+    requiredReferences.push(result);
+    return result;
+  })) : [];
+
+  if (objectSchema) {
+    return createTypeAlias($.api, schemaName, {
+      declaration: `Xor<${[...schemas,objectSchema].map(each => each.declaration).join(',')}>`,
+      requiredReferences
+    }, commonProperties(schema));
+  }
+
+  // no object combinations
+  return createTypeAlias($.api, schemaName, {
+    declaration: `Xor<${[...schemas].map(each => each.declaration).join(',')}>`,
+    requiredReferences
+  }, commonProperties(schema));
+}
+
+function constrainNumericSchema(schema: v3.Schema, $: Context<v3.Model>, options: Options|undefined, target: TypeReference): TypeReference {
+  // if this is just a number with no adornments, just return the common instance
+  if ((schema.default !== undefined || schema.exclusiveMaximum !== undefined || schema.exclusiveMinimum !== undefined || schema.minimum !== undefined || schema.maximum !== undefined || schema.multipleOf)) {
+    // add some stuff
+    if (schema.default) {
+      target = addDefault(target, schema.default);
+    }
+
+    if (schema.minimum !== undefined) {
+      if (schema.exclusiveMinimum) {
+        target = addConstraint( target, Constraints.exclusiveMinimum(schema.minimum));
+      } else {
+        target = addConstraint(target, Constraints.minimum(schema.minimum));
+      }
+    }
+    if (schema.maximum !== undefined) {
+      if (schema.exclusiveMaximum) {
+        target = addConstraint(target, Constraints.exclusiveMaximum(schema.maximum));
+      } else {
+        target = addConstraint(target, Constraints.maximum(schema.maximum));
+      }
+    }
+    if (schema.multipleOf !== undefined) {
+      target = addConstraint(target, Constraints.multipleOf(schema.multipleOf));
+    }
+  }
+  // we'll have to come back to xml
+  // alias.addToAttic('xml', schema.xml);
+
+  return options?.isAnonymous ? target : createTypeAlias($.api,nameOf(schema),target, commonProperties(schema));
+}
+
+
+export async function processStringSchema(schema: v3.Schema, $: Context<v3.Model>, options?: Options): Promise<TypeReference> {
   switch (schema.format) {
     case StringFormat.Base64Url:
+      return addEncoding( await processByteArraySchema(schema, $), Encodings.UrlEncoding );
+
     case StringFormat.Byte:
     case StringFormat.Binary:
-      return yield* processByteArraySchema(schema, $);
+      return processByteArraySchema(schema, $);
 
     case StringFormat.Char:
-      return yield* processCharSchema(schema, $);
+      return processCharSchema(schema, $);
 
     case StringFormat.Date:
-      return yield* processDateSchema(schema, $);
+      return processDateSchema(schema, $);
 
     case StringFormat.Time:
-      return yield* processTimeSchema(schema, $);
+      return processTimeSchema(schema, $);
 
     case StringFormat.DateTime:
+      return processDateTimeSchema(schema, $);
+
     case StringFormat.DateTimeRfc1123:
-      return yield* processDateTimeSchema(schema, $);
+      return processDateTimeSchema(schema, $, Encodings.RFC1123);
 
     case StringFormat.Duration:
-      return yield* processDurationSchema(schema, $);
+      return processDurationSchema(schema, $);
 
     case StringFormat.Uuid:
-      return yield* processUuidSchema(schema, $);
+      return processUuidSchema(schema, $);
 
     case StringFormat.Url:
     case StringFormat.Uri:
-      return yield* processUriSchema(schema, $);
+      return  processUriSchema(schema, $);
 
     case StringFormat.Password:
-      return yield* processPasswordSchema(schema, $);
+      return   processPasswordSchema(schema, $);
 
     case StringFormat.OData:
-      return yield* processOdataSchema(schema, $);
+      return   processOdataSchema(schema, $);
   }
 
-  if ($.forbiddenProperties(schema, ...<any>objectProperties, ...<any>arrayProperties, ...<any>numberProperties)) {
-    return;
-  }
-
+  $.assertNoForbiddenProperties(schema, ...<any>objectProperties, ...<any>arrayProperties, ...<any>numberProperties);
+  
   // we're going to treat it as a standard string schema
   // if this is just a plain string with no adornments, just return the common string instance. 
   if (!(schema.default !== undefined || schema.minLength !== undefined || schema.maxLength !== undefined || schema.pattern !== undefined)) {
-    return yield $.api.schemas.String;
+    return $.api.schemas.primitives.string;
   }
 
   // otherwise, we have to get the standard string and make an alias for it with the adornments. 
-  const alias = createAlias($.api,anonymous('string'), $.api.schemas.String, commonProperties(schema));
+  let alias = createTypeAlias($.api, anonymous('string'), $.api.schemas.primitives.string, commonProperties(schema));
 
   if (schema.default !== undefined) {
-    alias.defaults.push(new ServerDefaultValue(schema.default));
+    // alias.defaults.push(new ServerDefaultValue(schema.default));
+    alias = addDefault(alias, schema.default);
   }
 
+  //if (schema.readOnly !== undefined) {
+  // alias.constraints.push(new ReadOnlyModifier());
+  //}
+
   if (schema.maxLength !== undefined) {
-    alias.constraints.push(new MaxLengthConstraint(schema.maxLength));
+    alias = addConstraint( alias, Constraints.maxLength(schema.maxLength));
   }
 
   if (schema.minLength !== undefined) {
-    alias.constraints.push(new MinLengthConstraint(schema.minLength));
+    alias = addConstraint(alias, Constraints.minLength(schema.minLength));
   }
 
   if (schema.pattern !== undefined) {
-    alias.constraints.push(new RegularExpressionConstraint(schema.pattern));
+    alias = addConstraint(alias, Constraints.regularExpression(schema.pattern));
   }
 
-  yield alias;
-}
-
-
-export async function* processIntegerSchema(schema: v3.Schema, $: Context): AsyncGenerator<Schema> {
-  if ($.forbiddenProperties(schema, ...<any>stringProperties, ...<any>objectProperties, ...<any>arrayProperties)) {
-    return;
+  // we'll have to come back to xml
+  // alias.addToAttic('xml', schema.xml);
+  if (options?.isAnonymous) {
+    return alias;
   }
+  return createTypeAlias($.api, nameOf(schema), alias, commonProperties(schema));
   
-
-  let result: Schema;
-
-  switch (schema.format) {
-    case IntegerFormat.Int32:
-      result = $.api.schemas.Int32;
-      break;
-
-    case undefined:
-    case IntegerFormat.Int64:
-      result = $.api.schemas.Int64;
-      break;
-
-    case IntegerFormat.UnixTime:
-      result = $.api.schemas.Time;
-      break;
-
-
-    default:
-      throw new Error(`Unexpected integer format: ${schema.format}`);
-  }
-
-  yield constrainNumericSchema(schema, $, result);
-}
-
-export async function* processNumberSchema(schema: v3.Schema, $: Context): AsyncGenerator<Schema> {
-  
-
-  if ($.forbiddenProperties(schema, ...<any>stringProperties, ...<any>objectProperties, ...<any>arrayProperties)) {
-    return;
-  }
-
-  let result: Schema;
-
-  switch (schema.format) {
-    case NumberFormat.Float:
-      result = $.api.schemas.Float;
-      break;
-
-    case undefined:
-    case NumberFormat.Double:
-      result = $.api.schemas.Double;
-      break;
-
-    default:
-      throw new Error(`Unexpected number format: ${schema.format}`);
-  }
-
-  yield constrainNumericSchema(schema, $, result);
-}
-
-function constrainNumericSchema(schema: v3.Schema, $: Context, target: Schema): Schema {
-  // if this is just a number with no adornments, just return the common instance
-  if (!(schema.default !== undefined || schema.exclusiveMaximum !== undefined || schema.exclusiveMinimum !== undefined || schema.minimum !== undefined || schema.maximum !== undefined || schema.multipleOf !== undefined)) {
-    return target;
-  }
-
-  // gonna need an alias
-  const alias = createAlias($.api,anonymous('number'), target, commonProperties(schema));
-
-  if (schema.default) {
-    alias.defaults.push(new ServerDefaultValue(schema.default));
-  }
-
-  if (schema.minimum !== undefined ) {
-    alias.constraints.push(new MinimumConstraint(schema.minimum));
-  }
-  if (schema.maximum !== undefined ) {
-    alias.constraints.push(new MaximumConstraint(schema.maximum));
-  }
-  if (schema.exclusiveMinimum !== undefined ) {
-    alias.constraints.push(new ExclusiveMinimumConstraint(schema.exclusiveMinimum));
-  }
-  if (schema.exclusiveMaximum !== undefined ) {
-    alias.constraints.push(new ExclusiveMaximumConstraint(schema.exclusiveMaximum));
-  }
-  if (schema.multipleOf !== undefined ) {
-    alias.constraints.push(new MultipleOfConstraint(schema.multipleOf));
-  }
-
-  return alias;
 }
 
 
-export async function* processArraySchema(schema: v3.Schema, $: Context, options?: Options): AsyncGenerator<Schema> {
-  const schemaName = <Identity>(options?.isAnonymous ? anonymous('array') : nameOf(schema));
-  // if this isn't anonymous or a property or parameter, things like descriptions belong to this declaration
-  const common = (!options?.isAnonymous && !options?.isParameter && !options?.isProperty) ? commonProperties(schema) : {};
-
-
-  const elementSchema = await singleOrDefault(processInline(schema.items, $, { isAnonymous: true })) || $.api.schemas.Any;
-
-  if ($.forbiddenProperties(schema, ...<any>stringProperties, ...<any>numberProperties)) {
-    return undefined;
-  }
-
-  const result = new ArraySchema(elementSchema);
-
-  if (!(schema.default !== undefined || schema.maxItems !== undefined || schema.minItems !== undefined || schema.uniqueItems !== undefined )) {
-    return yield result;
-  }
-
-  const alias = createAlias($.api,anonymous('array'), result, {
-    name: schemaName,
-    ...common
-  });
-
-  if (schema.default !== undefined) {
-    alias.defaults.push(new ServerDefaultValue(schema.default));
-  }
-
-  if (schema.maxItems !== undefined) {
-    alias.constraints.push(new MaximumElementsConstraint(schema.maxItems));
-  }
-  if (schema.minItems !== undefined) {
-    alias.constraints.push(new MinimumElementsConstraint(schema.minItems));
-  }
-  if (schema.uniqueItems !== undefined) {
-    alias.constraints.push(new UniqueElementsConstraint(schema.uniqueItems));
-  }
-
-  return yield alias;
-}
-
-export async function* processAdditionalProperties(schema: v3.Schema, $: Context, options?: Options): AsyncGenerator<Schema> {
-  if (!schema.additionalProperties) {
-    throw new Error('should not get here.');
-  }
-
-  const schemaName = options?.isAnonymous ? anonymous('dictionary') : nameOf(schema);
-
-  const common = schema.properties ? {} : commonProperties(schema);
-
-  // true means type == any
-  const dictionaryType = schema.additionalProperties != true ? await singleOrDefault(processInline(schema.additionalProperties, $, { isAnonymous: true })) || $.api.schemas.Any : $.api.schemas.Any;
-
-  if (length(common) > 0 || schema.maxProperties !== undefined || schema.minProperties !== undefined) {
-    const result = new DictionarySchema(dictionaryType);
-
-    const alias = createAlias($.api,anonymous('dictionary'), result, {
-      name: schemaName,
-      ...common
-    });
-
-    if (schema.maxProperties !== undefined) {
-      alias.constraints.push(new MaximumPropertiesConstraint(schema.maxProperties));
-    }
-    if (schema.minProperties !== undefined) {
-      alias.constraints.push(new MinimumPropertiesConstraint(schema.minProperties));
-    }
-    if (schema.default) {
-      alias.defaults.push(new ServerDefaultValue(schema.default));
-    }
-
-    return yield alias;
-  }
-
-  // just a dictionary without constraints
-  const result = new DictionarySchema(dictionaryType, {
-    name: schemaName,
-    ...common
-  });
-
-  yield result;
-}
-
-
-export async function* processObjectSchema(schema: v3.Schema, $: Context, options?: Options): AsyncGenerator<Schema> {
+export async function processObjectSchema(schema: v3.Schema, $: Context<v3.Model>, options?: Options): Promise<TypeReference> {
+  let result!: TypeReference;
 
   if (schema.additionalProperties && length(schema.properties) === 0 && length(schema.allOf) === 0) {
     // if it has no actual properties of it's own, but it has additionalProperties, return just the dictionary
     // as the type.
-    return yield* await processAdditionalProperties(schema, $, options);
+    return processAdditionalProperties(schema, $, options);
   }
+
   const schemaName = options?.isAnonymous ? anonymous('object') : nameOf(schema);
 
-  // creating an object schema 
-  
-  const result = createObjectSchema($.api,schemaName, commonProperties(schema));
+  if(!options?.isAnonymous) {
+    // when it's not anonymous, we have to put the object typedefintion as soon as we can in case we recurse
+    const { name, file } = $.api.getNameAndFile(schemaName, 'model');
 
-  result.addToAttic('example', (<any>schema).example);
+    result = <TypeReference> {
+      sourceFile: file,
+      declaration: name,
+      requiredReferences: []
+    };
 
-  const schemas = getSchemas(schema.allOf, $);
-  for await (const schema of schemas) {
-    const s = <any> schema;
-    if (s.node) {
-      result.parents.push(s);
-    }
+    $.visitor.references.schema.set(refTo(schema), result );
   }
 
-  // yeild this as soon as possible in case we recurse.
-  yield result;
-
+  const requiredReferences = new Array<TypeReference>();
   // process the properties
-  for (const [propertyName, property] of items(schema.properties)) {
-    // process schema/reference inline
-    const propSchema = await singleOrDefault(processInline(property, $, { isAnonymous: true })) || $.api.schemas.Any;
-
-    // grabs the 'required' value for the property
-    let required = undefined;
-
-    if (schema.required) {
-      const i = schema.required.indexOf(propertyName);
-      required = using(schema.required[i], true);
-    }
-    const p = result.createProperty(propertyName, propSchema, {
-      required,
-      description: property.description,
-      writeonly: property.writeOnly,
-      readonly: property.readOnly,
+  const properties = new Array<PropertySignatureStructure>();
+  for( const [propertyName, property] of items(schema.properties) ) {
+    const pTypeRef = await processSchema(property, $, { isAnonymous: true });
+    const prop = createPropertySignature(propertyName, pTypeRef, {
+      ...commonProperties(<v3.Schema>property),
+      ...versionInfo($, property),
+      required: schema.required && schema.required.indexOf(propertyName) > -1,
     });
-    p.addToAttic('example', (<any>property).example);
-    $.addVersionInfo(p, property);
+    requiredReferences.push(pTypeRef);
+    properties.push( prop);
   }
+  
+  const parents = schema.allOf ? await Promise.all(schema.allOf.map(async parent => {
+    const result = await processSchema(parent, $, { isAnonymous: true });
+    requiredReferences.push(result);
+    return result;
+  })) : [];
+  
+  if( schema.additionalProperties ) {
+    // true means type == any
+    const elementTypeRef = schema.additionalProperties == true ? $.api.schemas.primitives.any : await processSchema(schema.additionalProperties!, $, { isAnonymous: true });
+    parents.push(createDictionary(elementTypeRef));
+  }
+  // creating an object schema 
+  result = createInterface($.api, schemaName, {
+    ...commonProperties(schema),
+    properties,
+    parents,
+    requiredReferences,
+    ...versionInfo($, schema),
 
-  if (schema.additionalProperties) {
-    // if additionalProperties is specified, then the type should
-    // be extending the dictionary of <type> 
-    for await (const ds of processAdditionalProperties(schema, $, { isAnonymous: true })) {
-      // result.extends.push(await ds);
-    }
-  }
+  } );
+
+  // todo: preserve attic things
+  // result.addToAttic('example', (<any>schema).example);
+  // result.addToAttic('xml', schema.xml); // we'll have to come back to xml
+  // result.addToAttic('x-ms-azure-resource', schema['x-ms-azure-resource']);
+  // result.addToAttic('x-ms-external', schema['x-ms-external']);
+  
+  return result;
 }
 
+function addObjectConstraints(schemaName: string, schema: v3.Schema, $: Context<v3.Model>, type: TypeReference): TypeReference {
+  if (schema.maxProperties !== undefined || schema.minProperties !== undefined || schema.default !== undefined) {
+
+    if (schema.maxProperties !== undefined) {
+      type = addConstraint(type, Constraints.maximumProperties(schema.maxProperties));
+    }
+    if (schema.minProperties !== undefined) {
+      type = addConstraint(type, Constraints.minimumProperties(schema.minProperties));
+    }
+    if (schema.default !== undefined) {
+      type = addDefault(type, schema.default);
+    }
+
+    return createTypeAlias($.api, schemaName, type);
+  } 
+  return type;
+}
+
+export async function processAdditionalProperties(schema: v3.Schema, $: Context<v3.Model>, options?: Options): Promise<TypeReference> {
+  if(!schema.additionalProperties) {
+    throw new Error('should not get here.');
+  }
+
+  const schemaName = options?.isAnonymous ? anonymous('dictionary') : nameOf(schema);
+  const common = schema.properties ? {} : commonProperties(schema);
+
+  // true means type == any
+  const elementTypeRef = schema.additionalProperties == true ? $.api.schemas.primitives.any : await processSchema(schema.additionalProperties!, $, {isAnonymous: true});
+  
+  let alias = createTypeAlias($.api, schemaName, createDictionary(elementTypeRef), common);
+  // todo: come back and handle attic -- we'll have to come back to xml
+  // alias.addToAttic('xml', schema.xml);
+
+  if (length(common) > 0 || schema.maxProperties !== undefined || schema.minProperties !== undefined ||schema.default !== undefined ) {
+    if (schema.maxProperties !== undefined) {
+      alias = addConstraint(alias, Constraints.maximumProperties(schema.maxProperties));
+    }
+    if (schema.minProperties !== undefined) {
+      alias = addConstraint(alias, Constraints.minimumProperties(schema.minProperties));
+    }
+    if (schema.default !== undefined ) {
+      alias = addDefault(alias, schema.default);
+    }
+  }
+  return alias;
+}
+
+
+export async function processArraySchema(schema: v3.Schema, $: Context<v3.Model>, options?: Options): Promise<TypeReference> {
+  const schemaName = <Identity>(options?.isAnonymous ? anonymous('array') : nameOf(schema));
+  // if this isn't anonymous or a property or parameter, things like descriptions belong to this declaration
+  const common = (!options?.isAnonymous && !options?.isParameter && !options?.isProperty) ? commonProperties(schema) : {};
+
+  const elementType = schema.items ? await processSchema(schema.items, $, { isAnonymous: true }) :  $.api.schemas.primitives.any;
+  $.assertNoForbiddenProperties(schema, ...<any>stringProperties, ...<any>numberProperties);
+
+  let alias = createArray(elementType);
+
+  if ((schema.default !== undefined || schema.maxItems !== undefined || schema.minItems !== undefined || schema.uniqueItems !== undefined)) {
+  
+    if (schema.default) {
+      alias = addDefault( alias, schema.default);
+    }
+
+    // if (schema.readOnly) {
+    // alias.constraints.push(new ReadOnlyModifier());
+    // }
+    if (schema.maxItems !== undefined) {
+      alias = addConstraint(alias, Constraints.maximumElements(schema.maxItems));
+    }
+    if (schema.minItems !== undefined) {
+      alias = addConstraint( alias, Constraints.minimumElements(schema.minItems));
+    }
+    if (schema.uniqueItems !== undefined) {
+      alias = addConstraint(alias, Constraints.uniqueElements());
+    }
+  }
+  // we'll have to come back to xml
+  // alias.addToAttic('xml', schema.xml);
+  return options?.isAnonymous ? alias : createTypeAlias($.api, schemaName, alias, commonProperties(schema));
+}

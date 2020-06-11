@@ -5,7 +5,8 @@ import { Push } from './Push';
  */
 export interface Extras {
     /**
+     *
      * @since 1.1.0
      */
-    push: Push;
+    push?: Push;
 }

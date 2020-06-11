@@ -8,5 +8,5 @@ export interface ApiVersionSetUpdateParameters {
      * @description Parameters to update or create an Api Version Set Contract.
      * @since 2019-12-01
      */
-    properties: ApiVersionSetUpdateParametersProperties;
+    properties?: ApiVersionSetUpdateParametersProperties;
 }

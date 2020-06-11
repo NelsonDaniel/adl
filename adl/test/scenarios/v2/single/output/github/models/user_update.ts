@@ -1,34 +1,42 @@
 
 /**
+ *
  * @since v3
  */
 export interface user_update {
     /**
+     *
      * @since v3
      */
-    bio: string;
+    bio?: string;
     /**
+     *
      * @since v3
      */
-    blog: string;
+    blog?: string;
     /**
+     *
      * @since v3
      */
-    company: string;
+    company?: string;
     /**
+     *
      * @since v3
      */
-    email: string;
+    email?: string;
     /**
+     *
      * @since v3
      */
-    hireable: boolean;
+    hireable?: boolean;
     /**
+     *
      * @since v3
      */
-    location: string;
+    location?: string;
     /**
+     *
      * @since v3
      */
-    name: string;
+    name?: string;
 }

@@ -8,10 +8,10 @@ export interface SecretCreateOrUpdateParameters {
      * @description The tags that will be assigned to the secret.
      * @since 2019-09-01
      */
-    tags: Dictionary<string>;
+    tags?: Dictionary<string>;
     /**
      * @description Properties of the secret
      * @since 2019-09-01
      */
-    properties?: SecretProperties;
+    properties: SecretProperties;
 }

@@ -8,25 +8,25 @@ export interface VaultAccessPolicyParameters {
      * @description The resource id of the access policy.
      * @since 2019-09-01
      */
-    readonly id: string & ;
+    readonly id?: string;
     /**
      * @description The resource name of the access policy.
      * @since 2019-09-01
      */
-    readonly name: string & ;
+    readonly name?: string;
     /**
      * @description The resource name of the access policy.
      * @since 2019-09-01
      */
-    readonly type: string & ;
+    readonly type?: string;
     /**
      * @description The resource type of the access policy.
      * @since 2019-09-01
      */
-    readonly location: string & ;
+    readonly location?: string;
     /**
      * @description Properties of the access policy
      * @since 2019-09-01
      */
-    properties?: VaultAccessPolicyProperties;
+    properties: VaultAccessPolicyProperties;
 }

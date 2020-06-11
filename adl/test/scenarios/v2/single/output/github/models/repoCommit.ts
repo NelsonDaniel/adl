@@ -1,80 +1,96 @@
 
 /**
+ *
  * @since v3
  */
 export interface repoCommit {
     /**
+     *
      * @since v3
      */
-    author: {
+    author?: {
         /**
          * @description ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
          * @since v3
          */
-        date: string;
+        date?: string;
         /**
+         *
          * @since v3
          */
-        email: string;
+        email?: string;
         /**
+         *
          * @since v3
          */
-        name: string;
+        name?: string;
     };
     /**
+     *
      * @since v3
      */
-    committer: {
+    committer?: {
         /**
          * @description ISO 8601 format: YYYY-MM-DDTHH:MM:SSZ
          * @since v3
          */
-        date: string;
+        date?: string;
         /**
+         *
          * @since v3
          */
-        email: string;
+        email?: string;
         /**
+         *
          * @since v3
          */
-        name: string;
+        name?: string;
     };
     /**
+     *
      * @since v3
      */
-    message: string;
+    message?: string;
     /**
+     *
      * @since v3
      */
-    parents: Array<{
+    parents?: Array<{
         /**
+         *
          * @since v3
          */
-        sha: string;
+        sha?: string;
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
     }>;
     /**
+     *
      * @since v3
      */
-    sha: string;
+    sha?: string;
     /**
+     *
      * @since v3
      */
-    tree: {
+    tree?: {
         /**
+         *
          * @since v3
          */
-        sha: string;
+        sha?: string;
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
     };
     /**
+     *
      * @since v3
      */
-    url: string;
+    url?: string;
 }

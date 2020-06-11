@@ -6,16 +6,19 @@ import { air6_properties } from './air6_properties';
  */
 export interface air6_Feature {
     /**
+     *
      * @since 0.0.0
      */
-    geometry?: geo;
+    geometry: geo;
     /**
+     *
      * @since 0.0.0
      */
-    properties?: air6_properties;
+    properties: air6_properties;
     /**
+     * Feature
      * @description Static marker indicating object is a GeoJSON Feature.
      * @since 0.0.0
      */
-    type?: string;
+    type: string;
 }

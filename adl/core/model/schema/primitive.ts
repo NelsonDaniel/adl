@@ -1,5 +1,4 @@
-import { TypeDeclaration } from '../../support/typescript';
-import { Schema, TSSchema } from './schema';
+import { Schema } from './schema';
 
 export class Primitive extends Schema {
   constructor(protected kind: string, initializer?: Partial<Primitive>) {
@@ -20,24 +19,12 @@ export class ArraySchema extends Primitive {
     super('array');
     this.initialize(initializer);
   }
-  get typeDefinition(): string {
-    return `Array<${this.elementSchema.typeDefinition}>`;
-  }
-  get requiredTypeDeclarations(): Array<TypeDeclaration> {
-    return this.elementSchema instanceof TSSchema ? [this.elementSchema.node] : [];
-  }
 }
 
 export class DictionarySchema extends Primitive {
   constructor(public elementSchema: Schema, initializer?: Partial<DictionarySchema>) {
     super('dictionary');
     this.initialize(initializer);
-  }
-  get typeDefinition(): string {
-    return `Dictionary<${this.elementSchema.typeDefinition}>`;
-  }
-  get requiredTypeDeclarations(): Array<TypeDeclaration> {
-    return this.elementSchema instanceof TSSchema ? [this.elementSchema.node] : [];
   }
 }
 

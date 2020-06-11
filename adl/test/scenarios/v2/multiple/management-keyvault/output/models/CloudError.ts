@@ -5,7 +5,8 @@ import { CloudErrorBody } from './CloudErrorBody';
  */
 export interface CloudError {
     /**
+     *
      * @since 2019-09-01
      */
-    error: CloudErrorBody;
+    error?: CloudErrorBody;
 }

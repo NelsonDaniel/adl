@@ -1,8 +1,8 @@
 import { v3 } from '@azure-tools/openapi';
 import { CookieParameter, HeaderParameter, PathParameter, QueryParameter, RenderStyle } from '../../../model/http/parameter';
-import { singleOrDefault } from '../common';
-import { processInline } from './schema';
+import { processSchema } from './schema';
 import { Context } from './serializer';
+
 
 export async function* parameter(parameter: v3.Parameter, $: Context, options?: { isAnonymous?: boolean }) {
 
@@ -25,7 +25,7 @@ export async function* parameter(parameter: v3.Parameter, $: Context, options?: 
 
 
 export async function* processPathParameter(parameter: v3.PathParameter, $: Context, options?: { isAnonymous?: boolean }) {
-  const schema = await singleOrDefault(processInline(parameter.schema, $)) || $.api.schemas.Any;
+  const schema = await processSchema(parameter.schema, $, { isAnonymous: true });
   const result = new PathParameter(parameter.name, schema,
     parameter.explode === undefined ? false : parameter.explode, {
       description: parameter.description,
@@ -38,7 +38,7 @@ export async function* processPathParameter(parameter: v3.PathParameter, $: Cont
 }
 
 export async function* processCookieParameter(parameter: v3.CookieParameter, $: Context, options?: { isAnonymous?: boolean }) {
-  const schema = await singleOrDefault(processInline(parameter.schema, $)) || $.api.schemas.Any;
+  const schema = await processSchema(parameter.schema, $, { isAnonymous: true });
   const result = new CookieParameter(parameter.name, schema,
     parameter.explode === undefined ? true : parameter.explode, {
       description: parameter.description,
@@ -51,7 +51,7 @@ export async function* processCookieParameter(parameter: v3.CookieParameter, $: 
 }
 
 export async function* processQueryParameter(parameter: v3.QueryParameter, $: Context, options?: { isAnonymous?: boolean }) {
-  const schema = await singleOrDefault(processInline(parameter.schema, $)) || $.api.schemas.Any;
+  const schema = await processSchema(parameter.schema, $, {isAnonymous: true});
   const renderStyle = <any><unknown>parameter.style || RenderStyle.Form;
   const result = new QueryParameter(parameter.name, schema,
     parameter.explode === undefined ? renderStyle === RenderStyle.Form ? true : false : parameter.explode, {
@@ -66,7 +66,7 @@ export async function* processQueryParameter(parameter: v3.QueryParameter, $: Co
   yield result;
 }
 export async function* processHeaderParameter(parameter: v3.HeaderParameter, $: Context, options?: { isAnonymous?: boolean }) {
-  const schema = await singleOrDefault(processInline(parameter.schema, $)) || $.api.schemas.Any;
+  const schema = await processSchema(parameter.schema, $, { isAnonymous: true });
   const result = new HeaderParameter(parameter.name, schema,
     parameter.explode === undefined ? false : parameter.explode, {
       description: parameter.description,

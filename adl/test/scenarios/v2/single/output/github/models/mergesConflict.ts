@@ -1,5 +1,6 @@
 
 /**
+ *
  * @since v3
  */
 export interface mergesConflict {
@@ -7,5 +8,5 @@ export interface mergesConflict {
      * @description Error message
      * @since v3
      */
-    message: string;
+    message?: string;
 }

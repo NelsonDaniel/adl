@@ -8,42 +8,42 @@ export interface Operation {
      * @description Operation name: {provider}/{resource}/{operation}
      * @since 2019-09-01
      */
-    name: string;
+    name?: string;
     /**
      * @description Display metadata associated with the operation.
      * @since 2019-09-01
      */
-    display: {
+    display?: {
         /**
          * @description Service provider: Microsoft Key Vault.
          * @since 2019-09-01
          */
-        provider: string;
+        provider?: string;
         /**
          * @description Resource on which the operation is performed etc.
          * @since 2019-09-01
          */
-        resource: string;
+        resource?: string;
         /**
          * @description Type of operation: get, read, delete, etc.
          * @since 2019-09-01
          */
-        operation: string;
+        operation?: string;
         /**
          * @description Description of operation.
          * @since 2019-09-01
          */
-        description: string;
+        description?: string;
     };
     /**
      * @description The origin of operations.
      * @since 2019-09-01
      */
-    origin: string;
+    origin?: string;
     /**
      * @description Properties of operation, include metric specifications.
      * @clientName OperationProperties
      * @since 2019-09-01
      */
-    properties: OperationProperties;
+    properties?: OperationProperties;
 }

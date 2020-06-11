@@ -8,5 +8,5 @@ export interface SubscriptionUpdateParameters {
      * @description Subscription Update contract properties.
      * @since 2019-12-01
      */
-    properties: SubscriptionUpdateParameterProperties;
+    properties?: SubscriptionUpdateParameterProperties;
 }

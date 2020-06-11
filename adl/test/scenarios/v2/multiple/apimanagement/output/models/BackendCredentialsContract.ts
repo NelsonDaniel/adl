@@ -8,20 +8,20 @@ export interface BackendCredentialsContract {
      * @description List of Client Certificate Thumbprint.
      * @since 2019-12-01
      */
-    certificate: Array<string> & MaximumElements<32>;
+    certificate?: Array<string> & MaximumElements<32>;
     /**
      * @description Query Parameter description.
      * @since 2019-12-01
      */
-    query: Dictionary<Array<string>>;
+    query?: Dictionary<Array<string>>;
     /**
      * @description Header Parameter description.
      * @since 2019-12-01
      */
-    header: Dictionary<Array<string>>;
+    header?: Dictionary<Array<string>>;
     /**
      * @description Authorization header authentication
      * @since 2019-12-01
      */
-    authorization: BackendAuthorizationHeaderCredentials;
+    authorization?: BackendAuthorizationHeaderCredentials;
 }

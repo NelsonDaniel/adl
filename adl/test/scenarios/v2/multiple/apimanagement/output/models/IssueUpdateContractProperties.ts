@@ -8,15 +8,15 @@ export interface IssueUpdateContractProperties extends IssueContractBaseProperti
      * @description The issue title.
      * @since 2019-12-01
      */
-    title: string;
+    title?: string;
     /**
      * @description Text describing the issue.
      * @since 2019-12-01
      */
-    description: string;
+    description?: string;
     /**
      * @description A resource identifier for the user created the issue.
      * @since 2019-12-01
      */
-    userId: string;
+    userId?: string;
 }

@@ -8,5 +8,5 @@ export interface HashtagFields {
      * @description The text of the Hashtag
      * @since 2.3
      */
-    tag?: string;
+    tag: string;
 }

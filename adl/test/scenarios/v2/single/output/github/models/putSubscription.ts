@@ -1,30 +1,37 @@
 
 /**
+ *
  * @since v3
  */
 export interface putSubscription {
     /**
+     *
      * @since v3
      */
-    created_at: string;
+    created_at?: string;
     /**
+     *
      * @since v3
      */
-    ignored: boolean;
+    ignored?: boolean;
     /**
+     *
      * @since v3
      */
-    reason: {};
+    reason?: {};
     /**
+     *
      * @since v3
      */
-    subscribed: boolean;
+    subscribed?: boolean;
     /**
+     *
      * @since v3
      */
-    thread_url: string;
+    thread_url?: string;
     /**
+     *
      * @since v3
      */
-    url: string;
+    url?: string;
 }

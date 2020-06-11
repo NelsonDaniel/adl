@@ -1,63 +1,78 @@
 
 /**
+ *
  * @since v3
  */
 export interface contents_path {
     /**
+     *
      * @since v3
      */
-    _links: {
+    _links?: {
         /**
+         *
          * @since v3
          */
-        git: string;
+        git?: string;
         /**
+         *
          * @since v3
          */
-        html: string;
+        html?: string;
         /**
+         *
          * @since v3
          */
-        self: string;
+        self?: string;
     };
     /**
+     *
      * @since v3
      */
-    content: string;
+    content?: string;
     /**
+     *
      * @since v3
      */
-    encoding: string;
+    encoding?: string;
     /**
+     *
      * @since v3
      */
-    git_url: string;
+    git_url?: string;
     /**
+     *
      * @since v3
      */
-    html_url: string;
+    html_url?: string;
     /**
+     *
      * @since v3
      */
-    name: string;
+    name?: string;
     /**
+     *
      * @since v3
      */
-    path: string;
+    path?: string;
     /**
+     *
      * @since v3
      */
-    sha: string;
+    sha?: string;
     /**
+     *
      * @since v3
      */
-    size: int64;
+    size?: int64;
     /**
+     *
      * @since v3
      */
-    type: string;
+    type?: string;
     /**
+     *
      * @since v3
      */
-    url: string;
+    url?: string;
 }

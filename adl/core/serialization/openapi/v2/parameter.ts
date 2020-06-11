@@ -1,7 +1,6 @@
 import { v2 } from '@azure-tools/openapi';
 import { FormDataParameter, HeaderParameter, PathParameter, QueryParameter, RenderStyle } from '../../../model/http/parameter';
-import { singleOrDefault } from '../common';
-import { processInline } from './schema';
+import { processSchema } from './schema';
 import { Context } from './serializer';
 
 export async function* parameter(parameter: v2.Parameter, $: Context, options?: { isAnonymous?: boolean }) {
@@ -25,8 +24,8 @@ export async function* parameter(parameter: v2.Parameter, $: Context, options?: 
 
 
 export async function* processPathParameter(parameter: v2.PathParameter, $: Context, options?: { isAnonymous?: boolean }) {
-  const schema = await singleOrDefault(processInline(<v2.Schema><unknown>parameter, $)) || $.api.schemas.Any;
-  const result = new PathParameter(parameter.name, schema, false, {
+  const typeref = await processSchema(<v2.Schema><unknown>parameter, $, { isAnonymous: true });
+  const result = new PathParameter(parameter.name, typeref, false, {
     description: parameter.description,
     required: parameter.required,
     renderStyle:  RenderStyle.Simple,
@@ -37,9 +36,9 @@ export async function* processPathParameter(parameter: v2.PathParameter, $: Cont
 
 
 export async function* processQueryParameter(parameter: v2.QueryParameter, $: Context, options?: { isAnonymous?: boolean }) {
-  const schema = await singleOrDefault(processInline(<v2.Schema>parameter, $)) || $.api.schemas.Any;
+  const typeref = await processSchema(<v2.Schema>parameter, $, {isAnonymous: true});
   const renderStyle =  RenderStyle.Form;
-  const result = new QueryParameter(parameter.name, schema, true, {
+  const result = new QueryParameter(parameter.name, typeref, true, {
     description: parameter.description,
     required: parameter.required,
     renderStyle,
@@ -51,9 +50,9 @@ export async function* processQueryParameter(parameter: v2.QueryParameter, $: Co
 }
 
 export async function* processFormDataParameter(parameter: v2.FormDataParameter, $: Context, options?: { isAnonymous?: boolean }) {
-  const schema = await singleOrDefault(processInline(<v2.Schema>parameter, $)) || $.api.schemas.Any;
+  const typeref = await processSchema(<v2.Schema>parameter, $, { isAnonymous: true });
   const renderStyle = RenderStyle.Form;
-  const result = new FormDataParameter(parameter.name, schema, true, {
+  const result = new FormDataParameter(parameter.name, typeref, true, {
     description: parameter.description,
     required: parameter.required,
     renderStyle,
@@ -64,8 +63,8 @@ export async function* processFormDataParameter(parameter: v2.FormDataParameter,
 }
 
 export async function* processHeaderParameter(parameter: v2.HeaderParameter, $: Context, options?: { isAnonymous?: boolean }) {
-  const schema = await singleOrDefault(processInline(<v2.Schema>parameter, $)) || $.api.schemas.Any;
-  const result = new HeaderParameter(parameter.name, schema, false, {
+  const typeref = await processSchema(<v2.Schema>parameter, $, { isAnonymous: true });
+  const result = new HeaderParameter(parameter.name, typeref, false, {
     description: parameter.description,
     required: parameter.required,
     renderStyle: RenderStyle.Simple,

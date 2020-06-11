@@ -1,95 +1,117 @@
 
 /**
+ *
  * @since v3
  */
 export interface deleteFile {
     /**
+     *
      * @since v3
      */
-    commit: {
+    commit?: {
         /**
+         *
          * @since v3
          */
-        author: {
+        author?: {
             /**
+             *
              * @since v3
              */
-            date: string;
+            date?: string;
             /**
+             *
              * @since v3
              */
-            email: string;
+            email?: string;
             /**
+             *
              * @since v3
              */
-            name: string;
+            name?: string;
         };
         /**
+         *
          * @since v3
          */
-        committer: {
+        committer?: {
             /**
+             *
              * @since v3
              */
-            date: string;
+            date?: string;
             /**
+             *
              * @since v3
              */
-            email: string;
+            email?: string;
             /**
+             *
              * @since v3
              */
-            name: string;
+            name?: string;
         };
         /**
+         *
          * @since v3
          */
-        html_url: string;
+        html_url?: string;
         /**
+         *
          * @since v3
          */
-        message: string;
+        message?: string;
         /**
+         *
          * @since v3
          */
-        parents: {
+        parents?: {
             /**
+             *
              * @since v3
              */
-            html_url: string;
+            html_url?: string;
             /**
+             *
              * @since v3
              */
-            sha: string;
+            sha?: string;
             /**
+             *
              * @since v3
              */
-            url: string;
+            url?: string;
         };
         /**
+         *
          * @since v3
          */
-        sha: string;
+        sha?: string;
         /**
+         *
          * @since v3
          */
-        tree: {
+        tree?: {
             /**
+             *
              * @since v3
              */
-            sha: string;
+            sha?: string;
             /**
+             *
              * @since v3
              */
-            url: string;
+            url?: string;
         };
         /**
+         *
          * @since v3
          */
-        url: string;
+        url?: string;
     };
     /**
+     *
      * @since v3
      */
-    content: string;
+    content?: string;
 }
