@@ -107,7 +107,7 @@ export function referenceTo<T extends Node>(input: T): T {
   });
 }
 
-export function project<T extends Node>(input: T): ApiModel {
+export function getAPI<T extends Node>(input: T): ApiModel {
   return (<any>input.getProject()).api;
 }
 
@@ -115,7 +115,7 @@ export function IsTypeDeclaration(node?: Node): node is TypeDeclaration {
   return node instanceof TypeAliasDeclaration || node instanceof ClassDeclaration || node instanceof InterfaceDeclaration || node instanceof EnumDeclaration;
 }
 
-export function getImportFor(type: EnumDeclaration|InterfaceDeclaration|TypeAliasDeclaration, relativeToSourceFile: SourceFile): ImportDeclarationStructure {
+export function getImportFor(type: EnumDeclaration | InterfaceDeclaration | TypeAliasDeclaration, relativeToSourceFile: SourceFile): ImportDeclarationStructure {
   return {
     kind: StructureKind.ImportDeclaration,
     namedImports: [type.getName()],
@@ -131,8 +131,8 @@ export function createImportFor(name: string, sourceFile: SourceFile, relativeTo
   };
 }
 
-export function addImportsTo(sourceFile: SourceFile,typeReference: TypeReference ) {
-  if (typeReference.sourceFile && sourceFile !== typeReference.sourceFile ) {
+export function addImportsTo(sourceFile: SourceFile, typeReference: TypeReference) {
+  if (typeReference.sourceFile && sourceFile !== typeReference.sourceFile) {
     const typeName = typeReference.declaration;
 
     const importDecls = sourceFile.getImportDeclarations();
@@ -153,22 +153,22 @@ export function addImportsTo(sourceFile: SourceFile,typeReference: TypeReference
       // wasn't that file
     }
     // wasn't imported yet. Let's add it.
-    if( !found) {
+    if (!found) {
       sourceFile.addImportDeclaration(createImportFor(typeName, typeReference.sourceFile, sourceFile));
     }
   }
 
   // now, add any requiredTypes to this file too.
-  for( const each of typeReference.requiredReferences) {
-    addImportsTo( sourceFile, each);
+  for (const each of typeReference.requiredReferences) {
+    addImportsTo(sourceFile, each);
   }
 }
 
 export function addNullable(declaration: string) {
-  return declaration.endsWith('| null') ?declaration:`${declaration} | null`;
+  return declaration.endsWith('| null') ? declaration : `${declaration} | null`;
 }
 
 export function getInnerText(declaration: InterfaceDeclaration) {
-  const text = declaration.getText(); 
+  const text = declaration.getText();
   return text.substring(text.indexOf('{'));
 }

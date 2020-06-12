@@ -1,9 +1,14 @@
-import { linq } from '@azure-tools/linq';
-import { EnumDeclaration, InterfaceDeclaration, Node, PropertySignature } from 'ts-morph';
+import { EnumDeclaration, EnumMember, InterfaceDeclaration, PropertySignature, TypeAliasDeclaration } from 'ts-morph';
 import { ApiModel } from '../api-model';
 import { Element } from '../element';
+import { NamedElement } from '../typescript/named-element';
 import { AndSchema, AnyOfSchema, XorSchema } from './group';
 import { TypeReference } from './type';
+
+export interface RemovableNode {
+  /** Removes the Node. */
+  remove(): void;
+}
 
 function createPrimitiveSchema(declaration: string) {
   return {
@@ -12,52 +17,79 @@ function createPrimitiveSchema(declaration: string) {
   };
 }
 
-export interface Model extends TypeReference {
 
-}
-
-export class NewElement {
-  constructor(protected node: Node) {
-  }
-}
-
-export class PropertyElement extends NewElement {
-  constructor(protected node: PropertySignature) {
+export class PropertyElement extends NamedElement<PropertySignature> {
+  constructor(node: PropertySignature) {
     super(node);
   }
 
-  get type(): Model {
-
+  get type(): TypeReference {
     return <TypeReference><any>{};
   }
 
-  set type(typeReference: Model) {
-
+  set type(typeReference: TypeReference) {
+    // shh
   }
 }
 
-export class InterfaceModel extends NewElement {
-  constructor(protected node: InterfaceDeclaration) {
+export class AliasType extends NamedElement<TypeAliasDeclaration> implements TypeReference {
+  declaration!: string;
+  requiredReferences = [];
+
+  isInline?: boolean;
+
+  constructor(node: TypeAliasDeclaration) {
     super(node);
+  }
+}
+
+export class InterfaceType extends NamedElement<InterfaceDeclaration> implements TypeReference {
+  readonly isInline = false;
+  readonly requiredReferences = [];
+
+  constructor(node: InterfaceDeclaration) {
+    super(node);
+  }
+  get declaration() {
+    return this.node.getName();
   }
 
   getProperties(): Iterable<PropertyElement> {
     return this.node.getProperties().map(each => new PropertyElement(each));
   }
 
-  removeProperty(name: string) {
-
+  createProperty(name: string) {
+    //ssh
   }
 
-  createProperty(name: string) {
+}
 
+export class EnumElement extends NamedElement<EnumMember> {
+  constructor(node: EnumMember) {
+    super(node);
   }
 }
 
-export class EnumModel extends NewElement {
-  constructor(protected node: EnumDeclaration) {
+export class EnumType extends NamedElement<EnumDeclaration> implements TypeReference {
+  readonly isInline = false;
+  readonly requiredReferences = [];
+
+  constructor(node: EnumDeclaration) {
     super(node);
   }
+
+  get declaration() {
+    return this.node.getName();
+  }
+
+  get values(): Array<EnumElement> {
+    return this.node.getMembers().map(each => new EnumElement(each));
+  }
+
+  createValue() {
+    // shh
+  }
+
 }
 
 export class Schemas extends Element {
@@ -87,18 +119,6 @@ export class Schemas extends Element {
 
   constructor(protected apiModel: ApiModel) {
     super();
-  }
-
-  *getInterfaces(): Iterable<InterfaceModel> {
-    for (const iface of linq.values(this.apiModel.project.getSourceFiles()).selectMany(file => file.getInterfaces())) {
-      yield new InterfaceModel(iface);
-    }
-  }
-
-  *getEnums(): Iterable<EnumModel> {
-    for (const enm of linq.values(this.apiModel.project.getSourceFiles()).selectMany(file => file.getEnums())) {
-      yield new EnumModel(enm);
-    }
   }
 }
 

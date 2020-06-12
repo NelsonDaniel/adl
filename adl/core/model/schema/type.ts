@@ -33,7 +33,18 @@ export interface TypeReference {
    * This may be undefined -- which means that there is nota source
    */
   readonly sourceFile?: SourceFile;
+
+  readonly isInline?: boolean;
 }
+
+export interface ParameterOrPropertyTypeReference extends TypeReference  {
+
+}
+
+export interface InheritableTypeReference extends TypeReference {
+
+}
+
 
 export interface ParameterReference {
 

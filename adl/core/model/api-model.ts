@@ -3,18 +3,17 @@ import { Dictionary } from '@azure-tools/linq';
 import { isAnonymous, Path, valueOf } from '@azure-tools/sourcemap';
 import { fail } from 'assert';
 import { dirname, join } from 'path';
-import { EnumDeclaration, IndentationText, InterfaceDeclaration, NewLineKind, Node, Project, QuoteKind, SourceFile } from 'ts-morph';
+import { EnumDeclaration, IndentationText, InterfaceDeclaration, NewLineKind, Node, Project, QuoteKind, SourceFile, TypeAliasDeclaration } from 'ts-morph';
 import { getNode, referenceTo } from '../support/typescript';
 import { Attic } from './element';
 import { SerializationResult } from './format';
-import { Operation } from './http/operation';
+import { HeaderElement } from './http/header';
 import { HttpProtocol } from './http/protocol';
 import { InternalData } from './internal-data';
 import { Metadata } from './metadata';
-import { Resource } from './resource';
+import { OperationGroup, ParameterElement, ResponseCollection, ResponseElement, ResultElement } from './operation';
 import { Alias } from './schema/alias';
-import { Schema } from './schema/schema';
-import { EnumModel, InterfaceModel, Schemas } from './schema/schemas';
+import { AliasType, EnumType, InterfaceType, Schemas } from './schema/schemas';
 import { Folders, Identity } from './types';
 import { VersionInfo } from './version-info';
 
@@ -37,6 +36,10 @@ export function isContentMap(declaration: InterfaceDeclaration) {
 }
 
 export function isResponse(declaration: InterfaceDeclaration) {
+  return false;
+}
+
+export function isAliasType(declaration: TypeAliasDeclaration) {
   return false;
 }
 
@@ -65,42 +68,43 @@ export class Files {
   }
 
   get interfaces() {
-    return this.files.map(each => each.getInterfaces().filter(isModelInterface)).flat().map(each => new InterfaceModel(each));
+    return this.files.map(each => each.getInterfaces().filter(isModelInterface)).flat().map(each => new InterfaceType(each));
   }
 
   get enums() {
-    return this.files.map(each => each.getEnums().flat().map(each => new EnumModel(each)));
+    return this.files.map(each => each.getEnums().flat().map(each => new EnumType(each)));
   }
 
-  // get typeAliases() {
-  // };
+  get typeAliases(): Array<AliasType> {
+    return this.files.map(each => each.getTypeAliases().filter(isAliasType)).flat().map(each => new AliasType(each));
+  }
 
   get operationGroups() {
-    return this.files.map(each => each.getInterfaces().filter(isOperationGroup)).flat().map(each => new InterfaceModel(each));
+    return this.files.map(each => each.getInterfaces().filter(isOperationGroup)).flat().map(each => new OperationGroup(each));
   }
 
-  get resources() {
-    return this.files.map(each => each.getInterfaces().filter(isResource)).flat().map(each => new InterfaceModel(each));
+  // get resources() {
+  // return this.files.map(each => each.getInterfaces().filter(isResource)).flat().map(each => new ResourceElement(each));
+  // }
+
+  get responseCollections(): Array<ResponseCollection> {
+    return [];
   }
 
-  get operationResults() {
-    return;
+  get responses(): Array<ResponseElement> {
+    return [];
   }
 
-  get contentMaps() {
-    return;
+  get results(): Array<ResultElement> {
+    return [];
   }
 
-  get responses() {
-    return;
+  get parameters(): Array<ParameterElement> {
+    return [];
   }
 
-  get parameters() {
-    return;
-  }
-
-  get headers() {
-    return;
+  get headers(): Array<HeaderElement> {
+    return [];
   }
 }
 
@@ -231,19 +235,6 @@ export class ApiModel extends Files {
     return undefined;
   }
 
-  getGroup(name: string) {
-    name = valueOf(name);
-    let result: InterfaceDeclaration;
-
-    for (const file of this.project.getSourceFiles()) {
-      const result = file.getInterface(name);
-      if (result) {
-        return referenceTo(result);
-      }
-    }
-    return undefined;
-  }
-
   isFileAnonymous(sourceFile: SourceFile): boolean {
     return this.#folders.anonymous.isAncestorOf(sourceFile);
   }
@@ -255,63 +246,12 @@ export class ApiModel extends Files {
     return { name, file };
   }
 
-  /**
-   * Gets a type reference for a given schema.
-   * 
-   * This also ensures that the types that are required for the schema are imported into the current sourcefile 
-   * 
-   * @param schema the schema that we need imported.
-   */
-  getTypeReference(schema: Schema, targetSourceFile: SourceFile): string {
-    schema = valueOf(schema);
 
-    // get all the imports required for the type 
-    // add them to this file
-    const importDecls = targetSourceFile.getImportDeclarations();
-
-    reqdTypes:
-    for (const requiredType of schema.requiredTypeDeclarations) {
-      if (requiredType.getSourceFile && requiredType.getName) {
-        const typeFile = requiredType.getSourceFile();
-        const typeName = requiredType.getName();
-
-        if (typeName === undefined || typeFile === undefined || typeFile === targetSourceFile || this.isFileAnonymous(typeFile)) {
-          // don't need to do anything if it's the same file 
-          continue;
-        }
-
-        for (const importDecl of importDecls) {
-
-          if (importDecl.getModuleSpecifierSourceFile() === typeFile) {
-            // we've got imports from that sourcefile 
-            if (importDecl.getNamedImports().find(imp => imp.getName() === typeName)) {
-              // we've already imported this. Go on to the next one.
-              continue reqdTypes;
-            }
-
-            // we've referenced the file, but not imported the type.
-            importDecl.addNamedImport(typeName);
-            continue reqdTypes;
-          }
-          // wasn't in that file
-        }
-        targetSourceFile.addImportDeclaration({
-          moduleSpecifier: targetSourceFile.getRelativePathAsModuleSpecifierTo(typeFile),
-          namedImports: [typeName]
-        });
-      }
-    }
-    // imported everything we needed. 
-    //return schema.node.getName();
-
-    return schema.typeDefinition;
-  }
-
-  createInterface(name: string, initializer: Partial<InterfaceModel>) {
+  createInterface(name: string, initializer: Partial<InterfaceType>) {
 
   }
 
-  createEnum(name: string, initializer: Partial<EnumModel>) {
+  createEnum(name: string, initializer: Partial<EnumType>) {
     const file = this.project.createSourceFile(`${this.api.#folders.enum.getPath()}/${name}.ts`);
     // const e = file.addEnum(initializer);
     // there is already a function called create Enum
@@ -333,9 +273,7 @@ export class ApiModel extends Files {
 
   }
 
-  remove(element: InterfaceModel | EnumModel | Alias | Operation | Resource) {
 
-  }
 }
 
 export class None {

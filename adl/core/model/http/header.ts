@@ -1,6 +1,10 @@
 import { Element } from '../element';
 import { TypeReference } from '../schema/type';
 
+export class HeaderElement {
+  
+}
+
 export class Header extends Element {
   // the header name in container. might not be unique in parent? 
   name!: string;

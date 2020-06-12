@@ -1,3 +1,12 @@
+api : ApiModel
+interface : InterfaceType extends TypeReference
+enum : EnumType extends TypeReference
+
+
+typeReference: TypeReference
+
+
+
  const someFiles = model.where( each => each.name.startsWith('foo'))
  const others = somefiles.where( each => each.fileLength > 1000 );
 
@@ -66,7 +75,7 @@ aliases:
 
  inteface operation  {
    get parameters
-   get operationResult?
+   get responses: Array<Response>
    // + accessors for the details of the operation
  }
 

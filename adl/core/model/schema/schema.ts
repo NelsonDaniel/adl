@@ -1,8 +1,7 @@
-import { anonymous, isAnonymous } from '@azure-tools/sourcemap';
+import { anonymous } from '@azure-tools/sourcemap';
 import { Node } from 'ts-morph';
-import { getFirstDoc, getTagValue, setTag } from '../../support/doc-tag';
 import { IsTypeDeclaration, TypeDeclaration } from '../../support/typescript';
-import { Element, TSElement } from '../element';
+import { Element } from '../element';
 import { Identity } from '../types';
 
 
@@ -28,7 +27,7 @@ export class Schema extends Element {
    * 
    * @todo: I'm not fond of having this in schema -- we should strongly consider refactoring this so the consumer gets it (ie, the property)
    */
-  nullable?:  boolean;
+  nullable?: boolean;
   /**
    * 
    * @param type the schema 'type' that this schema represents. 
@@ -67,40 +66,6 @@ export class Schema extends Element {
   }
 }
 
-export class NamedElement<TNode extends Node> extends TSElement<TNode> {
-  get name(): Identity {
-    let result: Identity | undefined = undefined;
-    if (Node.isNamedNode(this.node) || Node.isNameableNode(this.node)) {
-      result = this.node.getName();
-    }
-    return result ?? anonymous(this.node.getKindName());
-  }
-
-  set name(value: Identity) {
-    if (isAnonymous(value)) {
-      throw new Error('Cannot rename this node to anonymous.');
-    }
-    if (!Node.isRenameableNode(this.node)) {
-      throw new Error('This node cannot be renamed.');
-    }
-    this.node.rename(value);
-  }
-
-  get summary() {
-    return getFirstDoc(this.node).getDescription();
-  }
-  set summary(value: string | undefined) {
-    getFirstDoc(this.node).setDescription(value||'\n');
-  }
-
-  get description() {
-    return getTagValue(this.node, 'description');
-  }
-  set description(value: string | undefined) {
-    setTag(this.node,'description', value);
-  }
-}
-
 export class TSSchema<TNode extends Node> extends NamedElement<TNode> implements Schema {
   nullable?: boolean;
 
@@ -116,18 +81,18 @@ export class TSSchema<TNode extends Node> extends NamedElement<TNode> implements
    * other than just themselves (ie, in Array)
    */
   get requiredTypeDeclarations(): Array<TypeDeclaration> {
-    return this.isInline && IsTypeDeclaration( this.node ) ?  [this.node] : [];
+    return this.isInline && IsTypeDeclaration(this.node) ? [this.node] : [];
   }
-  
+
   get isInline(): boolean {
-    return this.project.isFileAnonymous( this.node.getSourceFile() );
+    return this.project.isFileAnonymous(this.node.getSourceFile());
   }
 
   get typeDefinition(): string {
-    if( this.isInline) {
+    if (this.isInline) {
       const v = this.node.getText();
-      return v.substring( v.indexOf('{') );
-    } 
+      return v.substring(v.indexOf('{'));
+    }
     return <string>this.name;
   }
 }

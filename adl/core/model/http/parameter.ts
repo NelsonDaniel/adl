@@ -2,6 +2,10 @@ import * as base from '../operation';
 import { TypeReference } from '../schema/type';
 
 
+export class ParameterElement extends base.ParameterElement {
+
+}
+
 export enum RenderStyle {
   /** Path-style parameters defined by RFC6570 */
   Matrix = 'matrix',

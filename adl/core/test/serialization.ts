@@ -4,7 +4,8 @@ import { AST, CST, Document } from 'yaml';
 import { Schema, YAMLMap } from 'yaml/types';
 import { parseMap } from 'yaml/util';
 import { ApiModel } from '../model/api-model';
-import { Element, TSElement } from '../model/element';
+import { Element } from '../model/element';
+import { TSElement } from '../model/typescript/typescript-element';
 
 const propertyPriority = [
   'type',

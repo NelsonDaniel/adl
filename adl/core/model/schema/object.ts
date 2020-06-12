@@ -6,7 +6,8 @@ import { createDocs, getTagValue, setTag } from '../../support/doc-tag';
 import { addImportsTo, addNullable, getInnerText, TypeDeclaration } from '../../support/typescript';
 import { ApiModel } from '../api-model';
 import { Collection, CollectionImpl, Identity, ReadOnlyCollection, ReadOnlyCollectionImpl } from '../types';
-import { NamedElement, Schema, TSSchema } from './schema';
+import { NamedElement } from './NamedElement';
+import { Schema, TSSchema } from './schema';
 import { TypeReference } from './type';
 
 export interface ObjectSchema extends Schema {

@@ -1,7 +1,35 @@
 import { Alias } from '../alias';
 import * as base from '../operation';
+import { TypeReference } from '../schema/type';
 import { Identity } from '../types';
 import { Header } from './header';
+
+export class ResponseCriteria extends base.ResponseCriteria {
+  set code(value: Array<string|number> ) {
+
+  }
+  get code(): Array<string|number> {
+    const p = this.node.getParameter('code');
+    if( p ) {
+      // expecting some kind of union type 
+      // pull out the values.
+    }
+    throw Error('not implemented');
+  }
+  mediaType!: Array<string>;
+}
+
+export class ResultElement extends base.ResultElement {
+  body!: TypeReference;
+  headers!: Array<TypeReference>;
+  isException?: boolean;
+  message?: string;
+}
+
+export class ResponseElement extends base.ResponseElement {
+  criteria!: ResponseCriteria;
+  result!: ResultElement | base.Reference<ResultElement>;
+}
 
 export class Response extends base.Response {
   /**
