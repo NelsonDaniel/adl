@@ -1,32 +1,75 @@
+import { linq } from '@azure-tools/linq';
+import { EnumDeclaration, InterfaceDeclaration, Node, PropertySignature } from 'ts-morph';
+import { ApiModel } from '../api-model';
 import { Element } from '../element';
-import { Alias } from './alias';
-import { Constant } from './constant';
-import { Constraint } from './constraint';
-import { Default } from './default';
-import { Enum } from './enum';
 import { AndSchema, AnyOfSchema, XorSchema } from './group';
-import { ObjectSchemaImpl } from './object';
+import { TypeReference } from './type';
 
-function createPrimitiveSchema( declaration: string ) {
+function createPrimitiveSchema(declaration: string) {
   return {
     declaration: declaration,
     requiredReferences: []
   };
 }
 
+export interface Model extends TypeReference {
+
+}
+
+export class NewElement {
+  constructor(protected node: Node) {
+  }
+}
+
+export class PropertyElement extends NewElement {
+  constructor(protected node: PropertySignature) {
+    super(node);
+  }
+
+  get type(): Model {
+
+    return <TypeReference><any>{};
+  }
+
+  set type(typeReference: Model) {
+
+  }
+}
+
+export class InterfaceModel extends NewElement {
+  constructor(protected node: InterfaceDeclaration) {
+    super(node);
+  }
+
+  getProperties(): Iterable<PropertyElement> {
+    return this.node.getProperties().map(each => new PropertyElement(each));
+  }
+
+  removeProperty(name: string) {
+
+  }
+
+  createProperty(name: string) {
+
+  }
+}
+
+export class EnumModel extends NewElement {
+  constructor(protected node: EnumDeclaration) {
+    super(node);
+  }
+}
+
 export class Schemas extends Element {
-  primitives= {
+  primitives = {
     any: createPrimitiveSchema('any'),
     string: createPrimitiveSchema('string'),
     char: createPrimitiveSchema('char'),
-    
     byte: createPrimitiveSchema('byte'),
     int16: createPrimitiveSchema('int16'),
     int32: createPrimitiveSchema('int32'),
     int64: createPrimitiveSchema('int64'),
-
     boolean: createPrimitiveSchema('boolean'),
-    
     double: createPrimitiveSchema('double'),
     float: createPrimitiveSchema('float'),
     byteArray: createPrimitiveSchema('Array<byte>'),
@@ -41,16 +84,22 @@ export class Schemas extends Element {
     odata: createPrimitiveSchema('odata'),
     file: createPrimitiveSchema('file'),
   }
-  
-  objects = new Array<ObjectSchemaImpl>();
-  combinations = new Array<Combination>();
-  constants = new Array<Constant>();
-  enums = new Array<Enum>();
-  constraints = new Array<Constraint>();
-  defaults = new Array<Default>();
-  aliases = new Array<Alias>();
-  
 
+  constructor(protected apiModel: ApiModel) {
+    super();
+  }
+
+  *getInterfaces(): Iterable<InterfaceModel> {
+    for (const iface of linq.values(this.apiModel.project.getSourceFiles()).selectMany(file => file.getInterfaces())) {
+      yield new InterfaceModel(iface);
+    }
+  }
+
+  *getEnums(): Iterable<EnumModel> {
+    for (const enm of linq.values(this.apiModel.project.getSourceFiles()).selectMany(file => file.getEnums())) {
+      yield new EnumModel(enm);
+    }
+  }
 }
 
 export type Combination = AndSchema | XorSchema | AnyOfSchema;

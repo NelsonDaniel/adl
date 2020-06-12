@@ -1,0 +1,128 @@
+ const someFiles = model.where( each => each.name.startsWith('foo'))
+ const others = somefiles.where( each => each.fileLength > 1000 );
+
+ interface ApiModel extends Files {
+
+  createInterface(iterfaceName, interfaceInitializer? { file? : sourceFile, ... } )
+  createEnum()
+  createTypeAlias()
+  createOperationGroup()
+  createResource();
+
+  createOpResultAlias()...
+
+  remove( Interface|enum|etc )
+
+ }
+
+  
+
+ interface Files {
+   get model() 
+
+   where() -- subselection of the fileset
+
+   get interfaces();
+   get enums();
+   get typeAliases();
+
+   get operationGroups();
+   get resources();
+
+
+aliases: 
+  get operationResults()
+  get contentMaps()
+  get responses()
+  get parameters()
+  get headers()
+
+  get typeAliases();
+ }
+
+ interface ModelInterface {
+   get properties
+   
+   remove( property | ?)
+   createProperty( ... ) 
+
+
+   //+accessors for the interface details itself
+ }
+
+ iterface Property { 
+   // + accessors for the property itself
+ }
+
+ interface ModelEnum {
+   get Values()
+   // + accessors for the enum details itself
+ }
+
+ interface operationGroup {
+   get operations 
+   // + accessors for the details of the group
+ }
+
+ inteface operation  {
+   get parameters
+   get operationResult?
+   // + accessors for the details of the operation
+ }
+
+ interface parameter { 
+   // in?, wirename, modelInterface
+ }
+
+interface operationResult {
+  [statusCode] => contentMap;
+}
+
+interface contentMap { 
+  [contentType] => response
+}
+
+interface response {
+  - body (modelInterface or blob, etc?)
+  - headers
+  - isException
+}
+
+interface resource extends operationGroup {
+ /??
+}
+
+
+
+
+ const all = model.files ;
+
+ for( const iface of model.files.interfaces ) { 
+   
+
+ }
+
+
+ vscode -> fileChangeNotification
+ we take the change and apply it to our copy.
+ <small pause>
+
+ which files changed recently? 
+  rerun rules on changed files.
+
+
+keep track of which files are referencing a file 
+a,b,c -> X
+X changes
+ run rules on X
+ run rules a,b,c 
+
+
+interfaces are used for :
+  - resources
+  - operation groups
+  - models
+  - result
+  - contentMap
+  - response 
+

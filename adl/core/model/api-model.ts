@@ -1,21 +1,110 @@
 import { exists, isFile, mkdir, rmdir, writeFile } from '@azure-tools/async-io';
 import { Dictionary } from '@azure-tools/linq';
 import { isAnonymous, Path, valueOf } from '@azure-tools/sourcemap';
+import { fail } from 'assert';
 import { dirname, join } from 'path';
 import { EnumDeclaration, IndentationText, InterfaceDeclaration, NewLineKind, Node, Project, QuoteKind, SourceFile } from 'ts-morph';
 import { getNode, referenceTo } from '../support/typescript';
 import { Attic } from './element';
 import { SerializationResult } from './format';
+import { Operation } from './http/operation';
 import { HttpProtocol } from './http/protocol';
 import { InternalData } from './internal-data';
 import { Metadata } from './metadata';
 import { Resource } from './resource';
+import { Alias } from './schema/alias';
 import { Schema } from './schema/schema';
-import { Schemas } from './schema/schemas';
+import { EnumModel, InterfaceModel, Schemas } from './schema/schemas';
 import { Folders, Identity } from './types';
 import { VersionInfo } from './version-info';
 
-export class ApiModel {
+export function isResource(declaration: InterfaceDeclaration) {
+  return false;
+}
+
+export function isOperationGroup(declaration: InterfaceDeclaration) {
+  // should only have operations
+  return false;
+
+}
+
+export function isResult(declaration: InterfaceDeclaration) {
+  return false;
+}
+
+export function isContentMap(declaration: InterfaceDeclaration) {
+  return false;
+}
+
+export function isResponse(declaration: InterfaceDeclaration) {
+  return false;
+}
+
+export function isModelInterface(declaration: InterfaceDeclaration) {
+  // model interfaces
+  // - may have constructors (used for versioning)
+  // - may not have methods 
+  if (declaration.getMethods().length > 0) {
+    return false;
+  }
+  // - are not a response, result, operation-group or contentmap
+  return !(isOperationGroup(declaration) || isResource(declaration) || isResult(declaration) || isContentMap(declaration) || isResponse(declaration));
+}
+
+export class Files {
+  readonly api: ApiModel;
+  readonly files: Array<SourceFile>;
+
+  protected constructor(api?: ApiModel, sourceFiles?: Array<SourceFile>) {
+    this.api = api || (this instanceof ApiModel ? this : fail('requires api model in constructor'));
+    this.files = sourceFiles || this.api.files;
+  }
+
+  where(predicate: (file: SourceFile) => boolean): Files {
+    return new Files(this.api, this.files.filter(predicate));
+  }
+
+  get interfaces() {
+    return this.files.map(each => each.getInterfaces().filter(isModelInterface)).flat().map(each => new InterfaceModel(each));
+  }
+
+  get enums() {
+    return this.files.map(each => each.getEnums().flat().map(each => new EnumModel(each)));
+  }
+
+  // get typeAliases() {
+  // };
+
+  get operationGroups() {
+    return this.files.map(each => each.getInterfaces().filter(isOperationGroup)).flat().map(each => new InterfaceModel(each));
+  }
+
+  get resources() {
+    return this.files.map(each => each.getInterfaces().filter(isResource)).flat().map(each => new InterfaceModel(each));
+  }
+
+  get operationResults() {
+    return;
+  }
+
+  get contentMaps() {
+    return;
+  }
+
+  get responses() {
+    return;
+  }
+
+  get parameters() {
+    return;
+  }
+
+  get headers() {
+    return;
+  }
+}
+
+export class ApiModel extends Files {
   #project: Project = new Project({
     useInMemoryFileSystem: true,
     manipulationSettings: {
@@ -32,12 +121,12 @@ export class ApiModel {
     anonymous: this.#project.createDirectory('anonymous'),
     alias: this.#project.createDirectory('aliases'),
     model: this.#project.createDirectory('models'),
-    enum : this.#project.createDirectory('enums'),
+    enum: this.#project.createDirectory('enums'),
     group: this.#project.createDirectory('operations'),
     resource: this.#project.createDirectory('resources'),
   }
-  
-  privateData = new Map<string,any>();
+
+  privateData = new Map<string, any>();
 
   get project() {
     return this.#project;
@@ -45,23 +134,24 @@ export class ApiModel {
   getPrivateData(path: Path): Dictionary<any> {
     const p = path.join('/');
     let v = this.privateData.get(p);
-    if( !v ) {
+    if (!v) {
       this.privateData.set(p, v = {});
     }
     return v;
   }
-  
+
   internalData: Dictionary<InternalData> = {};
-  
+
   metaData = new Metadata('');
 
-  resources = new Array<Resource>();
+  // resources = new Array<Resource>();
 
-  schemas = new Schemas();
+  schemas = new Schemas(this.api);
 
   http: HttpProtocol = new HttpProtocol();
 
   constructor() {
+    super();
     (<any>this.#project).api = this;
   }
 
@@ -119,8 +209,8 @@ export class ApiModel {
     return getNode(path, this.project);
   }
 
-  getFile(identity: Identity, type: keyof Folders ): SourceFile {
-    if (isAnonymous(identity) ) {
+  getFile(identity: Identity, type: keyof Folders): SourceFile {
+    if (isAnonymous(identity)) {
       identity = identity.name;
       type = 'anonymous';
     }
@@ -160,10 +250,10 @@ export class ApiModel {
 
   getNameAndFile(identity: Identity, type: keyof Folders) {
     const name = isAnonymous(identity) ? `${type}_${this.counter++}` : <string><any>valueOf(identity).replace(/[^\w]+/g, '_');
-    const file = isAnonymous(identity) ? this.getFile(name,'anonymous') : this.getFile(name, type);
+    const file = isAnonymous(identity) ? this.getFile(name, 'anonymous') : this.getFile(name, type);
 
     return { name, file };
-  } 
+  }
 
   /**
    * Gets a type reference for a given schema.
@@ -181,7 +271,7 @@ export class ApiModel {
 
     reqdTypes:
     for (const requiredType of schema.requiredTypeDeclarations) {
-      if (requiredType.getSourceFile && requiredType.getName ) {
+      if (requiredType.getSourceFile && requiredType.getName) {
         const typeFile = requiredType.getSourceFile();
         const typeName = requiredType.getName();
 
@@ -198,7 +288,7 @@ export class ApiModel {
               // we've already imported this. Go on to the next one.
               continue reqdTypes;
             }
-            
+
             // we've referenced the file, but not imported the type.
             importDecl.addNamedImport(typeName);
             continue reqdTypes;
@@ -213,8 +303,38 @@ export class ApiModel {
     }
     // imported everything we needed. 
     //return schema.node.getName();
-    
+
     return schema.typeDefinition;
+  }
+
+  createInterface(name: string, initializer: Partial<InterfaceModel>) {
+
+  }
+
+  createEnum(name: string, initializer: Partial<EnumModel>) {
+    const file = this.project.createSourceFile(`${this.api.#folders.enum.getPath()}/${name}.ts`);
+    // const e = file.addEnum(initializer);
+    // there is already a function called create Enum
+  }
+
+  createTypeAlias(name: string, initializer: Partial<Alias>) {
+
+  }
+
+  createOperationGroup() {
+
+  }
+
+  createResource() {
+
+  }
+
+  createOperationResultAlias() {
+
+  }
+
+  remove(element: InterfaceModel | EnumModel | Alias | Operation | Resource) {
+
   }
 }
 
