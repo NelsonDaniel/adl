@@ -72,7 +72,7 @@ export class Files {
   }
 
   get enums() {
-    return this.files.map(each => each.getEnums().flat().map(each => new EnumType(each)));
+    return this.files.map(each => each.getEnums()).flat().map(each => new EnumType(each));
   }
 
   get typeAliases(): Array<AliasType> {
@@ -82,10 +82,6 @@ export class Files {
   get operationGroups() {
     return this.files.map(each => each.getInterfaces().filter(isOperationGroup)).flat().map(each => new OperationGroup(each));
   }
-
-  // get resources() {
-  // return this.files.map(each => each.getInterfaces().filter(isResource)).flat().map(each => new ResourceElement(each));
-  // }
 
   get responseCollections(): Array<ResponseCollection> {
     return [];

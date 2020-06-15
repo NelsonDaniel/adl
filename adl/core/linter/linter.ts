@@ -1,56 +1,49 @@
 import { EventEmitter } from "ee-ts";
-import { Alias } from "../model/alias";
-import { ApiModel } from "../model/api-model";
-import { Operation } from "../model/http/operation";
-import { Parameter } from "../model/http/parameter";
-import { Response } from "../model/http/response";
-import { Enum } from "../model/schema/enum";
-import { ObjectSchema, Property } from "../model/schema/object";
-import { Combination } from "../model/schema/schemas";
+import { ApiModel, Files } from "../model/api-model";
+import { Operation, OperationGroup, ParameterElement, ResponseElement } from "../model/operation";
+import { EnumElement, EnumType, InterfaceType, PropertyElement } from "../model/schema/schemas";
 import { RuleResult } from "./rule";
 
 interface Events {
-  enum(model: ApiModel, e: Enum): Array<RuleResult> | undefined;
-  object(model: ApiModel, object: ObjectSchema): Array<RuleResult> | undefined;
-  combination(model: ApiModel, combination: Combination): Array<RuleResult> | undefined;
-  operation(model: ApiModel, operation: Operation | Alias<Operation>): Array<RuleResult> | undefined;
-  property(model: ApiModel, property: Property): Array<RuleResult> | undefined;
-  parameter(model: ApiModel, parameter: Parameter | Alias<Parameter>): Array<RuleResult> | undefined;
-  response(model: ApiModel, response: Response | Alias<Response>): Array<RuleResult> | undefined;
+  enum(model: ApiModel, e: EnumType): Array<RuleResult> | undefined;
+  object(model: ApiModel, object: InterfaceType): Array<RuleResult> | undefined;
+  operation(model: ApiModel, operation: Operation): Array<RuleResult> | undefined;
+  operationGroup(model: ApiModel, operationGroup: OperationGroup): Array<RuleResult> | undefined;
+  enumValue(model: ApiModel, enumValue: EnumElement): Array<RuleResult> | undefined;
+  property(model: ApiModel, property: PropertyElement): Array<RuleResult> | undefined;
+  parameter(model: ApiModel, parameter: ParameterElement): Array<RuleResult> | undefined;
+  response(model: ApiModel, response: ResponseElement): Array<RuleResult> | undefined;
 }
 
 export class Linter extends EventEmitter<Events> {
-  *run(model: ApiModel) {
-    // visit enums
-    for (const each of model.schemas.enums) {
-      yield this.emit('enum', model, each);
+  *run(files: Files) {
+    const model = files.api;
+
+    for (const group of files.operationGroups) {
+      yield this.emit('operationGroup', model, group);
+      for (const operation of group.operations) {
+        yield this.emit('operation', model, operation);
+        for (const parameter of operation.parameters) {
+          yield this.emit('parameter', model, parameter);
+        }
+      }
     }
 
-    // visit objects
-    for (const object of model.schemas.objects) {
-      yield this.emit('object', model, object);
+    for (const e of files.enums) {
+      yield this.emit('enum', model, e);
+      for (const value of e.values) {
+        yield this.emit('enumValue', model, value);
+      }
+    }
 
-      // visit properties
-      for (const property of object.properties.get()) {
+    for (const object of files.interfaces) {
+      yield this.emit('object', model, object);
+      for (const property of object.getProperties()) {
         yield this.emit('property', model, property);
       }
     }
 
-    // visit combination
-    for (const combination of model.schemas.combinations) {
-      yield this.emit('combination', model, combination);
-    }
-
-    // visit operations
-    for (const operation of model.http.operations) {
-      yield this.emit('operation', model, operation);
-    }
-
-    for (const parameter of model.http.parameters) {
-      yield this.emit('parameter', model, parameter);
-    }
-
-    for (const response of model.http.responses) {
+    for (const response of model.responses) {
       yield this.emit('response', model, response);
     }
   }
