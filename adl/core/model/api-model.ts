@@ -8,7 +8,7 @@ import { getTags, hasTag } from '../support/doc-tag';
 import { getNode, referenceTo } from '../support/typescript';
 import { Attic } from './element';
 import { HttpProtocol } from './http/protocol';
-import { ParameterElement, ResponseCollection, ResponseElement, ResultElement } from './operation';
+import { OperationGroup, ParameterElement, ResponseCollection, ResponseElement, ResultElement } from './operation';
 import { InternalData } from './project/internal-data';
 import { Metadata } from './project/metadata';
 import { Protocol } from './project/protocol';
@@ -173,7 +173,7 @@ export class Files {
    * returns all the enumTypes in the API
    */
   get enumTypes() {
-    return this.files.map(each => each.getEnums().flat().map(each => new EnumType(each)));
+    return this.files.map(each => each.getEnums()).flat().map(each => new EnumType(each));
   }
 
   /**
@@ -186,7 +186,7 @@ export class Files {
   /**
    * Returns all the operation groups for all protocols
    */
-  get operationGroups() {
+  get operationGroups(): Array<OperationGroup> {
     return linq.values(this.protocols).selectMany(protocol => protocol.operationGroups).toArray();
   }
 

@@ -35,7 +35,7 @@ export function createEnum(api: ApiModel, identity: Identity, values: Array<Enum
       };
     }
 
-    
+
     // create the definition all at once.
     const type = file.addEnum({
       name,
@@ -90,4 +90,6 @@ export class EnumType extends NamedElement<EnumDeclaration> implements TypeRefer
   createValue() {
     // shh
   }
+
+
 }
