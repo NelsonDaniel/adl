@@ -1,5 +1,5 @@
 import { exists, isFile, mkdir, rmdir, writeFile } from '@azure-tools/async-io';
-import { Dictionary, keys } from '@azure-tools/linq';
+import { Dictionary, items, keys, linq } from '@azure-tools/linq';
 import { isAnonymous, Path, valueOf } from '@azure-tools/sourcemap';
 import { fail } from 'assert';
 import { dirname, join } from 'path';
@@ -22,22 +22,41 @@ import { VersionInfo } from './version-info';
 
 export const KnownInterfaceTypes = {
   model: isModelInterface,
-  response: isResponse,
-  result: isResult,
-  operationgroup: isOperationGroup,
-  resource: isResource,
+  response: isResponseInterfaceType,
+  result: isResultInterfaceType,
+  operationgroup: isOperationGroupInterfaceType,
+  resource: isResourceInterfaceType,
 };
 
 export const KnownAliasTypes = {
-  // model: isModelTypeAlias,
-  // response: isResponseTypeAlias,
-  // result: isResultTypeAlias,
-  // resource: isResourceTypeAlias,
+  model: isModelTypeAlias,
+  response: isResponseTypeAlias,
+  result: isResultTypeAlias,
+  resource: isResourceTypeAlias,
 };
 
 
 export function identifyInterface(declaration: InterfaceDeclaration) {
   // returns a string that identifies that an interface is what it says it is.
+  const tagType = [...getTags(declaration, ...keys(KnownInterfaceTypes))];
+  switch (tagType.length) {
+    case 1:
+      // found a single
+      return tagType[0].getTagName();
+    case 0:
+      // no tag types found
+      // we're going to have to guess
+      for (const [type, check] of items(KnownInterfaceTypes)) {
+        if (check(declaration)) {
+          return type;
+        }
+      }
+  }
+  // it has more than one. That's not ok.
+  throw Error(`Inteface Decalaration has muliple type tags: ${declaration.getName()}: ${tagType.map(each => each.getTagName()).join(',')}`);
+}
+
+export function identifyTypeAlias(declaration: TypeAliasDeclaration) {
   const tagType = [...getTags(declaration, ...keys(KnownAliasTypes))];
   switch (tagType.length) {
     case 1:
@@ -46,38 +65,52 @@ export function identifyInterface(declaration: InterfaceDeclaration) {
     case 0:
       // no tag types found
       // we're going to have to guess
-      throw new Error('Not Implemented');
+      for (const [type, check] of items(KnownAliasTypes)) {
+        if (check(declaration)) {
+          return type;
+        }
+      }
   }
   // it has more than one. That's not ok.
   throw Error(`Inteface Decalaration has muliple type tags: ${declaration.getName()}: ${tagType.map(each => each.getTagName()).join(',')}`);
 }
 
-export function identifyTypeAlias(declaration: TypeAliasDeclaration) {
-  //todo
-}
+export function isModelTypeAlias(declaration: TypeAliasDeclaration) {
+  if (hasTag(declaration, 'model')) {
+    return true;
+  }
 
-export function isResource(declaration: InterfaceDeclaration) {
   return false;
 }
 
-export function isOperationGroup(declaration: InterfaceDeclaration) {
+export function isResponseTypeAlias(declaration: TypeAliasDeclaration) {
+  return false;
+}
+
+export function isResultTypeAlias(declaration: TypeAliasDeclaration) {
+  return false;
+}
+
+export function isResourceTypeAlias(declaration: TypeAliasDeclaration) {
+  return false;
+}
+
+
+export function isResourceInterfaceType(declaration: InterfaceDeclaration) {
+  return false;
+}
+
+export function isOperationGroupInterfaceType(declaration: InterfaceDeclaration) {
   // should only have operations
   return false;
 }
 
-export function isResult(declaration: InterfaceDeclaration) {
+export function isResultInterfaceType(declaration: InterfaceDeclaration) {
   return false;
 }
 
-export function isContentMap(declaration: InterfaceDeclaration) {
-  return false;
-}
-
-export function isResponse(declaration: InterfaceDeclaration) {
-  return false;
-}
-
-export function isAliasType(declaration: TypeAliasDeclaration) {
+export function isResponseInterfaceType
+  (declaration: InterfaceDeclaration) {
   return false;
 }
 
@@ -96,8 +129,7 @@ export function isModelInterface(declaration: InterfaceDeclaration) {
     return false;
   }
 
-  // - are not a response, result, operation-group or contentmap
-  return !(isOperationGroup(declaration) || isResource(declaration) || isResult(declaration) || isContentMap(declaration) || isResponse(declaration));
+  return true;
 }
 /*
 type Queryable<T extends string,TResult >  = {
@@ -130,45 +162,68 @@ export class Files {
     return new Files(this.api, this.files.filter(predicate));
   }
 
+  /**
+   * returns all the modelTypes in the API
+   */
   get modelTypes() {
     return this.files.map(each => each.getInterfaces().filter(isModelInterface)).flat().map(each => new ModelType(each));
   }
 
+  /**
+   * returns all the enumTypes in the API
+   */
   get enumTypes() {
     return this.files.map(each => each.getEnums().flat().map(each => new EnumType(each)));
   }
 
+  /**
+   * returns all the aliasTypes in the API
+   */
   get aliasTypes(): Array<AliasType> {
-    return this.files.map(each => each.getTypeAliases().filter(isAliasType)).flat().map(each => new AliasType(each));
+    return this.files.map(each => each.getTypeAliases().filter(isModelTypeAlias)).flat().map(each => new AliasType(each));
   }
 
+  /**
+   * Returns all the operation groups for all protocols
+   */
   get operationGroups() {
-    return this.protocols.map(protocol => protocol.operationGroups).flat();
-    // return this.files.map(each => each.getInterfaces().filter(isOperationGroup)).flat().map(each => new OperationGroup(each));
+    return linq.values(this.protocols).selectMany(protocol => protocol.operationGroups).toArray();
   }
 
-  get protocols(): Array<Protocol> {
-    return [];
+  /**
+   * returns all the protocols for this API 
+   */
+  get protocols(): Dictionary<Protocol> {
+    return linq.items(this.api.protocols).toDictionary(([key]) => key, ([, protocol]) => protocol.from(this.files));
   }
-  // get resources() {
-  // return this.files.map(each => each.getInterfaces().filter(isResource)).flat().map(each => new ResourceElement(each));
-  // }
 
+  /**
+   * Gets all the globally declared response collections across all the protocols
+   */
   get responseCollections(): Array<Declaration<ResponseCollection>> {
     // this.files.map( each => each.getTypeAliases()).filter(isResponseCollection)).flat().map(each => new ResponseCollectionAlias(each))
-    return this.protocols.map(protocol => protocol.responseCollections).flat();
+    return linq.values(this.protocols).selectMany(protocol => protocol.responseCollections).toArray();
   }
 
+  /**
+   * Gets all the globally declared responses across all the protocols
+   */
   get responses(): Array<Declaration<ResponseElement>> {
-    return this.protocols.map(protocol => protocol.responses).flat();
+    return linq.values(this.protocols).selectMany(protocol => protocol.responses).toArray();
   }
 
+  /**
+   * Gets all the globally declared results across all the protocols
+   */
   get results(): Array<Declaration<ResultElement>> {
-    return this.protocols.map(protocol => protocol.results).flat();
+    return linq.values(this.protocols).selectMany(protocol => protocol.results).toArray();
   }
 
+  /**
+   * Gets all the globally parameters across all the protocols
+   */
   get parameters(): Array<Declaration<ParameterElement>> {
-    return this.protocols.map(protocol => protocol.parameters).flat();
+    return linq.values(this.protocols).selectMany(protocol => protocol.parameters).toArray();
   }
 }
 
@@ -182,6 +237,8 @@ export class ApiModel extends Files {
       quoteKind: QuoteKind.Single,
     },
   });
+
+  protocols = new Dictionary<Protocol>();
 
   counter = 0;
 
@@ -214,11 +271,10 @@ export class ApiModel extends Files {
 
   primitives = Primitives;
 
-  http: HttpProtocol = new HttpProtocol();
-
   constructor() {
     super();
     (<any>this.#project).api = this;
+    this.protocols.http = new HttpProtocol(this);
   }
 
   versionInfo = new Array<VersionInfo>();

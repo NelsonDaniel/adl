@@ -5,7 +5,7 @@ import { OperationGroup, ParameterElement, ResponseCollection, ResponseElement, 
 import { Declaration } from '../typescript/reference';
 
 
-export class Protocol {
+export abstract class Protocol {
   readonly api: ApiModel;
   readonly files: Array<SourceFile>;
 
@@ -23,29 +23,17 @@ export class Protocol {
     return (Object.getOwnPropertyNames(this).indexOf(propertyName) > -1 ? (<any>this)[propertyName] : []);
   }
 
-  where(predicate: (file: SourceFile) => boolean): Protocol {
-    return new Protocol(this.api, this.files.filter(predicate));
-  }
+  abstract from(sourceFiles: Array<SourceFile>): Protocol;
 
-  get operationGroups(): Array<OperationGroup> {
-    // return this.files.map(each => each.getInterfaces().filter(isOperationGroup)).flat().map(each => new OperationGroup(each));
-    return [];
-  }
+  abstract where(predicate: (file: SourceFile) => boolean): Protocol;
 
-  get responseCollections(): Array<Declaration<ResponseCollection>> {
-    // this.files.map( each => each.getTypeAliases()).filter(isResponseCollection)).flat().map(each => new ResponseCollectionAlias(each))
-    return [];
-  }
+  abstract get operationGroups(): Array<OperationGroup>;
 
-  get responses(): Array<Declaration<ResponseElement>> {
-    return [];
-  }
+  abstract get responseCollections(): Array<Declaration<ResponseCollection>>;
 
-  get results(): Array<Declaration<ResultElement>> {
-    return [];
-  }
+  abstract get responses(): Array<Declaration<ResponseElement>>;
 
-  get parameters(): Array<Declaration<ParameterElement>> {
-    return [];
-  }
+  abstract get results(): Array<Declaration<ResultElement>>;
+
+  abstract get parameters(): Array<Declaration<ParameterElement>>;
 }

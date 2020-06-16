@@ -1,4 +1,6 @@
+import { SourceFile } from 'ts-morph';
 import { Alias } from '../alias';
+import { ApiModel } from '../api-model';
 import { Element } from '../element';
 import { Protocol } from '../project/protocol';
 import { Declaration } from '../typescript/reference';
@@ -205,7 +207,11 @@ export class ConnectionVariable extends Element {
 }
 
 export class HttpProtocol extends Protocol {
-  
+  /** @internal */ 
+  constructor(api: ApiModel, sourceFiles?: Array<SourceFile> ) {
+    super(api, sourceFiles);
+  }
+
   authentications = new Array<Authentication|Alias<Authentication>>();
 
   /**
@@ -217,6 +223,14 @@ export class HttpProtocol extends Protocol {
   /** Global connections, which may be overridden by individual operations. */
   connections = new Array<Connection | Alias<Connection>>();
 
+  where(predicate: (file: SourceFile) => boolean): HttpProtocol {
+    return new HttpProtocol(this.api, this.files.filter(predicate));
+  }
+
+  from(sourceFiles: Array<SourceFile>): HttpProtocol {
+    return new HttpProtocol(this.api, sourceFiles);
+  }
+  
   get operationGroups(): Array<OperationGroup> {
     // return this.files.map(each => each.getInterfaces().filter(isOperationGroup)).flat().map(each => new OperationGroup(each));
     return [];
@@ -242,4 +256,8 @@ export class HttpProtocol extends Protocol {
   get headers(): Array<Declaration<HeaderElement>> {
     return [];
   }
+
+  // get resources() {
+  // ??
+  // }
 }
