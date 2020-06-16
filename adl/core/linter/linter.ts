@@ -1,6 +1,6 @@
 import { EventEmitter } from "ee-ts";
 import { ApiModel, Files } from "../model/api-model";
-import { Operation, OperationGroup, ParameterElement, ResponseElement } from "../model/operation";
+import { Operation, OperationGroup, ParameterElement, Reference, ResponseElement } from "../model/operation";
 import { EnumElement, EnumType, InterfaceType, PropertyElement } from "../model/schema/schemas";
 import { RuleResult } from "./rule";
 
@@ -12,13 +12,12 @@ interface Events {
   enumValue(model: ApiModel, enumValue: EnumElement): Array<RuleResult> | undefined;
   property(model: ApiModel, property: PropertyElement): Array<RuleResult> | undefined;
   parameter(model: ApiModel, parameter: ParameterElement): Array<RuleResult> | undefined;
-  response(model: ApiModel, response: ResponseElement): Array<RuleResult> | undefined;
+  response(model: ApiModel, response: ResponseElement | Reference<ResponseElement>): Array<RuleResult> | undefined;
 }
 
 export class Linter extends EventEmitter<Events> {
   *run(files: Files) {
     const model = files.api;
-
     for (const group of files.operationGroups) {
       yield this.emit('operationGroup', model, group);
       for (const operation of group.operations) {
@@ -43,8 +42,10 @@ export class Linter extends EventEmitter<Events> {
       }
     }
 
-    for (const response of model.responses) {
-      yield this.emit('response', model, response);
+    for (const responseCollection of model.responseCollections) {
+      for (const response of responseCollection.responses) {
+        yield this.emit('response', model, response);
+      }
     }
   }
 }

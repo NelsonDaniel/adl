@@ -67,11 +67,11 @@ export class Files {
     return new Files(this.api, this.files.filter(predicate));
   }
 
-  get interfaces() {
+  get interfaces(): Array<InterfaceType> {
     return this.files.map(each => each.getInterfaces().filter(isModelInterface)).flat().map(each => new InterfaceType(each));
   }
 
-  get enums() {
+  get enums(): Array<EnumType> {
     return this.files.map(each => each.getEnums()).flat().map(each => new EnumType(each));
   }
 
@@ -79,7 +79,7 @@ export class Files {
     return this.files.map(each => each.getTypeAliases().filter(isAliasType)).flat().map(each => new AliasType(each));
   }
 
-  get operationGroups() {
+  get operationGroups(): OperationGroup[] {
     return this.files.map(each => each.getInterfaces().filter(isOperationGroup)).flat().map(each => new OperationGroup(each));
   }
 
