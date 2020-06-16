@@ -297,7 +297,7 @@ export class Context<TSourceModel extends OAIModel> {
             // if this is a direct link to the target, we return it as-is
             // otherwise it's got a name, so we're creating an alias to the actual target 
 
-            yield options?.isAnonymous ? target : new Alias(action.name, name, target);
+            yield options?.isAnonymous ? target : new Alias(action.name, <string>name, target);
           }
           return;
         }
@@ -306,7 +306,7 @@ export class Context<TSourceModel extends OAIModel> {
         for await (const target of this.visitor.processRef2(file, path, action)) {
           // if this is a direct link to the target, we return it as-is
           // otherwise it's got a name, so we're creating an alias to the actual target 
-          yield options?.isAnonymous ? target : new Alias(action.name, name, target);
+          yield options?.isAnonymous ? target : new Alias(action.name, <string>name, target);
         }
         return;
       }

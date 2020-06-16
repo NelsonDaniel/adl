@@ -1,5 +1,5 @@
+import { Element } from '../element';
 import { Contact } from './contact';
-import { Element } from './element';
 import { License } from './license';
 import { Reference } from './reference';
 

@@ -2,7 +2,7 @@ import { Node } from 'ts-morph';
 import { setTag } from '../../support/doc-tag';
 import { getAPI, getPath } from '../../support/typescript';
 import { Attic, Initializer } from '../element';
-import { InternalData } from '../internal-data';
+import { InternalData } from '../project/internal-data';
 import { VersionInfo } from '../version-info';
 
 export class TSElement<TNode extends Node> extends Initializer {

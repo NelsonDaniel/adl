@@ -5,9 +5,11 @@ export interface Service {
      * @since 2.3
      * @http GET /labs/2/openapi.json
      * @tag General
-     * @return 200 - The request was successful
+     * @return 200|application/json - The request was successful
      */
-    getOpenApiSpec(): Http.Response<'200', [object, Object], 'application/json'>;
+    getOpenApiSpec(): [(code: 200, mediaType: "application/json") => {
+        body: string;
+    }];
     /**
      * Returns hydrated Tweet objects
      * @description Returns a variety of information about the Tweet specified by the requested ID
@@ -21,11 +23,17 @@ export interface Service {
      * @param media_fields - A comma separated list of Media fields to display.
      * @param place_fields - A comma separated list of Place fields to display.
      * @param poll_fields - A comma separated list of Poll fields to display.
-     * @return 200 - The request was successful
-     * @return HttpErrorResponse - The request has failed.
-     * @return HttpErrorResponse - The request has failed.
+     * @return 200|application/json - The request was successful
+     * @return HttpErrorResponse|application/json - The request has failed.
+     * @return HttpErrorResponse|application/problem+json - The request has failed.
      */
-    findTweetsById(ids: Http.Query<Array<TweetID> & MaximumElements<100> & MinimumElements<1>>, expansions?: Http.Query<Array<"author_id" | "referenced_tweets.id" | "in_reply_to_user_id" | "geo.place_id" | "attachments.media_keys" | "attachments.poll_ids" | "entities.mentions.username" | "referenced_tweets.id.author_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Http.Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Http.Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Http.Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Http.Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Http.Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/problem+json'>;
+    findTweetsById(ids: Query<Array<TweetID> & MaximumElements<100> & MinimumElements<1>>, expansions?: Query<Array<"author_id" | "referenced_tweets.id" | "in_reply_to_user_id" | "geo.place_id" | "attachments.media_keys" | "attachments.poll_ids" | "entities.mentions.username" | "referenced_tweets.id.author_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): [(code: 200, mediaType: "application/json") => {
+        body: TweetLookupResponse;
+    }, (code: "HttpErrorResponse", mediaType: "application/json") => {
+        body: Error;
+    }, (code: "HttpErrorResponse", mediaType: "application/problem+json") => {
+        body: Problem;
+    }];
     /**
      * Returns Tweets from the last 7 days that match a search query.
      * @description Returns Tweets from the last 7 days that match a search query.
@@ -46,11 +54,17 @@ export interface Service {
      * @param media_fields - A comma separated list of Media fields to display.
      * @param place_fields - A comma separated list of Place fields to display.
      * @param poll_fields - A comma separated list of Poll fields to display.
-     * @return 200 - Tweets recent search response
-     * @return HttpErrorResponse - The request has failed.
-     * @return HttpErrorResponse - The request has failed.
+     * @return 200|application/json - Tweets recent search response
+     * @return HttpErrorResponse|application/json - The request has failed.
+     * @return HttpErrorResponse|application/problem+json - The request has failed.
      */
-    tweetsRecentSearch(query: Http.Query<string & MaxLength<512> & MinLength<1>>, start_time?: Http.Query<dateTime>, end_time?: Http.Query<dateTime>, since_id?: Http.Query<TweetID>, until_id?: Http.Query<TweetID>, max_results?: Http.Query<int32 /* todo: add defaultValue '10' */ & Minimum<10> & Maximum<100>>, next_token?: Http.Query<string>, expansions?: Http.Query<Array<"author_id" | "referenced_tweets.id" | "in_reply_to_user_id" | "geo.place_id" | "attachments.media_keys" | "attachments.poll_ids" | "entities.mentions.username" | "referenced_tweets.id.author_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Http.Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Http.Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Http.Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Http.Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Http.Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/problem+json'>;
+    tweetsRecentSearch(query: Query<string & MaxLength<512> & MinLength<1>>, start_time?: Query<dateTime>, end_time?: Query<dateTime>, since_id?: Query<TweetID>, until_id?: Query<TweetID>, max_results?: Query<int32 /* todo: add defaultValue '10' */ & Minimum<10> & Maximum<100>>, next_token?: Query<string>, expansions?: Query<Array<"author_id" | "referenced_tweets.id" | "in_reply_to_user_id" | "geo.place_id" | "attachments.media_keys" | "attachments.poll_ids" | "entities.mentions.username" | "referenced_tweets.id.author_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): [(code: 200, mediaType: "application/json") => {
+        body: TweetSearchResponse;
+    }, (code: "HttpErrorResponse", mediaType: "application/json") => {
+        body: Error;
+    }, (code: "HttpErrorResponse", mediaType: "application/problem+json") => {
+        body: Problem;
+    }];
     /**
      * Returns hydrated Tweet objects
      * @description Returns a variety of information about the Tweet specified by the requested ID
@@ -64,11 +78,17 @@ export interface Service {
      * @param media_fields - A comma separated list of Media fields to display.
      * @param place_fields - A comma separated list of Place fields to display.
      * @param poll_fields - A comma separated list of Poll fields to display.
-     * @return 200 - The request was successful
-     * @return HttpErrorResponse - The request has failed.
-     * @return HttpErrorResponse - The request has failed.
+     * @return 200|application/json - The request was successful
+     * @return HttpErrorResponse|application/json - The request has failed.
+     * @return HttpErrorResponse|application/problem+json - The request has failed.
      */
-    findTweetById(id: Http.Path<TweetID>, expansions?: Http.Query<Array<"author_id" | "referenced_tweets.id" | "in_reply_to_user_id" | "geo.place_id" | "attachments.media_keys" | "attachments.poll_ids" | "entities.mentions.username" | "referenced_tweets.id.author_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Http.Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Http.Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Http.Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Http.Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Http.Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/problem+json'>;
+    findTweetById(id: TweetID, expansions?: Query<Array<"author_id" | "referenced_tweets.id" | "in_reply_to_user_id" | "geo.place_id" | "attachments.media_keys" | "attachments.poll_ids" | "entities.mentions.username" | "referenced_tweets.id.author_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): [(code: 200, mediaType: "application/json") => {
+        body: SingleTweetLookupResponse;
+    }, (code: "HttpErrorResponse", mediaType: "application/json") => {
+        body: Error;
+    }, (code: "HttpErrorResponse", mediaType: "application/problem+json") => {
+        body: Problem;
+    }];
     /**
      * Hides a reply to an owned conversation.
      * @description Tweet ID in the path is that of the reply to hide.
@@ -76,17 +96,35 @@ export interface Service {
      * @http PUT /labs/2/tweets/{id}/hidden
      * @tag Tweets
      * @param id - The ID of the reply that you want to hide.
-     * @return 200 - A successful response. The reply has been hidden.
-     * @return HttpErrorResponse - The request has failed.
-     * @return HttpErrorResponse - The request has failed.
+     * @return 200|application/json - A successful response. The reply has been hidden.
+     * @return HttpErrorResponse|application/json - The request has failed.
+     * @return HttpErrorResponse|application/problem+json - The request has failed.
      */
-    hideReplyById(id: Http.Path<TweetID>, body?: Http.Body<{
+    hideReplyById(id: TweetID, body?: Body<{
         /**
          *
          * @since 2.3
          */
         hidden?: true;
-    }, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/problem+json'>;
+    }, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: {
+            /**
+             *
+             * @since 2.3
+             */
+            data?: {
+                /**
+                 *
+                 * @since 2.3
+                 */
+                hidden?: true;
+            };
+        };
+    }, (code: "HttpErrorResponse", mediaType: "application/json") => {
+        body: Error;
+    }, (code: "HttpErrorResponse", mediaType: "application/problem+json") => {
+        body: Problem;
+    }];
     /**
      * Return details for the specified users
      * @description This endpoint returns information about users. Specify users by their ID.
@@ -100,11 +138,17 @@ export interface Service {
      * @param media_fields - A comma separated list of Media fields to display.
      * @param place_fields - A comma separated list of Place fields to display.
      * @param poll_fields - A comma separated list of Poll fields to display.
-     * @return 200 - The request was successful
-     * @return HttpErrorResponse - The request has failed.
-     * @return HttpErrorResponse - The request has failed.
+     * @return 200|application/json - The request was successful
+     * @return HttpErrorResponse|application/json - The request has failed.
+     * @return HttpErrorResponse|application/problem+json - The request has failed.
      */
-    findUsersById(ids: Http.Query<Array<UserID> & MaximumElements<100> & MinimumElements<1>>, expansions?: Http.Query<Array<"pinned_tweet_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Http.Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Http.Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Http.Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Http.Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Http.Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/problem+json'>;
+    findUsersById(ids: Query<Array<UserID> & MaximumElements<100> & MinimumElements<1>>, expansions?: Query<Array<"pinned_tweet_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): [(code: 200, mediaType: "application/json") => {
+        body: UserLookupResponse;
+    }, (code: "HttpErrorResponse", mediaType: "application/json") => {
+        body: Error;
+    }, (code: "HttpErrorResponse", mediaType: "application/problem+json") => {
+        body: Problem;
+    }];
     /**
      * Return details for the specified users
      * @description This endpoint returns information about users. Specify users by their username.
@@ -118,11 +162,17 @@ export interface Service {
      * @param media_fields - A comma separated list of Media fields to display.
      * @param place_fields - A comma separated list of Place fields to display.
      * @param poll_fields - A comma separated list of Poll fields to display.
-     * @return 200 - The request was successful
-     * @return HttpErrorResponse - The request has failed.
-     * @return HttpErrorResponse - The request has failed.
+     * @return 200|application/json - The request was successful
+     * @return HttpErrorResponse|application/json - The request has failed.
+     * @return HttpErrorResponse|application/problem+json - The request has failed.
      */
-    findUsersByUsername(usernames: Http.Query<Array<UserName> & MaximumElements<100> & MinimumElements<1>>, expansions?: Http.Query<Array<"pinned_tweet_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Http.Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Http.Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Http.Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Http.Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Http.Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/problem+json'>;
+    findUsersByUsername(usernames: Query<Array<UserName> & MaximumElements<100> & MinimumElements<1>>, expansions?: Query<Array<"pinned_tweet_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): [(code: 200, mediaType: "application/json") => {
+        body: UserLookupResponse;
+    }, (code: "HttpErrorResponse", mediaType: "application/json") => {
+        body: Error;
+    }, (code: "HttpErrorResponse", mediaType: "application/problem+json") => {
+        body: Problem;
+    }];
     /**
      * Return details for the specified users
      * @description This endpoint returns information about a user. Specify user by username.
@@ -136,11 +186,17 @@ export interface Service {
      * @param media_fields - A comma separated list of Media fields to display.
      * @param place_fields - A comma separated list of Place fields to display.
      * @param poll_fields - A comma separated list of Poll fields to display.
-     * @return 200 - The request was successful
-     * @return HttpErrorResponse - The request has failed.
-     * @return HttpErrorResponse - The request has failed.
+     * @return 200|application/json - The request was successful
+     * @return HttpErrorResponse|application/json - The request has failed.
+     * @return HttpErrorResponse|application/problem+json - The request has failed.
      */
-    findUserByUsername(username: Http.Path<UserName>, expansions?: Http.Query<Array<"pinned_tweet_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Http.Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Http.Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Http.Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Http.Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Http.Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/problem+json'>;
+    findUserByUsername(username: UserName, expansions?: Query<Array<"pinned_tweet_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): [(code: 200, mediaType: "application/json") => {
+        body: SingleUserLookupResponse;
+    }, (code: "HttpErrorResponse", mediaType: "application/json") => {
+        body: Error;
+    }, (code: "HttpErrorResponse", mediaType: "application/problem+json") => {
+        body: Problem;
+    }];
     /**
      * Return details for the specified users
      * @description This endpoint returns information about a user. Specify user by ID.
@@ -154,9 +210,15 @@ export interface Service {
      * @param media_fields - A comma separated list of Media fields to display.
      * @param place_fields - A comma separated list of Place fields to display.
      * @param poll_fields - A comma separated list of Poll fields to display.
-     * @return 200 - The request was successful
-     * @return HttpErrorResponse - The request has failed.
-     * @return HttpErrorResponse - The request has failed.
+     * @return 200|application/json - The request was successful
+     * @return HttpErrorResponse|application/json - The request has failed.
+     * @return HttpErrorResponse|application/problem+json - The request has failed.
      */
-    findUserById(id: Http.Path<UserID>, expansions?: Http.Query<Array<"pinned_tweet_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Http.Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Http.Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Http.Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Http.Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Http.Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/json'> | Http.Response<'HttpErrorResponse', [object, Object], 'application/problem+json'>;
+    findUserById(id: UserID, expansions?: Query<Array<"pinned_tweet_id"> & MinimumElements<1> & UniqueElements>, tweet_fields?: Query<Array<"id" | "created_at" | "text" | "author_id" | "in_reply_to_user_id" | "referenced_tweets" | "attachments" | "withheld" | "geo" | "entities" | "public_metrics" | "possibly_sensitive" | "source" | "lang" | "context_annotations"> & MinimumElements<1> & UniqueElements, 'tweet.fields'>, user_fields?: Query<Array<"id" | "created_at" | "name" | "username" | "protected" | "verified" | "withheld" | "profile_image_url" | "location" | "url" | "description" | "entities" | "pinned_tweet_id" | "public_metrics"> & MinimumElements<1> & UniqueElements, 'user.fields'>, media_fields?: Query<Array<"media_key" | "duration_ms" | "height" | "preview_image_url" | "type" | "url" | "width"> & MinimumElements<1> & UniqueElements, 'media.fields'>, place_fields?: Query<Array<"id" | "name" | "country_code" | "place_type" | "full_name" | "country" | "contained_within" | "geo"> & MinimumElements<1> & UniqueElements, 'place.fields'>, poll_fields?: Query<Array<"id" | "options" | "voting_status" | "end_datetime" | "duration_minutes"> & MinimumElements<1> & UniqueElements, 'poll.fields'>): [(code: 200, mediaType: "application/json") => {
+        body: SingleUserLookupResponse;
+    }, (code: "HttpErrorResponse", mediaType: "application/json") => {
+        body: Error;
+    }, (code: "HttpErrorResponse", mediaType: "application/problem+json") => {
+        body: Problem;
+    }];
 }

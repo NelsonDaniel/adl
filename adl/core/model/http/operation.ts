@@ -1,15 +1,18 @@
 import { isAnonymous } from '@azure-tools/sourcemap';
-import { JSDoc, JSDocTagStructure, MethodSignatureStructure, Node, ParameterDeclarationStructure, StructureKind } from 'ts-morph';
-import { normalizeIdentifier, normalizeName } from '../../support/codegen';
+import { JSDoc, JSDocTagStructure, MethodSignatureStructure, Node, ParameterDeclarationStructure, StructureKind, ts } from 'ts-morph';
+import { normalizeIdentifier, normalizeName, printCompilerNode } from '../../support/codegen';
 import { createDocs, getTagValue, setTag } from '../../support/doc-tag';
 import { Alias } from '../alias';
 import { ApiModel } from '../api-model';
 import * as base from '../operation';
-import { Reference } from '../reference';
-import { VersionedEntity } from '../schema/object';
+import { Reference } from '../project/reference';
+import { Identity } from '../types';
+import { VersionedElement } from '../typescript/versioned-element';
+import { Header } from './header';
 import { Parameter, ParameterElement, ParameterType } from './parameter';
 import { Request } from './request';
 import { Response, ResponseElement } from './response';
+
 
 export enum Method {
   Get = 'GET',
@@ -30,6 +33,25 @@ export interface Path {
 export class TagCollection {
   constructor(private node: Node | Array<JSDoc> | JSDoc) {
   }
+}
+
+export class OperationGroup extends base.OperationGroup {
+  
+  get operations(): Array<Operation> {
+    throw new Error('Method not implemented.');
+  }
+
+  /**
+   * Creates a new HttpOperation in this operation group.
+   */
+  createOperation() {
+
+  }
+  
+}
+
+export class ResponseCollection extends base.ResponseCollection {
+
 }
 
 export class Operation extends base.Operation {
@@ -68,7 +90,7 @@ export class Operation extends base.Operation {
   // readonly connections: Collection<Connection>;
 }
 
-export interface OperationInitializer extends VersionedEntity {
+export interface OperationInitializer extends VersionedElement {
   description: string;
   summary: string;
   tags: Array<string>;
@@ -208,51 +230,67 @@ function createRequestStructures(requests?: Array<Request | Alias<Request>>) {
   return { parameters: parameterStructures, tags: tagStructures };
 }
 
-function createResponseStructures(responses?: Array<Response | Alias<Response>>, currentReturnType = '') {
-  let returnType = currentReturnType;
+function createResponseStructures(
+  responses?: Array<Response | Alias<Response>>,
+  currentReturnType: ts.TypeNode = ts.createTupleTypeNode([])) {
+
+  if (!ts.isTupleTypeNode(currentReturnType)) {
+    throw new Error('Operation has invalid return type');
+  }
+
+  const reponseTypes = new Array<ts.FunctionTypeNode>();
   const tagStructures = new Array<JSDocTagStructure>();
 
   for (const each of responses ?? []) {
-    if (returnType != '') {
-      returnType += ' | ';
-    }
     const response = each instanceof Alias ? each.target : each;
     const type = getResponseType(response);
+    reponseTypes.push(type);
 
     if (response.description) {
-      const doc = `${response.name} - ${response.description}`;
+      const doc = `${response.name}|${response.mediaType} - ${response.description}`;
       tagStructures.push({
         kind: StructureKind.JSDocTag,
         tagName: 'return',
         text: doc,
       });
     }
-
-    returnType += type;
   }
 
-  return { type: returnType, tags: tagStructures };
+  const returnType = ts.createTupleTypeNode([
+    ...currentReturnType.elementTypes, 
+    ...reponseTypes
+  ]);
+
+  return { 
+    type: printCompilerNode(returnType),
+    tags: tagStructures
+  };
 }
 
 function getParameterType(parameter: Parameter, chosenName: string) {
   const innerType = parameter.typeRef.declaration;
   const outerType = getOuterParameterType(parameter.type);
   const nameArg = parameter.name == chosenName ? '' : `, '${parameter.name}'`;
+
+  if (outerType == 'Path' && nameArg == '') {
+    return innerType;
+  }
+
   return `${outerType}<${innerType}${nameArg}>`;
 }
 
 function getOuterParameterType(parameterType: ParameterType) {
   switch (parameterType) {
     case ParameterType.Cookie:
-      return 'Http.Cookie';
+      return 'Cookie';
     case ParameterType.FormData:
-      return 'Http.FormData';
+      return 'FormData';
     case ParameterType.Header:
-      return 'Http.Header';
+      return 'Header';
     case ParameterType.Path:
-      return 'Http.Path';
+      return 'Path';
     case ParameterType.Query:
-      return 'Http.Query';
+      return 'Query';
     default:
       throw new Error(`Invalid parameter type '${parameterType}'`);
   }
@@ -260,24 +298,94 @@ function getOuterParameterType(parameterType: ParameterType) {
 
 function getRequestType(request: Request, chosenName: string) {
   const innerType = request.typeRef.declaration;
-  const outerType = 'Http.Body';
+  const outerType = 'Body';
   const mediaTypeArg = `, '${request.mediaType}'`;
   const nameArg = (!request.name || request.name == chosenName) ? '' : `, '${request.name}'`;
   return `${outerType}<${innerType}${mediaTypeArg}${nameArg}>`;
 }
 
-function getResponseType(response: Response) {
-  const outerType = response.isException ? 'Http.Exception' : 'Http.Response';
-  const statusArg = getStatusArg(response);
-  const schema = response.typeref;
-  const schemaArg = schema ? `, ${schema}` : response.mediaType ? ', none' : '';
-  const mediaTypeArg = response.mediaType ? `, '${response.mediaType}'` : '';
-  return `${outerType}<${statusArg}${schemaArg}${mediaTypeArg}>`;
+function getResponseCodeParameter(code: Identity) {
+  if (isAnonymous(code) || code == 'default') {
+    return undefined;
+  }
+
+  const literal = /^\d+$/.test(code) ? ts.createNumericLiteral(code) : ts.createStringLiteral(code);
+  const literalType = ts.createLiteralTypeNode(literal);
+  return ts.createParameter(undefined, undefined, undefined, 'code', undefined, literalType);
 }
 
-function getStatusArg(response: Response) {
-  const status = isAnonymous(response.name) ? 'default' : response.name;
-  return status == 'default' ? 'Http.Default' : `'${status}'`;
+function getMediaTypeParameter(mediaType: string) {
+  if (!mediaType) {
+    return undefined;
+  }
+
+  const literal = ts.createStringLiteral(mediaType);
+  const literalType = ts.createLiteralTypeNode(literal);
+  return ts.createParameter(undefined, undefined, undefined, 'mediaType', undefined, literalType);
+}
+
+function getResponseCriteria(response: Response) {
+  const parameters = new Array<ts.ParameterDeclaration>();
+
+  const code = getResponseCodeParameter(response.name);
+  if (code) {
+    parameters.push(code);
+  }
+
+  const mediaType = getMediaTypeParameter(response.mediaType);
+  if (mediaType) {
+    parameters.push(mediaType);
+  }
+
+  return parameters;
+}
+
+function getResponseDefinition(response: Response) {
+  const properties = new Array<ts.PropertySignature>();
+
+  if (response.typeref) {
+    const typeReference = ts.createTypeReferenceNode(response.typeref.declaration, undefined);
+    properties.push(ts.createPropertySignature(undefined, 'body', undefined, typeReference, undefined));
+  }
+
+  if (response.headers.length > 0) {
+    const headerType = getHeadersType(response.headers);
+    properties.push(ts.createPropertySignature(undefined, 'headers', undefined, headerType, undefined));
+  }
+
+  if (response.isException) {
+    const literalTrueType = ts.createLiteralTypeNode(ts.createTrue());
+    properties.push(ts.createPropertySignature(undefined, 'isException', undefined, literalTrueType, undefined));
+  }
+
+  return ts.createTypeLiteralNode(properties);
+}
+
+function getResponseType(response: Response) {
+  return ts.createFunctionTypeNode(
+    undefined,
+    getResponseCriteria(response),
+    getResponseDefinition(response));
+}
+
+function getHeadersType(headers: Array<Header | Alias<Header>>) {
+  const typeReferences = new Array<ts.TypeReferenceNode>();
+  
+  for (let each of headers) {
+    if (each instanceof Alias) {
+      each = each.target;
+    }
+
+    const args = [
+      ts.createTypeReferenceNode(each.typeRef?.declaration ?? 'any', undefined),
+      ts.createLiteralTypeNode(ts.createStringLiteral(each?.name))
+    ];
+  
+    const typeReference = ts.createTypeReferenceNode('Header', args); 
+    typeReferences.push(typeReference);
+  }
+
+  return ts.createTupleTypeNode(typeReferences);
 }
 
 /*
@@ -337,8 +445,8 @@ class OperationImpl extends NamedElement<MethodSignature> implements Operation {
 
   private pushResponses(...responses: Array<Response | Alias<Response>>) {
     const responseStructures = createResponseStructures(
-      responses,
-      this.node.getReturnTypeNode()?.getText() ?? '');
+      responses, 
+      this.node.getReturnTypeNode()?.compilerNode);
 
     this.node.setReturnType(responseStructures.type);
     getLastDoc(this.node).addTags(responseStructures.tags);

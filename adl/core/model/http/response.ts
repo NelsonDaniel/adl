@@ -6,7 +6,7 @@ import { Header } from './header';
 
 export class ResponseCriteria extends base.ResponseCriteria {
   set code(value: Array<string|number> ) {
-
+    //todo
   }
   get code(): Array<string|number> {
     const p = this.node.getParameter('code');

@@ -1,10 +1,11 @@
 import { Alias } from '../alias';
 import { Element } from '../element';
-import { Header } from './header';
-import { Operation } from './operation';
-import { Parameter } from './parameter';
-import { Request } from './request';
-import { Response } from './response';
+import { Protocol } from '../project/protocol';
+import { Declaration } from '../typescript/reference';
+import { HeaderElement } from './header';
+import { OperationGroup, ResponseCollection } from './operation';
+import { ParameterElement } from './parameter';
+import { ResponseElement, ResultElement } from './response';
 
 export enum AuthenticationType {
   ApiKey = 'apikey',
@@ -203,8 +204,8 @@ export class ConnectionVariable extends Element {
   }
 }
 
-export class HttpProtocol extends Element {
-  headers = new Array<Header|Alias<Header>>();
+export class HttpProtocol extends Protocol {
+  
   authentications = new Array<Authentication|Alias<Authentication>>();
 
   /**
@@ -215,8 +216,30 @@ export class HttpProtocol extends Element {
 
   /** Global connections, which may be overridden by individual operations. */
   connections = new Array<Connection | Alias<Connection>>();
-  operations = new Array<Operation|Alias<Operation>>();
-  requests = new Array<Request | Alias<Request>>();
-  responses = new Array<Response| Alias<Response>>();
-  parameters = new Array<Parameter|Alias<Parameter>>();
+
+  get operationGroups(): Array<OperationGroup> {
+    // return this.files.map(each => each.getInterfaces().filter(isOperationGroup)).flat().map(each => new OperationGroup(each));
+    return [];
+  }
+
+  get responseCollections(): Array<Declaration<ResponseCollection>> {
+    // this.files.map( each => each.getTypeAliases()).filter(isResponseCollection)).flat().map(each => new ResponseCollectionAlias(each))
+    return [];
+  }
+
+  get responses(): Array<Declaration<ResponseElement>> {
+    return [];
+  }
+
+  get results(): Array<Declaration<ResultElement>> {
+    return [];
+  }
+
+  get parameters(): Array<Declaration<ParameterElement>> {
+    return [];
+  }
+
+  get headers(): Array<Declaration<HeaderElement>> {
+    return [];
+  }
 }

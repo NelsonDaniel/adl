@@ -21,9 +21,9 @@ export function getLastDoc(target: Node | JSDocs | JSDoc): JSDoc {
   return docs.length > 0 ? docs[docs.length - 1] : (Node.isJSDocableNode(<any>target) ? (<any>target).addJsDoc('\n') : fail('Node is not a docable node'));
 }
 
-export function* getTags(target: Node | JSDocs | JSDoc, tagName?: string): Iterable<JSDocTag> {
+export function* getTags(target: Node | JSDocs | JSDoc, ...tagName: Array<string>): Iterable<JSDocTag> {
   for (const each of getDocs(target)) {
-    yield* (tagName ? each.getTags().filter(tag => tag.getTagName() == tagName) : each.getTags());
+    yield* (tagName.length ? each.getTags().filter(tag => tagName.indexOf(tag.getTagName()) >-1) : each.getTags());
   }
 }
 
@@ -34,8 +34,8 @@ export function getTagValue(target: Node | JSDocs | JSDoc, tagName: string): str
   return undefined;
 }
 
-export function* getTagValues(target: Node | JSDocs | JSDoc, tagName? : string): Iterable<string> {
-  for( const each of getTags(target,tagName)) {
+export function* getTagValues(target: Node | JSDocs | JSDoc, ...tagName: Array<string>): Iterable<string> {
+  for( const each of getTags(target,...tagName)) {
     yield each.getStructure().text?.toString() || '';
   } 
 }

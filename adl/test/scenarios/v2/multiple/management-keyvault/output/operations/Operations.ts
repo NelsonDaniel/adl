@@ -5,7 +5,9 @@ export interface Operations {
      * @http GET /providers/Microsoft.KeyVault/operations
      * @tag Operations
      * @param api_version - Client Api Version.
-     * @return 200 - OK. The request has succeeded.
+     * @return 200|application/json - OK. The request has succeeded.
      */
-    List(api_version: Http.Query<string, 'api-version'>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'>;
+    List(api_version: Query<string, 'api-version'>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: OperationListResult;
+    }];
 }

@@ -1,7 +1,8 @@
-import { FunctionTypeNode, InterfaceDeclaration, MethodDeclaration, ParameterDeclaration, SourceFile, TupleTypeNode, TypeAliasDeclaration } from 'ts-morph';
+import { FunctionTypeNode, InterfaceDeclaration, MethodDeclaration, ParameterDeclaration, TupleTypeNode, TypeLiteralNode } from 'ts-morph';
 import { Element } from './element';
 import { TypeReference } from './schema/type';
 import { NamedElement } from './typescript/named-element';
+import { Declaration } from './typescript/reference';
 import { TSElement } from './typescript/typescript-element';
 
 export interface ResultTypeReference extends TypeReference {
@@ -15,35 +16,42 @@ export interface ResponseCollectionTypeReference extends TypeReference {
 
 }
 
-export function isReference<T>(instance: T|Reference<T>): instance is Reference<T> { 
-  return  !!((<any>instance).target);
-}
-
-export class Reference<T> extends NamedElement<InterfaceDeclaration| TypeAliasDeclaration>  {
-  constructor(node: InterfaceDeclaration|TypeAliasDeclaration) {
-    super(node);
-  }
-
-  get target(): T {
-    throw new Error('not implemented');
-  }
-}
-
-export class ResponseCollection extends TSElement<TupleTypeNode> {
+export abstract class ResponseCollection extends TSElement<TupleTypeNode> {
   constructor(node: TupleTypeNode) {
     super(node);
   }
 
-  get responses(): Array<ResponseElement | Reference<ResponseElement>> {
+  /**
+   * returns the collection of responses 
+   */
+  get responses(): ReadonlyArray<ResponseElement | Declaration<ResponseElement>> {
     return [];
+  }
+
+  /**
+   * Adds a new response to this collection
+   */
+  createResponse() {
+    // todo
+  }
+
+  /**
+   * Adds a response to this collection using a globally defined response
+   */
+  addResponse(declaration: Declaration<ResponseElement>) {
+    //todo
   }
 }
 
 export class ParameterElement extends NamedElement<ParameterDeclaration> {
-  
+
 }
 
-export class ResultElement extends TSElement<InterfaceDeclaration|TypeAliasDeclaration> implements TypeReference {
+/**
+ * A Result describes a single output from an operation.
+ * 
+ */
+export class ResultElement extends TSElement<TypeLiteralNode | InterfaceDeclaration> implements TypeReference {
   declaration!: string;
   requiredReferences!: Array<TypeReference>;
 
@@ -56,20 +64,41 @@ export class ResponseCriteria extends TSElement<FunctionTypeNode> {
   }
 }
 
-export class ResponseElement implements TypeReference  {
+/**
+ * A Response is the combination of the Criteria and the Result for a possible output from an operation.
+ */
+export class ResponseElement extends TSElement<FunctionTypeNode> implements TypeReference {
   declaration!: string;
   requiredReferences!: Array<TypeReference>;
-  sourceFile?: SourceFile;
+  
   isInline?: boolean | undefined;
 
-  criteria!: ResponseCriteria;
-  result?: ResultElement | Reference<ResultElement>;
+  readonly criteria!: ResponseCriteria;
+
+  readonly result?: ResultElement | Declaration<ResultElement>;
+
+  /**
+   * Creates a new inline Result (removes any previous delared result)
+   * 
+   * (if you want to set the result to a globally defined result, use {@link setResult})
+   */
+  createResult() {
+    // todo
+  }
+
+  setResult() {
+    // todo
+  }
+
 }
 
-export class OperationGroup extends NamedElement<InterfaceDeclaration>  {
-  get operations(): Array<Operation> {
-    return [];
+export abstract class OperationGroup extends NamedElement<InterfaceDeclaration>  {
+  constructor(node: InterfaceDeclaration) {
+    super(node);
   }
+
+  abstract get operations(): Array<Operation>;
+  
 }
 
 export class Operation extends NamedElement<MethodDeclaration> {
@@ -78,13 +107,52 @@ export class Operation extends NamedElement<MethodDeclaration> {
   }
 
   get parameters(): ReadonlyArray<ParameterElement> {
-    return this.node.getParameters().map( each => new ParameterElement(each));
+    return this.node.getParameters().map(each => new ParameterElement(each));
   }
 
-  get response(): ResponseCollection|Reference<ResponseCollection> {
+  /**
+   * creates a new parameter in this operation
+   */
+  createParameter() {
+    // todo
+  }
+
+  /**
+   * returns the Response for this operation as either a ResponseCollection the declaration of the ResponseCollection
+   */
+  get responseCollection(): ResponseCollection | Declaration<ResponseCollection> | undefined {
     throw new Error('Not Implemented');
   }
+
+  /**
+   * creates a new Response collection as a literal on this operation 
+   * 
+   * (if you want to use a declared response declaration, use {@link setResponse} )
+   */
+  createResponseCollection(){
+    // todo
+  }
+
+  /**
+  * Sets the response for this operation to a declaration of a ResponseCollection
+  * 
+  * (if you want to create a fresh inline response declaration, use {@link createResponse} )
+  * @param response 
+  */
+  setResponseCollection(value: Declaration<ResponseCollection>) {
+    //todo
+  }
+
+  /**
+   * Removes the response collection (if any) from this operation.
+   * 
+   * does not alter the declaration if the current response is declared globally.
+   */
+  removeResponse(){
+    // todo
+  }
  
+
 }
 
 export class Response extends Element {

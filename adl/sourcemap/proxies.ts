@@ -108,11 +108,11 @@ export function getSourceFile(value: any): SourceFile | undefined {
   return value[SpecialProperties.Origin]?.sourceFile;
 }
 
-export function nameOf(value: any) {
+export function nameOf(value: any): string {
   if (value === undefined || value === null) {
-    return undefined;
+    return '';
   }
-  return value[SpecialProperties.Origin]?.path.last;
+  return value[SpecialProperties.Origin]?.path.last ?? '';
 }
 
 export function refTo(value: any): string {

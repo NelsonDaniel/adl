@@ -1,5 +1,5 @@
-import { Element } from './element';
-import { URL } from './types';
+import { Element } from '../element';
+import { URL } from '../types';
 
 /**
  * A tag is a bit of arbitrary information about the API.

@@ -1,5 +1,5 @@
+import { Element } from '../element';
 import { Contact } from './contact';
-import { Element } from './element';
 
 export class License extends Element {
   /** A URL to the license used for the API. MUST be in the format of a URL. */

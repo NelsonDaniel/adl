@@ -1,3 +1,5 @@
+import { ts } from 'ts-morph';
+
 /**  
  * Prepares a string for use as a TypeScript identifier.
  * 
@@ -33,4 +35,10 @@ export function normalizeName(value: string ) {
   }
 
   return value.replace(/[^\w]+/g, '_');
+}
+
+export function printCompilerNode(compilerNode: ts.Node) {
+  const printer = ts.createPrinter();
+  const sourceFile = ts.createSourceFile('temp', '', ts.ScriptTarget.Latest);
+  return printer.printNode(ts.EmitHint.Unspecified, compilerNode, sourceFile);
 }

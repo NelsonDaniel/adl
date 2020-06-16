@@ -1,5 +1,5 @@
 import { Dictionary, items } from '@azure-tools/linq';
-import { InternalData } from './internal-data';
+import { InternalData } from './project/internal-data';
 import { VersionInfo } from './version-info';
 
 

@@ -8,8 +8,13 @@ export interface PrivateLinkResources {
      * @param resourceGroupName - Name of the resource group that contains the key vault.
      * @param vaultName - The name of the key vault.
      * @param api_version - Client Api Version.
-     * @return 200 - Successfully retrieved private link resources.
-     * @return default - Error response describing why the operation failed.
+     * @return 200|application/json - Successfully retrieved private link resources.
+     * @return default|application/json - Error response describing why the operation failed.
      */
-    ListByVault(subscriptionId: Http.Path<string>, resourceGroupName: Http.Path<string>, vaultName: Http.Path<string & RegularExpression<'^[a-zA-Z0-9-]{3,24}$'>>, api_version: Http.Query<string, 'api-version'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<Http.Default, [object, Object], 'application/json'>;
+    ListByVault(subscriptionId: string, resourceGroupName: string, vaultName: string & RegularExpression<'^[a-zA-Z0-9-]{3,24}$'>, api_version: Query<string, 'api-version'>): [(code: 200, mediaType: "application/json") => {
+        body: PrivateLinkResourceListResult;
+    }, (mediaType: "application/json") => {
+        body: CloudError;
+        isException: true;
+    }];
 }

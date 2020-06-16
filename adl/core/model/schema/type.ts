@@ -1,6 +1,5 @@
 import { SourceFile } from 'ts-morph';
 
-
 export type TypeDeclaration = string;
 
 export interface TypeReference {

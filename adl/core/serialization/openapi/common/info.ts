@@ -1,8 +1,8 @@
 import { common } from '@azure-tools/openapi';
-import { Contact, ContactRole } from '../../../model/contact';
-import { License } from '../../../model/license';
-import { Metadata } from '../../../model/metadata';
-import { Reference } from '../../../model/reference';
+import { Contact, ContactRole } from '../../../model/project/contact';
+import { License } from '../../../model/project/license';
+import { Metadata } from '../../../model/project/metadata';
+import { Reference } from '../../../model/project/reference';
 import { Context, OAIModel } from '../../../support/visitor';
 import { addExtensionsToAttic } from '../common';
 

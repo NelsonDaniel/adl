@@ -21,9 +21,9 @@ export interface Service {
      * @param segment - An Analytics advanced segment to be applied to the report data.
      * @param sort - A comma-separated list of dimensions or metrics that determine the sort order for the report data.
      * @param start_index - An index of the first entity to retrieve. Use this parameter as a pagination mechanism along with the max-results parameter.
-     * @return 200 - Successful response
+     * @return 200| - Successful response
      */
-    'analytics.data.get'(alt?: Http.Query<"atom">, fields?: Http.Query<string>, key?: Http.Query<string>, oauth_token?: Http.Query<string>, prettyPrint?: Http.Query<boolean>, quotaUser?: Http.Query<string>, userIp?: Http.Query<string>, ids: Http.Query<string>, start_date: Http.Query<string, 'start-date'>, end_date: Http.Query<string, 'end-date'>, metrics: Http.Query<string>, dimensions?: Http.Query<string>, filters?: Http.Query<string>, max_results?: Http.Query<int64, 'max-results'>, segment?: Http.Query<string>, sort?: Http.Query<string>, start_index?: Http.Query<int64 & Minimum<1>, 'start-index'>): Http.Response<'200'>;
+    'analytics.data.get'(alt?: Query<"atom">, fields?: Query<string>, key?: Query<string>, oauth_token?: Query<string>, prettyPrint?: Query<boolean>, quotaUser?: Query<string>, userIp?: Query<string>, ids: Query<string>, start_date: Query<string, 'start-date'>, end_date: Query<string, 'end-date'>, metrics: Query<string>, dimensions?: Query<string>, filters?: Query<string>, max_results?: Query<int64, 'max-results'>, segment?: Query<string>, sort?: Query<string>, start_index?: Query<int64 & Minimum<1>, 'start-index'>): [(code: 200) => {}];
     /**
      * @description Lists all accounts to which the user has access.
      * @since v2.4
@@ -38,9 +38,9 @@ export interface Service {
      * @param userIp - Deprecated. Please use quotaUser instead.
      * @param max_results - The maximum number of accounts to include in this response.
      * @param start_index - An index of the first account to retrieve. Use this parameter as a pagination mechanism along with the max-results parameter.
-     * @return 200 - Successful response
+     * @return 200| - Successful response
      */
-    'analytics.management.accounts.list'(alt?: Http.Query<"atom">, fields?: Http.Query<string>, key?: Http.Query<string>, oauth_token?: Http.Query<string>, prettyPrint?: Http.Query<boolean>, quotaUser?: Http.Query<string>, userIp?: Http.Query<string>, max_results?: Http.Query<int64, 'max-results'>, start_index?: Http.Query<int64 & Minimum<1>, 'start-index'>): Http.Response<'200'>;
+    'analytics.management.accounts.list'(alt?: Query<"atom">, fields?: Query<string>, key?: Query<string>, oauth_token?: Query<string>, prettyPrint?: Query<boolean>, quotaUser?: Query<string>, userIp?: Query<string>, max_results?: Query<int64, 'max-results'>, start_index?: Query<int64 & Minimum<1>, 'start-index'>): [(code: 200) => {}];
     /**
      * @description Lists web properties to which the user has access.
      * @since v2.4
@@ -56,9 +56,9 @@ export interface Service {
      * @param accountId - Account ID to retrieve web properties for. Can either be a specific account ID or '~all', which refers to all the accounts that user has access to.
      * @param max_results - The maximum number of web properties to include in this response.
      * @param start_index - An index of the first entity to retrieve. Use this parameter as a pagination mechanism along with the max-results parameter.
-     * @return 200 - Successful response
+     * @return 200| - Successful response
      */
-    'analytics.management.webproperties.list'(alt?: Http.Query<"atom">, fields?: Http.Query<string>, key?: Http.Query<string>, oauth_token?: Http.Query<string>, prettyPrint?: Http.Query<boolean>, quotaUser?: Http.Query<string>, userIp?: Http.Query<string>, accountId: Http.Path<string>, max_results?: Http.Query<int64, 'max-results'>, start_index?: Http.Query<int64 & Minimum<1>, 'start-index'>): Http.Response<'200'>;
+    'analytics.management.webproperties.list'(alt?: Query<"atom">, fields?: Query<string>, key?: Query<string>, oauth_token?: Query<string>, prettyPrint?: Query<boolean>, quotaUser?: Query<string>, userIp?: Query<string>, accountId: string, max_results?: Query<int64, 'max-results'>, start_index?: Query<int64 & Minimum<1>, 'start-index'>): [(code: 200) => {}];
     /**
      * @description Lists views (profiles) to which the user has access.
      * @since v2.4
@@ -75,9 +75,9 @@ export interface Service {
      * @param webPropertyId - Web property ID for the views (profiles) to retrieve. Can either be a specific web property ID or '~all', which refers to all the web properties to which the user has access.
      * @param max_results - The maximum number of views (profiles) to include in this response.
      * @param start_index - An index of the first entity to retrieve. Use this parameter as a pagination mechanism along with the max-results parameter.
-     * @return 200 - Successful response
+     * @return 200| - Successful response
      */
-    'analytics.management.profiles.list'(alt?: Http.Query<"atom">, fields?: Http.Query<string>, key?: Http.Query<string>, oauth_token?: Http.Query<string>, prettyPrint?: Http.Query<boolean>, quotaUser?: Http.Query<string>, userIp?: Http.Query<string>, accountId: Http.Path<string>, webPropertyId: Http.Path<string>, max_results?: Http.Query<int64, 'max-results'>, start_index?: Http.Query<int64 & Minimum<1>, 'start-index'>): Http.Response<'200'>;
+    'analytics.management.profiles.list'(alt?: Query<"atom">, fields?: Query<string>, key?: Query<string>, oauth_token?: Query<string>, prettyPrint?: Query<boolean>, quotaUser?: Query<string>, userIp?: Query<string>, accountId: string, webPropertyId: string, max_results?: Query<int64, 'max-results'>, start_index?: Query<int64 & Minimum<1>, 'start-index'>): [(code: 200) => {}];
     /**
      * @description Lists goals to which the user has access.
      * @since v2.4
@@ -95,9 +95,9 @@ export interface Service {
      * @param profileId - View (Profile) ID to retrieve goals for. Can either be a specific view (profile) ID or '~all', which refers to all the views (profiles) that user has access to.
      * @param max_results - The maximum number of goals to include in this response.
      * @param start_index - An index of the first goal to retrieve. Use this parameter as a pagination mechanism along with the max-results parameter.
-     * @return 200 - Successful response
+     * @return 200| - Successful response
      */
-    'analytics.management.goals.list'(alt?: Http.Query<"atom">, fields?: Http.Query<string>, key?: Http.Query<string>, oauth_token?: Http.Query<string>, prettyPrint?: Http.Query<boolean>, quotaUser?: Http.Query<string>, userIp?: Http.Query<string>, accountId: Http.Path<string>, webPropertyId: Http.Path<string>, profileId: Http.Path<string>, max_results?: Http.Query<int64, 'max-results'>, start_index?: Http.Query<int64 & Minimum<1>, 'start-index'>): Http.Response<'200'>;
+    'analytics.management.goals.list'(alt?: Query<"atom">, fields?: Query<string>, key?: Query<string>, oauth_token?: Query<string>, prettyPrint?: Query<boolean>, quotaUser?: Query<string>, userIp?: Query<string>, accountId: string, webPropertyId: string, profileId: string, max_results?: Query<int64, 'max-results'>, start_index?: Query<int64 & Minimum<1>, 'start-index'>): [(code: 200) => {}];
     /**
      * @description Lists advanced segments to which the user has access.
      * @since v2.4
@@ -112,7 +112,7 @@ export interface Service {
      * @param userIp - Deprecated. Please use quotaUser instead.
      * @param max_results - The maximum number of advanced segments to include in this response.
      * @param start_index - An index of the first advanced segment to retrieve. Use this parameter as a pagination mechanism along with the max-results parameter.
-     * @return 200 - Successful response
+     * @return 200| - Successful response
      */
-    'analytics.management.segments.list'(alt?: Http.Query<"atom">, fields?: Http.Query<string>, key?: Http.Query<string>, oauth_token?: Http.Query<string>, prettyPrint?: Http.Query<boolean>, quotaUser?: Http.Query<string>, userIp?: Http.Query<string>, max_results?: Http.Query<int64, 'max-results'>, start_index?: Http.Query<int64 & Minimum<1>, 'start-index'>): Http.Response<'200'>;
+    'analytics.management.segments.list'(alt?: Query<"atom">, fields?: Query<string>, key?: Query<string>, oauth_token?: Query<string>, prettyPrint?: Query<boolean>, quotaUser?: Query<string>, userIp?: Query<string>, max_results?: Query<int64, 'max-results'>, start_index?: Query<int64 & Minimum<1>, 'start-index'>): [(code: 200) => {}];
 }

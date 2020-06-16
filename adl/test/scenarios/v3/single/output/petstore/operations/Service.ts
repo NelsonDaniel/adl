@@ -5,27 +5,41 @@ export interface Service {
      * @http GET /pets
      * @tag pets
      * @param limit - How many items to return at one time (max 100)
-     * @return 200 - A paged array of pets
-     * @return default - unexpected error
+     * @return 200|application/json - A paged array of pets
+     * @return default|application/json - unexpected error
      */
-    listPets(limit?: Http.Query<int32>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<Http.Default, [object, Object], 'application/json'>;
+    listPets(limit?: Query<int32>): [(code: 200, mediaType: "application/json") => {
+        body: Pets;
+        headers: [Header<string, "x-next">];
+    }, (mediaType: "application/json") => {
+        body: Error;
+        isException: true;
+    }];
     /**
      * Create a pet
      * @since 1.0.0
      * @http POST /pets
      * @tag pets
-     * @return 201 - Null response
-     * @return default - unexpected error
+     * @return 201| - Null response
+     * @return default|application/json - unexpected error
      */
-    createPets(): Http.Response<'201'> | Http.Response<Http.Default, [object, Object], 'application/json'>;
+    createPets(): [(code: 201) => {}, (mediaType: "application/json") => {
+        body: Error;
+        isException: true;
+    }];
     /**
      * Info for a specific pet
      * @since 1.0.0
      * @http GET /pets/{petId}
      * @tag pets
      * @param petId - The id of the pet to retrieve
-     * @return 200 - Expected response to a valid request
-     * @return default - unexpected error
+     * @return 200|application/json - Expected response to a valid request
+     * @return default|application/json - unexpected error
      */
-    showPetById(petId: Http.Path<string>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<Http.Default, [object, Object], 'application/json'>;
+    showPetById(petId: string): [(code: 200, mediaType: "application/json") => {
+        body: Pet;
+    }, (mediaType: "application/json") => {
+        body: Error;
+        isException: true;
+    }];
 }

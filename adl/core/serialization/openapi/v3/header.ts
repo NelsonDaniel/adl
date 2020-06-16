@@ -1,5 +1,5 @@
 import { v3 } from '@azure-tools/openapi';
-import { anonymous, nameOf } from '@azure-tools/sourcemap';
+import { nameOf } from '@azure-tools/sourcemap';
 import { Header } from '../../../model/http/header';
 import { processSchema } from '../v3/schema';
 import { Context } from './serializer';
@@ -7,7 +7,7 @@ import { Context } from './serializer';
 
 export async function* header(header: v3.Header, $: Context, options?: { isAnonymous?: boolean }): AsyncGenerator<Header> {
   const { api, visitor } = $;
-  const name = options?.isAnonymous ? anonymous('header') : nameOf(header);
+  const name = nameOf(header);
 
   // these are in the OAI schema, but should not be in headers - freakout if they are used
   header.explode && $.error('header definitions must not contain property \'explode\'', header.explode);
@@ -19,7 +19,7 @@ export async function* header(header: v3.Header, $: Context, options?: { isAnony
   // create the http header object and track it. 
   const httpHeader = new Header({
     // maintain the key
-    name: name.toString(),
+    name,
     // use the schema
     typeRef: typeref,
     // set a specific value 

@@ -1,8 +1,8 @@
 import { IntegerFormat, NumberFormat, v2, v3, XMSEnumValue } from '@azure-tools/openapi';
 import { anonymous, nameOf } from '@azure-tools/sourcemap';
-import { createTypeAlias } from '../../../model/schema/alias';
-import { addEncoding, EncodingReference } from '../../../model/schema/constraint';
+import { createAliasType } from '../../../model/schema/alias';
 import { addDefault } from '../../../model/schema/default';
+import { addEncoding, EncodingReference } from '../../../model/schema/encoding';
 import { createEnum } from '../../../model/schema/enum';
 import { TypeReference } from '../../../model/schema/type';
 import { Context, OAIModel } from '../../../support/visitor';
@@ -52,74 +52,74 @@ export function versionInfo<T extends OAIModel>($: Context<T>, versionedElement:
 export async function processCharSchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>): Promise<TypeReference> {
   $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.char, $);
+  return wrapWithAliasIfNeeded(schema, $.api.primitives.char, $);
 }
 
 
 export async function processDateSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
   $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.date, $);
+  return wrapWithAliasIfNeeded(schema, $.api.primitives.date, $);
 }
 
 export async function processTimeSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
   $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.time, $);
+  return wrapWithAliasIfNeeded(schema, $.api.primitives.time, $);
 }
 
 export async function processDateTimeSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>, encoding?: EncodingReference): Promise<TypeReference> {
   $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.dateTime, $, encoding);
+  return wrapWithAliasIfNeeded(schema, $.api.primitives.dateTime, $, encoding);
 }
 
 export async function processDurationSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
   $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.duration, $);
+  return wrapWithAliasIfNeeded(schema, $.api.primitives.duration, $);
 }
 
 export async function processUuidSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
   $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.uuid, $);
+  return wrapWithAliasIfNeeded(schema, $.api.primitives.uuid, $);
 }
 
 export async function processUriSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
   $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.uri, $);
+  return wrapWithAliasIfNeeded(schema, $.api.primitives.uri, $);
 }
 
 export async function processPasswordSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
   $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.password, $);
+  return wrapWithAliasIfNeeded(schema, $.api.primitives.password, $);
 }
 
 export async function processOdataSchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
   $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.odata, $);
+  return wrapWithAliasIfNeeded(schema, $.api.primitives.odata, $);
 }
 
 export async function processBooleanSchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>, options?: Options): Promise<TypeReference> {
   $.assertNoForbiddenProperties(schema, ...<any>notPrimitiveProperties);
 
-  return wrapWithAliasIfNeeded(schema, $.api.schemas.primitives.boolean, $);
+  return wrapWithAliasIfNeeded(schema, $.api.primitives.boolean, $);
 }
 
 export async function processByteArraySchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>): Promise<TypeReference> {
   // throws on error.
   $.assertNoForbiddenProperties(schema, ...<any>stringProperties, ...<any>objectProperties, ...<any>numberProperties);
     
-  return $.api.schemas.primitives.byteArray;
+  return $.api.primitives.byteArray;
 }
 
 export function wrapWithAliasIfNeeded<T extends OAIModel>(schema: v3.Schema | v2.Schema, type: TypeReference, $: Context<T>, encoding?: EncodingReference) {
   if (schema.default || schema.description || schema.title || (<any>schema).nullable || schema['x-nullable'] || (<any>schema).readOnly || encoding) {
-    let alias = createTypeAlias($.api, anonymous(nameOf(schema)), type, commonProperties(schema));
+    let alias = createAliasType($.api, anonymous(nameOf(schema)), type, commonProperties(schema));
     
     if( encoding) {
       alias = addEncoding(alias, encoding);
@@ -130,11 +130,11 @@ export function wrapWithAliasIfNeeded<T extends OAIModel>(schema: v3.Schema | v2
     }
 
     if ((<any>schema).readOnly) {
-      // alias.constraints.push(new ReadOnlyModifier());
+      //todo?
     }
 
     if ((<any>schema).nullable || schema['x-nullable']) {
-      // alias.constraints.push(new NullableModifier((<any>schema).readOnly));
+      //todo?
     }
     return alias;
   }
@@ -146,11 +146,11 @@ export async function processNumberSchema<T extends OAIModel>(schema: v2.Schema|
   
   switch (schema.format) {
     case NumberFormat.Float:
-      return $.api.schemas.primitives.float;
+      return $.api.primitives.float;
 
     case undefined:
     case NumberFormat.Double:
-      return $.api.schemas.primitives.double;
+      return $.api.primitives.double;
 
     default:
       throw new Error(`Unexpected number format: ${schema.format}`);
@@ -163,14 +163,14 @@ export async function processIntegerSchema<T extends OAIModel>(schema: v2.Schema
 
   switch (schema.format) {
     case IntegerFormat.Int32:
-      return $.api.schemas.primitives.int32;
+      return $.api.primitives.int32;
 
     case undefined:
     case IntegerFormat.Int64:
-      return $.api.schemas.primitives.int64;
+      return $.api.primitives.int64;
 
     case IntegerFormat.UnixTime:
-      return $.api.schemas.primitives.time;
+      return $.api.primitives.time;
 
     default:
       throw new Error(`Unexpected integer format: ${schema.format}`);
@@ -178,11 +178,11 @@ export async function processIntegerSchema<T extends OAIModel>(schema: v2.Schema
 }
 
 export async function processFileSchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>, options?: Options): Promise<TypeReference> {
-  return $.api.schemas.primitives.file;
+  return $.api.primitives.file;
 }
 
 export async function processAnySchema<T extends OAIModel>(schema: v3.Schema|v2.Schema, $: Context<T>): Promise<TypeReference> {
-  return $.api.schemas.primitives.any;
+  return $.api.primitives.any;
 }
 
 export async function processEnumSchema<T extends OAIModel>(schema: v3.Schema | v2.Schema, $: Context<T>, options?: Options): Promise<TypeReference> {

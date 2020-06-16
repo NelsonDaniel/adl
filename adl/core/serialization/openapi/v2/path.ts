@@ -78,7 +78,7 @@ async function processOperation(path: Path, operation: v2.Operation, shared: v2.
     // they specified a body content type, but no actual body parameter, which means
     // they get an anonymous one added 
     for( const mediaType of consumes ) {
-      requests.push( new Request(anonymous('requestBody'),mediaType,$.api.schemas.primitives.file));
+      requests.push( new Request(anonymous('requestBody'),mediaType,$.api.primitives.file));
     }
   }
 

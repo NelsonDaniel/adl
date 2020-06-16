@@ -4,23 +4,35 @@ export interface Service {
      * @since v3
      * @http GET /emojis
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    emojis(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    emojis(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: emojis;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List public events.
      * @since v3
      * @http GET /events
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    events(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    events(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: events;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List Feeds.
      * GitHub provides several timeline resources in Atom format. The Feeds API
@@ -29,12 +41,18 @@ export interface Service {
      * @since v3
      * @http GET /feeds
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    feeds(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    feeds(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: feeds;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List the authenticated user's gists or if called anonymously, this will
      * return all public gists.
@@ -45,23 +63,35 @@ export interface Service {
      * Only gists updated at or after this time are returned.
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    gists(since?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    gists(since?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: gists;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a gist.
      * @since v3
      * @http POST /gists
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    gists(Accept?: Http.Header<string>, body: Http.Body<postGist, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    gists(Accept?: Header<string>, body: Body<postGist, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: gist;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List all public gists.
      * @since v3
@@ -70,12 +100,18 @@ export interface Service {
      * Only gists updated at or after this time are returned.
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    public(since?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    public(since?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: gists;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List the authenticated user's starred gists.
      * @since v3
@@ -84,73 +120,108 @@ export interface Service {
      * Only gists updated at or after this time are returned.
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    starred(since?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    starred(since?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: gists;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single gist.
      * @since v3
      * @http GET /gists/{id}
      * @param id - Id of gist.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    gists(id: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    gists(id: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: gist;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a gist.
      * @since v3
      * @http DELETE /gists/{id}
      * @param id - Id of gist.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    gists(id: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    gists(id: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Edit a gist.
      * @since v3
      * @http PATCH /gists/{id}
      * @param id - Id of gist.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    gists(id: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<patchGist, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    gists(id: int64, Accept?: Header<string>, body: Body<patchGist, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: gist;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List comments on a gist.
      * @since v3
      * @http GET /gists/{id}/comments
      * @param id - Id of gist.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(id: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(id: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: comments;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a commen
      * @since v3
      * @http POST /gists/{id}/comments
      * @param id - Id of gist.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(id: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<commentBody, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(id: int64, Accept?: Header<string>, body: Body<commentBody, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: comment;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single comment.
      * @since v3
@@ -158,12 +229,18 @@ export interface Service {
      * @param id - Id of gist.
      * @param commentId - Id of comment.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(id: Http.Path<int64>, commentId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(id: int64, commentId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: comment;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a comment.
      * @since v3
@@ -171,13 +248,18 @@ export interface Service {
      * @param id - Id of gist.
      * @param commentId - Id of comment.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(id: Http.Path<int64>, commentId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(id: int64, commentId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Edit a comment.
      * @since v3
@@ -185,62 +267,94 @@ export interface Service {
      * @param id - Id of gist.
      * @param commentId - Id of comment.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(id: Http.Path<int64>, commentId: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<comment, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(id: int64, commentId: int64, Accept?: Header<string>, body: Body<comment, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: comment;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Fork a gist.
      * @since v3
      * @http POST /gists/{id}/forks
      * @param id - Id of gist.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Exists.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Exists.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - Not exists.
+     * @return 404|application/json - Not exists.
      */
-    forks(id: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', none, 'application/json'>;
+    forks(id: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Check if a gist is starred.
      * @since v3
      * @http GET /gists/{id}/star
      * @param id - Id of gist.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Exists.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Exists.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - Not exists.
+     * @return 404|application/json - Not exists.
      */
-    star(id: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', none, 'application/json'>;
+    star(id: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Star a gist.
      * @since v3
      * @http PUT /gists/{id}/star
      * @param id - Id of gist.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Starred.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Starred.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    star(id: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    star(id: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Unstar a gist.
      * @since v3
      * @http DELETE /gists/{id}/star
      * @param id - Id of gist.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Item removed.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Item removed.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    star(id: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    star(id: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Listing available templates.
      * List all templates available to pass as an option when creating a repository.
@@ -248,23 +362,35 @@ export interface Service {
      * @since v3
      * @http GET /gitignore/templates
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    templates(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    templates(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: gitignore;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single template.
      * @since v3
      * @http GET /gitignore/templates/{language}
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    templates(language: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    templates(language: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: gitignore_lang;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List issues.
      * List all issues across all the authenticated user's visible repositories.
@@ -279,12 +405,18 @@ export interface Service {
      * Only issues updated at or after this time are returned.
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    issues(filter: Http.Query<"assigned" | "created" | "mentioned" | "subscribed" | "all">, state: Http.Query<"open" | "closed">, labels: Http.Query<string>, sort: Http.Query<"created" | "updated" | "comments">, direction: Http.Query<"asc" | "desc">, since?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    issues(filter: Query<"assigned" | "created" | "mentioned" | "subscribed" | "all">, state: Query<"open" | "closed">, labels: Query<string>, sort: Query<"created" | "updated" | "comments">, direction: Query<"asc" | "desc">, since?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issues;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Find issues by state and keyword.
      * @since v3
@@ -293,12 +425,18 @@ export interface Service {
      * @param keyword - The search term.
      * @param state - Indicates the state of the issues to return. Can be either open or closed.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    search(keyword: Http.Path<string>, state: Http.Path<"open" | "closed">, owner: Http.Path<string>, repository: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    search(keyword: string, state: "open" | "closed", owner: string, repository: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: search_issues_by_keyword;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Find repositories by keyword. Note, this legacy method does not follow the v3 pagination pattern. This method returns up to 100 results per page and pages can be fetched using the start_page parameter.
      * @since v3
@@ -310,12 +448,18 @@ export interface Service {
      * @param start_page - The page number to fetch
      * @param sort - The sort field. One of stars, forks, or updated. Default: results are sorted by best match.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    search(keyword: Http.Path<string>, order?: Http.Query<"desc" | "asc">, language?: Http.Query<string>, start_page?: Http.Query<string>, sort?: Http.Query<"updated" | "stars" | "forks">, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    search(keyword: string, order?: Query<"desc" | "asc">, language?: Query<string>, start_page?: Query<string>, sort?: Query<"updated" | "stars" | "forks">, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: search_repositories_by_keyword;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description This API call is added for compatibility reasons only.
      * @since v3
@@ -323,12 +467,18 @@ export interface Service {
      * @http GET /legacy/user/email/{email}
      * @param email - The email address
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    email(email: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    email(email: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: search_user_by_email;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Find users by keyword.
      * @since v3
@@ -339,45 +489,67 @@ export interface Service {
      * @param start_page - The page number to fetch
      * @param sort - The sort field. One of stars, forks, or updated. Default: results are sorted by best match.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    search(keyword: Http.Path<string>, order?: Http.Query<"desc" | "asc">, start_page?: Http.Query<string>, sort?: Http.Query<"updated" | "stars" | "forks">, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    search(keyword: string, order?: Query<"desc" | "asc">, start_page?: Query<string>, sort?: Query<"updated" | "stars" | "forks">, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: search_users_by_keyword;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Render an arbitrary Markdown document
      * @since v3
      * @http POST /markdown
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|text/html - OK
+     * @return 403|text/html - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    markdown(Accept?: Http.Header<string>, body: Http.Body<markdown, 'application/json'>): Http.Response<'200', none, 'text/html'> | Http.Response<'403', none, 'text/html'>;
+    markdown(Accept?: Header<string>, body: Body<markdown, 'application/json'>): [(code: 200, mediaType: "text/html") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "text/html") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Render a Markdown document in raw mode
      * @since v3
      * @http POST /markdown/raw
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|text/html - OK
+     * @return 403|text/html - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    raw(Accept?: Http.Header<string>, body?: Http.Body<file, 'text/plain'>): Http.Response<'200', none, 'text/html'> | Http.Response<'403', none, 'text/html'>;
+    raw(Accept?: Header<string>, body?: Body<file, 'text/plain'>): [(code: 200, mediaType: "text/html") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "text/html") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description This gives some information about GitHub.com, the service.
      * @since v3
      * @http GET /meta
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    meta(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    meta(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: meta;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List public events for a network of repositories.
      * @since v3
@@ -385,12 +557,18 @@ export interface Service {
      * @param owner - Name of the owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    events(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    events(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: events;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List your notifications.
      * List all notifications for the current user, grouped by repository.
@@ -405,12 +583,18 @@ export interface Service {
      * Example: "2012-10-09T23:39:01Z".
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    notifications(all?: Http.Query<boolean>, participating?: Http.Query<boolean>, since?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    notifications(all?: Query<boolean>, participating?: Query<boolean>, since?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: notifications;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Mark as read.
      * Marking a notification as "read" removes it from the default view on GitHub.com.
@@ -418,48 +602,70 @@ export interface Service {
      * @since v3
      * @http PUT /notifications
      * @param Accept - Is used to set specified media type.
-     * @return 205 - Marked as read.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 205|application/json - Marked as read.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    notifications(Accept?: Http.Header<string>, body: Http.Body<notificationMarkRead, 'application/json'>): Http.Response<'205', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    notifications(Accept?: Header<string>, body: Body<notificationMarkRead, 'application/json'>): [(code: 205, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description View a single thread.
      * @since v3
      * @http GET /notifications/threads/{id}
      * @param id - Id of thread.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    threads(id: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    threads(id: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: notifications;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Mark a thread as read
      * @since v3
      * @http PATCH /notifications/threads/{id}
      * @param id - Id of thread.
      * @param Accept - Is used to set specified media type.
-     * @return 205 - Thread marked as read.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 205|application/json - Thread marked as read.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    threads(id: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'205', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    threads(id: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 205, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a Thread Subscription.
      * @since v3
      * @http GET /notifications/threads/{id}/subscription
      * @param id - Id of thread.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    subscription(id: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    subscription(id: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: subscription;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Set a Thread Subscription.
      * This lets you subscribe to a thread, or ignore it. Subscribing to a thread
@@ -470,61 +676,90 @@ export interface Service {
      * @http PUT /notifications/threads/{id}/subscription
      * @param id - Id of thread.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    subscription(id: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<putSubscription, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    subscription(id: int64, Accept?: Header<string>, body: Body<putSubscription, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: subscription;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a Thread Subscription.
      * @since v3
      * @http DELETE /notifications/threads/{id}/subscription
      * @param id - Id of thread.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No Content
+     * @return 204|application/json - No Content
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    subscription(id: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    subscription(id: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get an Organization.
      * @since v3
      * @http GET /orgs/{org}
      * @param org - Name of organisation.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    orgs(org: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    orgs(org: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: organization;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Edit an Organization.
      * @since v3
      * @http PATCH /orgs/{org}
      * @param org - Name of organisation.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    orgs(org: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<patchOrg, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    orgs(org: string, Accept?: Header<string>, body: Body<patchOrg, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: organization;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List public events for an organization.
      * @since v3
      * @http GET /orgs/{org}/events
      * @param org - Name of organisation.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    events(org: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    events(org: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: events;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List issues.
      * List all issues for a given organization for the authenticated user.
@@ -540,12 +775,18 @@ export interface Service {
      * Only issues updated at or after this time are returned.
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    issues(org: Http.Path<string>, filter: Http.Query<"assigned" | "created" | "mentioned" | "subscribed" | "all">, state: Http.Query<"open" | "closed">, labels: Http.Query<string>, sort: Http.Query<"created" | "updated" | "comments">, direction: Http.Query<"asc" | "desc">, since?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    issues(org: string, filter: Query<"assigned" | "created" | "mentioned" | "subscribed" | "all">, state: Query<"open" | "closed">, labels: Query<string>, sort: Query<"created" | "updated" | "comments">, direction: Query<"asc" | "desc">, since?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issues;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Members list.
      * List all users who are members of an organization. A member is a user tha
@@ -558,13 +799,21 @@ export interface Service {
      * @http GET /orgs/{org}/members
      * @param org - Name of organisation.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 302 - Response if requester is not an organization member.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 302|application/json - Response if requester is not an organization member.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    members(org: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'302', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    members(org: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: users;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 302, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Check if a user is, publicly or privately, a member of the organization.
      * @since v3
@@ -572,19 +821,29 @@ export interface Service {
      * @param org - Name of organisation.
      * @param username - Name of the user.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content. Response if requester is an organization member and user is a member
+     * @return 204|application/json - No content. Response if requester is an organization member and user is a member
      *
-     * @return 302 - Found. Response if requester is not an organization member
+     * @return 302|application/json - Found. Response if requester is not an organization member
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - Not Found.
+     * @return 404|application/json - Not Found.
      * a. Response if requester is an organization member and user is not a member
      * b. Response if requester is not an organization member and is inquiring about themselves
      *
      */
-    members(org: Http.Path<string>, username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'302', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', none, 'application/json'>;
+    members(org: string, username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 302, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Remove a member.
      * Removing a user from this list will remove them from all teams and they
@@ -595,13 +854,18 @@ export interface Service {
      * @param org - Name of organisation.
      * @param username - Name of the user.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    members(org: Http.Path<string>, username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    members(org: string, username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Public members list.
      * Members of an organization can choose to have their membership publicized
@@ -611,12 +875,18 @@ export interface Service {
      * @http GET /orgs/{org}/public_members
      * @param org - Name of organisation.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    public_members(org: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    public_members(org: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: users;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Check public membership.
      * @since v3
@@ -624,13 +894,21 @@ export interface Service {
      * @param org - Name of organisation.
      * @param username - Name of the user.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - User is a public member.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - User is a public member.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - User is not a public member.
+     * @return 404|application/json - User is not a public member.
      */
-    public_members(org: Http.Path<string>, username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', none, 'application/json'>;
+    public_members(org: string, username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Publicize a user's membership.
      * @since v3
@@ -638,12 +916,17 @@ export interface Service {
      * @param org - Name of organisation.
      * @param username - Name of the user.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Publicized.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Publicized.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    public_members(org: Http.Path<string>, username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    public_members(org: string, username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Conceal a user's membership.
      * @since v3
@@ -651,24 +934,35 @@ export interface Service {
      * @param org - Name of organisation.
      * @param username - Name of the user.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Concealed.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Concealed.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    public_members(org: Http.Path<string>, username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    public_members(org: string, username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List repositories for the specified org.
      * @since v3
      * @http GET /orgs/{org}/repos
      * @param org - Name of organisation.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repos(org: Http.Path<string>, type?: Http.Query<"all" | "public" | "private" | "forks" | "sources" | "member">, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    repos(org: string, type?: Query<"all" | "public" | "private" | "forks" | "sources" | "member">, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: repos;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a new repository for the authenticated user. OAuth users must supply
      * repo scope.
@@ -677,24 +971,36 @@ export interface Service {
      * @http POST /orgs/{org}/repos
      * @param org - Name of organisation.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repos(org: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<postRepo, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    repos(org: string, Accept?: Header<string>, body: Body<postRepo, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: repos;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List teams.
      * @since v3
      * @http GET /orgs/{org}/teams
      * @param org - Name of organisation.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    teams(org: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    teams(org: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: teams;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create team.
      * In order to create a team, the authenticated user must be an owner of organization.
@@ -703,12 +1009,18 @@ export interface Service {
      * @http POST /orgs/{org}/teams
      * @param org - Name of organisation.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    teams(org: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<orgTeamsPost, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    teams(org: string, Accept?: Header<string>, body: Body<orgTeamsPost, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: team;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get your current rate limit status
      * Note: Accessing this endpoint does not count against your rate limit.
@@ -716,12 +1028,18 @@ export interface Service {
      * @since v3
      * @http GET /rate_limit
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    rate_limit(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    rate_limit(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: rate_limit;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get repository.
      * @since v3
@@ -729,12 +1047,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repos(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    repos(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: repo;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a Repository.
      * Deleting a repository requires admin access. If OAuth is used, the delete_repo
@@ -745,12 +1069,17 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Item removed.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Item removed.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repos(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    repos(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Edit repository.
      * @since v3
@@ -758,12 +1087,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repos(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<repoEdit, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    repos(owner: string, repo: string, Accept?: Header<string>, body: Body<repoEdit, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: repo;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List assignees.
      * This call lists all the available assignees (owner + collaborators) to which
@@ -774,12 +1109,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    assignees(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    assignees(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: assignees;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Check assignee.
      * You may also check to see if a particular user is an assignee for a repository.
@@ -790,13 +1131,21 @@ export interface Service {
      * @param repo - Name of repository.
      * @param assignee - Login of the assignee.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - User is an assignee.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - User is an assignee.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - User isn't an assignee.
+     * @return 404|application/json - User isn't an assignee.
      */
-    assignees(owner: Http.Path<string>, repo: Http.Path<string>, assignee: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', none, 'application/json'>;
+    assignees(owner: string, repo: string, assignee: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get list of branches
      * @since v3
@@ -804,12 +1153,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    branches(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    branches(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: branches;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get Branch
      * @since v3
@@ -818,12 +1173,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param branch - Name of the branch.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    branches(owner: Http.Path<string>, repo: Http.Path<string>, branch: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    branches(owner: string, repo: string, branch: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: branch;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List.
      * When authenticating as an organization owner of an organization-owned
@@ -836,12 +1197,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    collaborators(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    collaborators(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: users;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Check if user is a collaborator
      * @since v3
@@ -850,13 +1217,21 @@ export interface Service {
      * @param repo - Name of repository.
      * @param user - Login of the user.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - User is a collaborator.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - User is a collaborator.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - User is not a collaborator.
+     * @return 404|application/json - User is not a collaborator.
      */
-    collaborators(owner: Http.Path<string>, repo: Http.Path<string>, user: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', none, 'application/json'>;
+    collaborators(owner: string, repo: string, user: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Add collaborator.
      * @since v3
@@ -865,12 +1240,17 @@ export interface Service {
      * @param repo - Name of repository.
      * @param user - Login of the user.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Collaborator added.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Collaborator added.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    collaborators(owner: Http.Path<string>, repo: Http.Path<string>, user: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    collaborators(owner: string, repo: string, user: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Remove collaborator.
      * @since v3
@@ -879,12 +1259,17 @@ export interface Service {
      * @param repo - Name of repository.
      * @param user - Login of the user.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Collaborator removed.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Collaborator removed.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    collaborators(owner: Http.Path<string>, repo: Http.Path<string>, user: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    collaborators(owner: string, repo: string, user: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List commit comments for a repository.
      * Comments are ordered by ascending ID.
@@ -894,12 +1279,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: repoComments;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single commit comment.
      * @since v3
@@ -908,12 +1299,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param commentId - Id of comment.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, commentId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, commentId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: commitComment;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a commit comment
      * @since v3
@@ -922,13 +1319,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param commentId - Id of comment.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, commentId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, commentId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Update a commit comment.
      * @since v3
@@ -937,12 +1339,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param commentId - Id of comment.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, commentId: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<commentBody, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, commentId: int64, Accept?: Header<string>, body: Body<commentBody, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: commitComment;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List commits on a repository.
      * @since v3
@@ -957,12 +1365,18 @@ export interface Service {
      * @param author - GitHub login, name, or email by which to filter by commit author.
      * @param until - ISO 8601 Date - Only commits before this date will be returned.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    commits(owner: Http.Path<string>, repo: Http.Path<string>, since?: Http.Query<string>, sha?: Http.Query<string>, path?: Http.Query<string>, author?: Http.Query<string>, until?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    commits(owner: string, repo: string, since?: Query<string>, sha?: Query<string>, path?: Query<string>, author?: Query<string>, until?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: commits;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get the combined Status for a specific Ref
      * The Combined status endpoint is currently available for developers to preview. During the preview period, the API may change without advance notice. Please see the blog post for full details.
@@ -974,12 +1388,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    status(owner: Http.Path<string>, repo: Http.Path<string>, ref: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    status(owner: string, repo: string, ref: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: refStatus;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single commit.
      * @since v3
@@ -988,12 +1408,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param shaCode - SHA-1 code of the commit.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    commits(owner: Http.Path<string>, repo: Http.Path<string>, shaCode: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    commits(owner: string, repo: string, shaCode: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: commit;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List comments for a single commitList comments for a single commit.
      * @since v3
@@ -1002,12 +1428,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param shaCode - SHA-1 code of the commit.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, shaCode: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, shaCode: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: repoComments;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a commit comment.
      * @since v3
@@ -1016,12 +1448,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param shaCode - SHA-1 code of the commit.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, shaCode: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<commitCommentBody, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, shaCode: string, Accept?: Header<string>, body: Body<commitCommentBody, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: commitComment;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Compare two commits
      * @since v3
@@ -1029,12 +1467,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    '...'(owner: Http.Path<string>, repo: Http.Path<string>, baseId: Http.Path<string>, headId: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    '...'(owner: string, repo: string, baseId: string, headId: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: compare_commits;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get contents.
      * This method returns the contents of a file or directory in a repository.
@@ -1050,12 +1494,18 @@ export interface Service {
      * @param path - The content path.
      * @param ref - The String name of the Commit/Branch/Tag. Defaults to 'master'.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    contents(owner: Http.Path<string>, repo: Http.Path<string>, path: Http.Path<string>, path?: Http.Query<string>, ref?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    contents(owner: string, repo: string, path: string, path?: Query<string>, ref?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: contents_path;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a file.
      * @since v3
@@ -1063,12 +1513,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    contents(owner: Http.Path<string>, repo: Http.Path<string>, path: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<createFileBody, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    contents(owner: string, repo: string, path: string, Accept?: Header<string>, body: Body<createFileBody, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: createFile;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a file.
      * This method deletes a file in a repository.
@@ -1078,12 +1534,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    contents(owner: Http.Path<string>, repo: Http.Path<string>, path: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<deleteFileBody, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    contents(owner: string, repo: string, path: string, Accept?: Header<string>, body: Body<deleteFileBody, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: deleteFile;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get list of contributors.
      * @since v3
@@ -1092,12 +1554,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param anon - Set to 1 or true to include anonymous contributors in results.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    contributors(owner: Http.Path<string>, repo: Http.Path<string>, anon: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    contributors(owner: string, repo: string, anon: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: users;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Users with pull access can view deployments for a repository
      * @since v3
@@ -1105,12 +1573,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    deployments(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    deployments(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: repo_deployments;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Users with push access can create a deployment for a given ref
      * @since v3
@@ -1118,12 +1592,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    deployments(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<deployment, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    deployments(owner: string, repo: string, Accept?: Header<string>, body: Body<deployment, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: deployment_resp;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Users with pull access can view deployment statuses for a deployment
      * @since v3
@@ -1132,12 +1612,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param id - The Deployment ID to list the statuses from.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    statuses(owner: Http.Path<string>, repo: Http.Path<string>, id: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    statuses(owner: string, repo: string, id: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: deployment_statuses;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a Deployment Status
      * Users with push access can create deployment statuses for a given deployment:
@@ -1148,12 +1634,17 @@ export interface Service {
      * @param repo - Name of repository.
      * @param id - The Deployment ID to list the statuses from.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - ok
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - ok
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    statuses(owner: Http.Path<string>, repo: Http.Path<string>, id: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<deployment_statuses_create, 'application/json'>): Http.Response<'201', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    statuses(owner: string, repo: string, id: int64, Accept?: Header<string>, body: Body<deployment_statuses_create, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Deprecated. List downloads for a repository.
      * @since v3
@@ -1162,12 +1653,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    downloads(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    downloads(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: downloads;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Deprecated. Get a single download.
      * @since v3
@@ -1177,12 +1674,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param downloadId - Id of download.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    downloads(owner: Http.Path<string>, repo: Http.Path<string>, downloadId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    downloads(owner: string, repo: string, downloadId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: download;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Deprecated. Delete a download.
      * @since v3
@@ -1192,13 +1695,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param downloadId - Id of download.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    downloads(owner: Http.Path<string>, repo: Http.Path<string>, downloadId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    downloads(owner: string, repo: string, downloadId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get list of repository events.
      * @since v3
@@ -1206,12 +1714,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    events(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    events(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: events;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List forks.
      * @since v3
@@ -1219,12 +1733,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    forks(owner: Http.Path<string>, repo: Http.Path<string>, sort?: Http.Query<"newes" | "oldes" | "watchers">, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    forks(owner: string, repo: string, sort?: Query<"newes" | "oldes" | "watchers">, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: forks;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a fork.
      * Forking a Repository happens asynchronously. Therefore, you may have to wai
@@ -1236,12 +1756,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    forks(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<forkBody, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    forks(owner: string, repo: string, Accept?: Header<string>, body: Body<forkBody, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: repo;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a Blob.
      * @since v3
@@ -1249,12 +1775,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    blobs(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<blob, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    blobs(owner: string, repo: string, Accept?: Header<string>, body: Body<blob, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: blobs;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a Blob.
      * Since blobs can be any arbitrary binary data, the input and responses for
@@ -1268,12 +1800,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param shaCode - SHA-1 code.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    blobs(owner: Http.Path<string>, repo: Http.Path<string>, shaCode: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    blobs(owner: string, repo: string, shaCode: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: blob;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a Commit.
      * @since v3
@@ -1281,12 +1819,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    commits(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<repoCommitBody, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    commits(owner: string, repo: string, Accept?: Header<string>, body: Body<repoCommitBody, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: gitCommit;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a Commit.
      * @since v3
@@ -1295,12 +1839,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param shaCode - SHA-1 code.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    commits(owner: Http.Path<string>, repo: Http.Path<string>, shaCode: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    commits(owner: string, repo: string, shaCode: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: repoCommit;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get all References
      * @since v3
@@ -1308,12 +1858,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    refs(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    refs(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: refs;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a Reference
      * @since v3
@@ -1321,12 +1877,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    refs(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<refsBody, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    refs(owner: string, repo: string, Accept?: Header<string>, body: Body<refsBody, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: headBranch;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a Reference
      * @since v3
@@ -1334,12 +1896,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    refs(owner: Http.Path<string>, repo: Http.Path<string>, ref: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    refs(owner: string, repo: string, ref: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: headBranch;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a Reference
      * Example: Deleting a branch: DELETE /repos/octocat/Hello-World/git/refs/heads/feature-a
@@ -1350,12 +1918,17 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No Content
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - No Content
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    refs(owner: Http.Path<string>, repo: Http.Path<string>, ref: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    refs(owner: string, repo: string, ref: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Update a Reference
      * @since v3
@@ -1363,12 +1936,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    refs(owner: Http.Path<string>, repo: Http.Path<string>, ref: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<gitRefPatch, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    refs(owner: string, repo: string, ref: string, Accept?: Header<string>, body: Body<gitRefPatch, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: headBranch;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a Tag Object.
      * Note that creating a tag object does not create the reference that makes a
@@ -1382,12 +1961,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    tags(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<tagBody, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    tags(owner: string, repo: string, Accept?: Header<string>, body: Body<tagBody, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: tag;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a Tag.
      * @since v3
@@ -1395,12 +1980,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    tags(owner: Http.Path<string>, repo: Http.Path<string>, shaCode: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    tags(owner: string, repo: string, shaCode: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: tag;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a Tree.
      * The tree creation API will take nested entries as well. If both a tree and
@@ -1412,12 +2003,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    trees(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<tree, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    trees(owner: string, repo: string, Accept?: Header<string>, body: Body<tree, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: trees;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a Tree.
      * @since v3
@@ -1427,12 +2024,18 @@ export interface Service {
      * @param shaCode - Tree SHA.
      * @param recursive - Get a Tree Recursively. (0 or 1)
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    trees(owner: Http.Path<string>, repo: Http.Path<string>, shaCode: Http.Path<string>, recursive?: Http.Query<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    trees(owner: string, repo: string, shaCode: string, recursive?: Query<int64>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: tree;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get list of hooks.
      * @since v3
@@ -1440,12 +2043,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    hooks(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    hooks(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: hook;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a hook.
      * @since v3
@@ -1453,12 +2062,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    hooks(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<hookBody, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    hooks(owner: string, repo: string, Accept?: Header<string>, body: Body<hookBody, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: hook;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get single hook.
      * @since v3
@@ -1467,12 +2082,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param hookId - Id of hook.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    hooks(owner: Http.Path<string>, repo: Http.Path<string>, hookId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    hooks(owner: string, repo: string, hookId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: hook;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a hook.
      * @since v3
@@ -1481,13 +2102,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param hookId - Id of hook.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    hooks(owner: Http.Path<string>, repo: Http.Path<string>, hookId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    hooks(owner: string, repo: string, hookId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Edit a hook.
      * @since v3
@@ -1496,12 +2122,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param hookId - Id of hook.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    hooks(owner: Http.Path<string>, repo: Http.Path<string>, hookId: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<hookBody, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    hooks(owner: string, repo: string, hookId: int64, Accept?: Header<string>, body: Body<hookBody, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: hook;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Test a push hook.
      * This will trigger the hook with the latest push to the current repository
@@ -1516,12 +2148,17 @@ export interface Service {
      * @param repo - Name of repository.
      * @param hookId - Id of hook.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Hook is triggered.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Hook is triggered.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    tests(owner: Http.Path<string>, repo: Http.Path<string>, hookId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    tests(owner: string, repo: string, hookId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List issues for a repository.
      * @since v3
@@ -1536,12 +2173,18 @@ export interface Service {
      * Only issues updated at or after this time are returned.
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    issues(owner: Http.Path<string>, repo: Http.Path<string>, filter: Http.Query<"assigned" | "created" | "mentioned" | "subscribed" | "all">, state: Http.Query<"open" | "closed">, labels: Http.Query<string>, sort: Http.Query<"created" | "updated" | "comments">, direction: Http.Query<"asc" | "desc">, since?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    issues(owner: string, repo: string, filter: Query<"assigned" | "created" | "mentioned" | "subscribed" | "all">, state: Query<"open" | "closed">, labels: Query<string>, sort: Query<"created" | "updated" | "comments">, direction: Query<"asc" | "desc">, since?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issues;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create an issue.
      * Any user with pull access to a repository can create an issue.
@@ -1551,12 +2194,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    issues(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<issue, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    issues(owner: string, repo: string, Accept?: Header<string>, body: Body<issue, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: issue;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List comments in a repository.
      * @since v3
@@ -1568,12 +2217,18 @@ export interface Service {
      * Example: "2012-10-09T23:39:01Z".
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, direction?: Http.Query<string>, sort?: Http.Query<"created" | "updated">, since?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, direction?: Query<string>, sort?: Query<"created" | "updated">, since?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issuesComments;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single comment.
      * @since v3
@@ -1582,12 +2237,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param commentId - ID of comment.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, commentId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, commentId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issuesComment;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a comment.
      * @since v3
@@ -1596,13 +2257,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param commentId - ID of comment.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, commentId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, commentId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Edit a comment.
      * @since v3
@@ -1611,12 +2277,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param commentId - ID of comment.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, commentId: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<commentBody, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, commentId: int64, Accept?: Header<string>, body: Body<commentBody, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issuesComment;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List issue events for a repository.
      * @since v3
@@ -1624,12 +2296,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    events(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    events(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issueEvents;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single event.
      * @since v3
@@ -1638,12 +2316,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param eventId - Id of the event.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    events(owner: Http.Path<string>, repo: Http.Path<string>, eventId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    events(owner: string, repo: string, eventId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issueEvent;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single issue
      * @since v3
@@ -1652,12 +2336,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Number of issue.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    issues(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    issues(owner: string, repo: string, number: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issue;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Edit an issue.
      * Issue owners and users with push access can edit an issue.
@@ -1668,12 +2358,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Number of issue.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    issues(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<issue, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    issues(owner: string, repo: string, number: int64, Accept?: Header<string>, body: Body<issue, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issue;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List comments on an issue.
      * @since v3
@@ -1682,12 +2378,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Number of issue.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, number: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issuesComments;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a comment.
      * @since v3
@@ -1696,12 +2398,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Number of issue.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<commentBody, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, number: int64, Accept?: Header<string>, body: Body<commentBody, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: issuesComment;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List events for an issue.
      * @since v3
@@ -1710,12 +2418,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Number of issue.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    events(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    events(owner: string, repo: string, number: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issueEvents;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List labels on an issue.
      * @since v3
@@ -1724,12 +2438,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Number of issue.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    labels(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    labels(owner: string, repo: string, number: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: labels;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Replace all labels for an issue.
      * Sending an empty array ([]) will remove all Labels from the Issue.
@@ -1740,12 +2460,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Number of issue.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    labels(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<emailsPost, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    labels(owner: string, repo: string, number: int64, Accept?: Header<string>, body: Body<emailsPost, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: label;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Add labels to an issue.
      * @since v3
@@ -1754,12 +2480,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Number of issue.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    labels(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<emailsPost, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    labels(owner: string, repo: string, number: int64, Accept?: Header<string>, body: Body<emailsPost, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: label;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Remove all labels from an issue.
      * @since v3
@@ -1768,13 +2500,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Number of issue.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    labels(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    labels(owner: string, repo: string, number: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Remove a label from an issue.
      * @since v3
@@ -1784,12 +2521,17 @@ export interface Service {
      * @param number - Number of issue.
      * @param name - Name of the label.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Item removed.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Item removed.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    labels(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, name: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    labels(owner: string, repo: string, number: int64, name: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get list of keys.
      * @since v3
@@ -1797,12 +2539,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    keys(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    keys(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: keys;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a key.
      * @since v3
@@ -1810,12 +2558,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    keys(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<user_keys_post, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    keys(owner: string, repo: string, Accept?: Header<string>, body: Body<user_keys_post, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: user_keys_keyId;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a key
      * @since v3
@@ -1824,12 +2578,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param keyId - Id of key.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    keys(owner: Http.Path<string>, repo: Http.Path<string>, keyId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    keys(owner: string, repo: string, keyId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: user_keys_keyId;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a key.
      * @since v3
@@ -1838,13 +2598,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param keyId - Id of key.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    keys(owner: Http.Path<string>, repo: Http.Path<string>, keyId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    keys(owner: string, repo: string, keyId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List all labels for this repository.
      * @since v3
@@ -1852,12 +2617,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    labels(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    labels(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: labels;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a label.
      * @since v3
@@ -1865,12 +2636,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    labels(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<emailsPost, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    labels(owner: string, repo: string, Accept?: Header<string>, body: Body<emailsPost, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: label;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single label.
      * @since v3
@@ -1879,12 +2656,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param name - Name of the label.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    labels(owner: Http.Path<string>, repo: Http.Path<string>, name: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    labels(owner: string, repo: string, name: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: label;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a label.
      * @since v3
@@ -1893,13 +2676,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param name - Name of the label.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    labels(owner: Http.Path<string>, repo: Http.Path<string>, name: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    labels(owner: string, repo: string, name: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Update a label.
      * @since v3
@@ -1908,12 +2696,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param name - Name of the label.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    labels(owner: Http.Path<string>, repo: Http.Path<string>, name: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<emailsPost, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    labels(owner: string, repo: string, name: string, Accept?: Header<string>, body: Body<emailsPost, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: label;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List languages.
      * List languages for the specified repository. The value on the right of a
@@ -1924,12 +2718,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    languages(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    languages(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: languages;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Perform a merge.
      * @since v3
@@ -1937,15 +2737,31 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Successful Response (The resulting merge commit)
-     * @return 204 - No-op response (base already contains the head, nothing to merge)
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Successful Response (The resulting merge commit)
+     * @return 204|application/json - No-op response (base already contains the head, nothing to merge)
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - Missing base response or missing head response
-     * @return 409 - Merge conflict response.
+     * @return 404|application/json - Missing base response or missing head response
+     * @return 409|application/json - Merge conflict response.
      */
-    merges(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<mergesBody, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', [object, Object], 'application/json'> | Http.Response<'409', [object, Object], 'application/json'>;
+    merges(owner: string, repo: string, Accept?: Header<string>, body: Body<mergesBody, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: mergesSuccessful;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        body: mergesConflict;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 409, mediaType: "application/json") => {
+        body: mergesConflict;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List milestones for a repository.
      * @since v3
@@ -1955,12 +2771,18 @@ export interface Service {
      * @param state - String to filter by state.
      * @param direction - Ignored without 'sort' parameter.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    milestones(owner: Http.Path<string>, repo: Http.Path<string>, state?: Http.Query<"open" | "closed">, direction?: Http.Query<string>, sort?: Http.Query<"due_date" | "completeness">, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    milestones(owner: string, repo: string, state?: Query<"open" | "closed">, direction?: Query<string>, sort?: Query<"due_date" | "completeness">, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: milestone;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a milestone.
      * @since v3
@@ -1968,12 +2790,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    milestones(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<milestoneUpdate, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    milestones(owner: string, repo: string, Accept?: Header<string>, body: Body<milestoneUpdate, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: milestone;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single milestone.
      * @since v3
@@ -1982,12 +2810,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Number of milestone.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    milestones(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    milestones(owner: string, repo: string, number: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: milestone;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a milestone.
      * @since v3
@@ -1996,13 +2830,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Number of milestone.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    milestones(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    milestones(owner: string, repo: string, number: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Update a milestone.
      * @since v3
@@ -2011,12 +2850,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Number of milestone.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    milestones(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<milestoneUpdate, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    milestones(owner: string, repo: string, number: int64, Accept?: Header<string>, body: Body<milestoneUpdate, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: milestone;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get labels for every issue in a milestone.
      * @since v3
@@ -2025,12 +2870,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Number of milestone.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    labels(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    labels(owner: string, repo: string, number: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: labels;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List your notifications in a repository
      * List all notifications for the current user.
@@ -2047,12 +2898,18 @@ export interface Service {
      * Example: "2012-10-09T23:39:01Z".
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    notifications(owner: Http.Path<string>, repo: Http.Path<string>, all?: Http.Query<boolean>, participating?: Http.Query<boolean>, since?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    notifications(owner: string, repo: string, all?: Query<boolean>, participating?: Query<boolean>, since?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: notifications;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Mark notifications as read in a repository.
      * Marking all notifications in a repository as "read" removes them from the
@@ -2063,12 +2920,17 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 205 - Marked as read.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 205|application/json - Marked as read.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    notifications(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<notificationMarkRead, 'application/json'>): Http.Response<'205', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    notifications(owner: string, repo: string, Accept?: Header<string>, body: Body<notificationMarkRead, 'application/json'>): [(code: 205, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List pull requests.
      * @since v3
@@ -2081,12 +2943,18 @@ export interface Service {
      *
      * @param base - Filter pulls by base branch name. Example - gh-pages.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    pulls(owner: Http.Path<string>, repo: Http.Path<string>, state?: Http.Query<"open" | "closed">, head?: Http.Query<string>, base?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    pulls(owner: string, repo: string, state?: Query<"open" | "closed">, head?: Query<string>, base?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: pulls;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a pull request.
      * @since v3
@@ -2094,12 +2962,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    pulls(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<pullsPost, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    pulls(owner: string, repo: string, Accept?: Header<string>, body: Body<pullsPost, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: pulls;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List comments in a repository.
      * By default, Review Comments are ordered by ascending ID.
@@ -2113,12 +2987,18 @@ export interface Service {
      * Example: "2012-10-09T23:39:01Z".
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, direction?: Http.Query<string>, sort?: Http.Query<"created" | "updated">, since?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, direction?: Query<string>, sort?: Query<"created" | "updated">, since?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issuesComments;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single comment.
      * @since v3
@@ -2127,12 +3007,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param commentId - Id of comment.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, commentId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, commentId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: pullsComment;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a comment.
      * @since v3
@@ -2141,13 +3027,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param commentId - Id of comment.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, commentId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, commentId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Edit a comment.
      * @since v3
@@ -2156,12 +3047,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param commentId - Id of comment.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, commentId: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<commentBody, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, commentId: int64, Accept?: Header<string>, body: Body<commentBody, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: pullsComment;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single pull request.
      * @since v3
@@ -2170,12 +3067,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Id of pull.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    pulls(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    pulls(owner: string, repo: string, number: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: pullRequest;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Update a pull request.
      * @since v3
@@ -2184,12 +3087,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Id of pull.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    pulls(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<pullUpdate, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    pulls(owner: string, repo: string, number: int64, Accept?: Header<string>, body: Body<pullUpdate, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: repo;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List comments on a pull request.
      * @since v3
@@ -2198,12 +3107,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Id of pull.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, number: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: pullsComment;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a comment.
      *   #TODO Alternative input ( http://developer.github.com/v3/pulls/comments/ )
@@ -2223,12 +3138,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Id of pull.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    comments(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<pullsCommentPost, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    comments(owner: string, repo: string, number: int64, Accept?: Header<string>, body: Body<pullsCommentPost, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: pullsComment;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List commits on a pull request.
      * @since v3
@@ -2237,12 +3158,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Id of pull.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    commits(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    commits(owner: string, repo: string, number: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: commits;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List pull requests files.
      * @since v3
@@ -2251,12 +3178,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Id of pull.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    files(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    files(owner: string, repo: string, number: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: pulls;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get if a pull request has been merged.
      * @since v3
@@ -2265,13 +3198,21 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Id of pull.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Pull request has been merged.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Pull request has been merged.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - Pull request has not been merged.
+     * @return 404|application/json - Pull request has not been merged.
      */
-    merge(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', none, 'application/json'>;
+    merge(owner: string, repo: string, number: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Merge a pull request (Merge Button's)
      * @since v3
@@ -2280,13 +3221,23 @@ export interface Service {
      * @param repo - Name of repository.
      * @param number - Id of pull.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - Response if merge was successful.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - Response if merge was successful.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 405 - Response if merge cannot be performed.
+     * @return 405|application/json - Response if merge cannot be performed.
      */
-    merge(owner: Http.Path<string>, repo: Http.Path<string>, number: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<mergePullBody, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'405', [object, Object], 'application/json'>;
+    merge(owner: string, repo: string, number: int64, Accept?: Header<string>, body: Body<mergePullBody, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: merge;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 405, mediaType: "application/json") => {
+        body: merge;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get the README.
      * This method returns the preferred README for a repository.
@@ -2297,12 +3248,18 @@ export interface Service {
      * @param repo - Name of repository.
      * @param ref - The String name of the Commit/Branch/Tag. Defaults to master.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    readme(owner: Http.Path<string>, repo: Http.Path<string>, ref?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    readme(owner: string, repo: string, ref?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: contents_path;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Users with push access to the repository will receive all releases (i.e., published releases and draft releases). Users with pull access will receive published releases only
      * @since v3
@@ -2310,12 +3267,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    releases(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    releases(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: releases;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a release
      * Users with push access to the repository can create a release.
@@ -2325,12 +3288,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    releases(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<release_create, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    releases(owner: string, repo: string, Accept?: Header<string>, body: Body<release_create, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: release;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single release asset
      * @since v3
@@ -2338,12 +3307,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    assets(owner: Http.Path<string>, repo: Http.Path<string>, id: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    assets(owner: string, repo: string, id: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: asset;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a release asset
      * @since v3
@@ -2351,12 +3326,17 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No Content
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - No Content
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    assets(owner: Http.Path<string>, repo: Http.Path<string>, id: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    assets(owner: string, repo: string, id: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Edit a release asset
      * Users with push access to the repository can edit a release asset.
@@ -2366,12 +3346,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    assets(owner: Http.Path<string>, repo: Http.Path<string>, id: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<assetPatch, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    assets(owner: string, repo: string, id: string, Accept?: Header<string>, body: Body<assetPatch, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: asset;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single release
      * @since v3
@@ -2379,12 +3365,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    releases(owner: Http.Path<string>, repo: Http.Path<string>, id: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    releases(owner: string, repo: string, id: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: release;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Users with push access to the repository can delete a release.
      * @since v3
@@ -2392,12 +3384,17 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No Content
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - No Content
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    releases(owner: Http.Path<string>, repo: Http.Path<string>, id: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    releases(owner: string, repo: string, id: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Users with push access to the repository can edit a release
      * @since v3
@@ -2405,12 +3402,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    releases(owner: Http.Path<string>, repo: Http.Path<string>, id: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<release_create, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    releases(owner: string, repo: string, id: string, Accept?: Header<string>, body: Body<release_create, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: release;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List assets for a release
      * @since v3
@@ -2418,12 +3421,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    assets(owner: Http.Path<string>, repo: Http.Path<string>, id: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    assets(owner: string, repo: string, id: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: assets;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List Stargazers.
      * @since v3
@@ -2431,12 +3440,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    stargazers(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    stargazers(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: users;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get the number of additions and deletions per week.
      * Returns a weekly aggregate of the number of additions and deletions pushed
@@ -2447,12 +3462,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    code_frequency(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    code_frequency(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: codeFrequencyStats;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get the last year of commit activity data.
      * Returns the last year of commit activity grouped by week. The days array
@@ -2463,12 +3484,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    commit_activity(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    commit_activity(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: commitActivityStats;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get contributors list with additions, deletions, and commit counts.
      * @since v3
@@ -2476,12 +3503,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    contributors(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    contributors(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: contributorsStats;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get the weekly commit count for the repo owner and everyone else.
      * @since v3
@@ -2489,12 +3522,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    participation(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    participation(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: participationStats;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get the number of commits per hour in each day.
      * Each array contains the day number, hour number, and number of commits
@@ -2511,12 +3550,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    punch_card(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    punch_card(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: codeFrequencyStats;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List Statuses for a specific Ref.
      * @since v3
@@ -2526,12 +3571,18 @@ export interface Service {
      * @param ref - Ref to list the statuses from. It can be a SHA, a branch name, or a tag name.
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    statuses(owner: Http.Path<string>, repo: Http.Path<string>, ref: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    statuses(owner: string, repo: string, ref: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: ref;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a Status.
      * @since v3
@@ -2541,12 +3592,18 @@ export interface Service {
      * @param ref - Ref to list the statuses from. It can be a SHA, a branch name, or a tag name.
      *
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    statuses(owner: Http.Path<string>, repo: Http.Path<string>, ref: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<headBranch, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    statuses(owner: string, repo: string, ref: string, Accept?: Header<string>, body: Body<headBranch, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: ref;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List watchers.
      * @since v3
@@ -2554,12 +3611,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    subscribers(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    subscribers(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: users;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a Repository Subscription.
      * @since v3
@@ -2567,12 +3630,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    subscription(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    subscription(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: subscription;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Set a Repository Subscription
      * @since v3
@@ -2580,12 +3649,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    subscription(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body: Http.Body<subscriptionBody, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    subscription(owner: string, repo: string, Accept?: Header<string>, body: Body<subscriptionBody, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: subscription;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a Repository Subscription.
      * @since v3
@@ -2593,13 +3668,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    subscription(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    subscription(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get list of tags.
      * @since v3
@@ -2607,12 +3687,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    tags(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    tags(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: tags;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get list of teams
      * @since v3
@@ -2620,12 +3706,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    teams(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    teams(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: teams;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List Stargazers. New implementation.
      * @since v3
@@ -2633,12 +3725,18 @@ export interface Service {
      * @param owner - Name of repository owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    watchers(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    watchers(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: users;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get archive link.
      * This method will return a 302 to a URL to download a tarball or zipball
@@ -2653,12 +3751,17 @@ export interface Service {
      * @param repo - Name of repository.
      * @param path - Valid Git reference, defaults to 'master'.
      * @param Accept - Is used to set specified media type.
-     * @return 302 - Found.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 302|application/json - Found.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repos(owner: Http.Path<string>, repo: Http.Path<string>, archive_format: Http.Path<"tarball" | "zipball">, path: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'302', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    repos(owner: string, repo: string, archive_format: "tarball" | "zipball", path: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 302, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List all public repositories.
      * This provides a dump of every public repository, in the order that they
@@ -2672,12 +3775,18 @@ export interface Service {
      * Example: "2012-10-09T23:39:01Z".
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repositories(since?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    repositories(since?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: repos;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Search code.
      * @since v3
@@ -2702,12 +3811,18 @@ export interface Service {
      * by best match.
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    code(order?: Http.Query<"desc" | "asc">, q: Http.Query<string>, sort?: Http.Query<"indexed">, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    code(order?: Query<"desc" | "asc">, q: Query<string>, sort?: Query<"indexed">, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: search_code;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Find issues by state and keyword. (This method returns up to 100 results per page.)
      * @since v3
@@ -2716,12 +3831,18 @@ export interface Service {
      * @param q - The q search term can also contain any combination of the supported issue search qualifiers:
      * @param sort - The sort field. Can be comments, created, or updated. Default: results are sorted by best match.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    issues(order?: Http.Query<"desc" | "asc">, q: Http.Query<string>, sort?: Http.Query<"updated" | "created" | "comments">, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    issues(order?: Query<"desc" | "asc">, q: Query<string>, sort?: Query<"updated" | "created" | "comments">, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: search_issues;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Search repositories.
      * @since v3
@@ -2743,12 +3864,18 @@ export interface Service {
      *
      * @param sort - If not provided, results are sorted by best match.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repositories(order?: Http.Query<"desc" | "asc">, q: Http.Query<string>, sort?: Http.Query<"stars" | "forks" | "updated">, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    repositories(order?: Query<"desc" | "asc">, q: Query<string>, sort?: Query<"stars" | "forks" | "updated">, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: search_repositories;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Search users.
      * @since v3
@@ -2769,24 +3896,36 @@ export interface Service {
      *
      * @param sort - If not provided, results are sorted by best match.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    users(order?: Http.Query<"desc" | "asc">, q: Http.Query<string>, sort?: Http.Query<"followers" | "repositories" | "joined">, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    users(order?: Query<"desc" | "asc">, q: Query<string>, sort?: Query<"followers" | "repositories" | "joined">, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: search_users;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get team.
      * @since v3
      * @http GET /teams/{teamId}
      * @param teamId - Id of team.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    teams(teamId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    teams(teamId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: team;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete team.
      * In order to delete a team, the authenticated user must be an owner of the
@@ -2796,13 +3935,18 @@ export interface Service {
      * @http DELETE /teams/{teamId}
      * @param teamId - Id of team.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    teams(teamId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    teams(teamId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Edit team.
      * In order to edit a team, the authenticated user must be an owner of the org
@@ -2812,12 +3956,18 @@ export interface Service {
      * @http PATCH /teams/{teamId}
      * @param teamId - Id of team.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    teams(teamId: Http.Path<int64>, Accept?: Http.Header<string>, body: Http.Body<editTeam, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    teams(teamId: int64, Accept?: Header<string>, body: Body<editTeam, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: team;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List team members.
      * In order to list members in a team, the authenticated user must be a member
@@ -2827,12 +3977,18 @@ export interface Service {
      * @http GET /teams/{teamId}/members
      * @param teamId - Id of team.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    members(teamId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    members(teamId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: users;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description The "Get team member" API is deprecated and is scheduled for removal in the next major version of the API. We recommend using the Get team membership API instead. It allows you to get both active and pending memberships.
      *
@@ -2846,13 +4002,21 @@ export interface Service {
      * @param teamId - Id of team.
      * @param username - Name of a member.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - User is a member.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - User is a member.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - User is not a member.
+     * @return 404|application/json - User is not a member.
      */
-    members(teamId: Http.Path<int64>, username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', none, 'application/json'>;
+    members(teamId: int64, username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description The API (described below) is deprecated and is scheduled for removal in the next major version of the API. We recommend using the Add team membership API instead. It allows you to invite new organization members to your teams.
      *
@@ -2867,13 +4031,22 @@ export interface Service {
      * @param teamId - Id of team.
      * @param username - Name of a member.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Team member added.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Team member added.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 422 - If you attempt to add an organization to a team, you will get this.
+     * @return 422|application/json - If you attempt to add an organization to a team, you will get this.
      */
-    members(teamId: Http.Path<int64>, username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'422', [object, Object], 'application/json'>;
+    members(teamId: int64, username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 422, mediaType: "application/json") => {
+        body: organizationAsTeamMember;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description The "Remove team member" API is deprecated and is scheduled for removal in the next major version of the API. We recommend using the Remove team membership API instead. It allows you to remove both active and pending memberships.
      *
@@ -2889,12 +4062,17 @@ export interface Service {
      * @param teamId - Id of team.
      * @param username - Name of a member.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Team member removed.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Team member removed.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    members(teamId: Http.Path<int64>, username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    members(teamId: int64, username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get team membership.
      * In order to get a user's membership with a team, the authenticated user must be a member of the team or an owner of the team's organization.
@@ -2904,13 +4082,22 @@ export interface Service {
      * @param teamId - Id of team.
      * @param username - Name of a member.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - User is a member.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - User is a member.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - User has no membership with team
+     * @return 404|application/json - User has no membership with team
      */
-    memberships(teamId: Http.Path<int64>, username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', none, 'application/json'>;
+    memberships(teamId: int64, username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: teamMembership;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Add team membership.
      * In order to add a membership between a user and a team, the authenticated user must have 'admin' permissions to the team or be an owner of the organization that the team is associated with.
@@ -2924,13 +4111,23 @@ export interface Service {
      * @param teamId - Id of team.
      * @param username - Name of a member.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - Team member added.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - Team member added.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 422 - If you attempt to add an organization to a team, you will get this.
+     * @return 422|application/json - If you attempt to add an organization to a team, you will get this.
      */
-    memberships(teamId: Http.Path<int64>, username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'422', [object, Object], 'application/json'>;
+    memberships(teamId: int64, username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: teamMembership;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 422, mediaType: "application/json") => {
+        body: organizationAsTeamMember;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Remove team membership.
      * In order to remove a membership between a user and a team, the authenticated user must have 'admin' permissions to the team or be an owner of the organization that the team is associated with. NOTE: This does not delete the user, it just removes their membership from the team.
@@ -2940,24 +4137,35 @@ export interface Service {
      * @param teamId - Id of team.
      * @param username - Name of a member.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Team member removed.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Team member removed.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    memberships(teamId: Http.Path<int64>, username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    memberships(teamId: int64, username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List team repos
      * @since v3
      * @http GET /teams/{teamId}/repos
      * @param teamId - Id of team.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repos(teamId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    repos(teamId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: teamRepos;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Check if a team manages a repository
      * @since v3
@@ -2966,11 +4174,14 @@ export interface Service {
      * @param owner - Name of a repository owner.
      * @param repo - Name of a repository.
      * @param Accept - Is used to set specified media type.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repos(teamId: Http.Path<int64>, owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'403', none, 'application/json'>;
+    repos(teamId: int64, owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description In order to add a repository to a team, the authenticated user must be an owner of the org that the team is associated with. Also, the repository must be owned by the organization, or a direct fork of a repository owned by the organization.
      * @since v3
@@ -2979,11 +4190,14 @@ export interface Service {
      * @param owner - Name of a organization.
      * @param repo - Name of a repository.
      * @param Accept - Is used to set specified media type.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repos(teamId: Http.Path<int64>, owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'403', none, 'application/json'>;
+    repos(teamId: int64, owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description In order to remove a repository from a team, the authenticated user must be an owner of the org that the team is associated with. NOTE: This does not delete the repository, it just removes it from the team.
      * @since v3
@@ -2992,35 +4206,52 @@ export interface Service {
      * @param owner - Name of a repository owner.
      * @param repo - Name of a repository.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repos(teamId: Http.Path<int64>, owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    repos(teamId: int64, owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get the authenticated user.
      * @since v3
      * @http GET /user
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    user(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    user(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: user;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Update the authenticated user.
      * @since v3
      * @http PATCH /user
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    user(Accept?: Http.Header<string>, body: Http.Body<user_update, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    user(Accept?: Header<string>, body: Body<user_update, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: user;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List email addresses for a user.
      * In the final version of the API, this method will return an array of hashes
@@ -3032,12 +4263,18 @@ export interface Service {
      * @since v3
      * @http GET /user/emails
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/vnd.github.v3 - OK
+     * @return 403|application/vnd.github.v3 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    emails(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/vnd.github.v3'> | Http.Response<'403', none, 'application/vnd.github.v3'>;
+    emails(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/vnd.github.v3") => {
+        body: user_emails;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/vnd.github.v3") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Add email address(es).
      * You can post a single email address or an array of addresses.
@@ -3045,11 +4282,14 @@ export interface Service {
      * @since v3
      * @http POST /user/emails
      * @param Accept - Is used to set specified media type.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    emails(Accept?: Http.Header<string>, body: Http.Body<emailsPost, 'application/json'>): Http.Response<'403', none, 'application/json'>;
+    emails(Accept?: Header<string>, body: Body<emailsPost, 'application/json'>): [(code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete email address(es).
      * You can include a single email address or an array of addresses.
@@ -3057,48 +4297,73 @@ export interface Service {
      * @since v3
      * @http DELETE /user/emails
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    emails(Accept?: Http.Header<string>, body: Http.Body<user_emails, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    emails(Accept?: Header<string>, body: Body<user_emails, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List the authenticated user's followers
      * @since v3
      * @http GET /user/followers
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    followers(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    followers(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: users;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List who the authenticated user is following.
      * @since v3
      * @http GET /user/following
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    following(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    following(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: users;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Check if you are following a user.
      * @since v3
      * @http GET /user/following/{username}
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Response if you are following this user.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Response if you are following this user.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - Response if you are not following this user.
+     * @return 404|application/json - Response if you are not following this user.
      */
-    following(username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', none, 'application/json'>;
+    following(username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Follow a user.
      * Following a user requires the user to be logged in and authenticated with
@@ -3108,12 +4373,17 @@ export interface Service {
      * @http PUT /user/following/{username}
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - You are now following the user.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - You are now following the user.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    following(username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    following(username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Unfollow a user.
      * Unfollowing a user requires the user to be logged in and authenticated with
@@ -3123,12 +4393,17 @@ export interface Service {
      * @http DELETE /user/following/{username}
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - User unfollowed.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - User unfollowed.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    following(username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    following(username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List issues.
      * List all issues across owned and member repositories for the authenticated
@@ -3144,12 +4419,18 @@ export interface Service {
      * Only issues updated at or after this time are returned.
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    issues(filter: Http.Query<"assigned" | "created" | "mentioned" | "subscribed" | "all">, state: Http.Query<"open" | "closed">, labels: Http.Query<string>, sort: Http.Query<"created" | "updated" | "comments">, direction: Http.Query<"asc" | "desc">, since?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    issues(filter: Query<"assigned" | "created" | "mentioned" | "subscribed" | "all">, state: Query<"open" | "closed">, labels: Query<string>, sort: Query<"created" | "updated" | "comments">, direction: Query<"asc" | "desc">, since?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: issues;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List your public keys.
      * Lists the current user's keys. Management of public keys via the API requires
@@ -3158,59 +4439,88 @@ export interface Service {
      * @since v3
      * @http GET /user/keys
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    keys(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    keys(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: gitignore;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a public key.
      * @since v3
      * @http POST /user/keys
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    keys(Accept?: Http.Header<string>, body: Http.Body<user_keys_post, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    keys(Accept?: Header<string>, body: Body<user_keys_post, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: user_keys_keyId;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single public key.
      * @since v3
      * @http GET /user/keys/{keyId}
      * @param keyId - ID of key.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    keys(keyId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    keys(keyId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: user_keys_keyId;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Delete a public key. Removes a public key. Requires that you are authenticated via Basic Auth or via OAuth with at least admin:public_key scope.
      * @since v3
      * @http DELETE /user/keys/{keyId}
      * @param keyId - ID of key.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - No content.
+     * @return 204|application/json - No content.
      *
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    keys(keyId: Http.Path<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    keys(keyId: int64, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List public and private organizations for the authenticated user.
      * @since v3
      * @http GET /user/orgs
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    orgs(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    orgs(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: gitignore;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List repositories for the authenticated user. Note that this does not include
      * repositories owned by organizations which the user can access. You can lis
@@ -3219,12 +4529,18 @@ export interface Service {
      * @since v3
      * @http GET /user/repos
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repos(type?: Http.Query<"all" | "public" | "private" | "forks" | "sources" | "member">, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    repos(type?: Query<"all" | "public" | "private" | "forks" | "sources" | "member">, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: repos;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Create a new repository for the authenticated user. OAuth users must supply
      * repo scope.
@@ -3232,24 +4548,36 @@ export interface Service {
      * @since v3
      * @http POST /user/repos
      * @param Accept - Is used to set specified media type.
-     * @return 201 - Created
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 201|application/json - Created
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repos(Accept?: Http.Header<string>, body: Http.Body<postRepo, 'application/json'>): Http.Response<'201', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    repos(Accept?: Header<string>, body: Body<postRepo, 'application/json'>): [(code: 201, mediaType: "application/json") => {
+        body: repos;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List repositories being starred by the authenticated user.
      * @since v3
      * @http GET /user/starred
      * @param direction - Ignored without 'sort' parameter.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    starred(direction?: Http.Query<string>, sort?: Http.Query<"created" | "updated">, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    starred(direction?: Query<string>, sort?: Query<"created" | "updated">, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: gitignore;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Check if you are starring a repository.
      * @since v3
@@ -3257,13 +4585,21 @@ export interface Service {
      * @param owner - Name of a repository owner.
      * @param repo - Name of a repository.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - This repository is starred by you.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - This repository is starred by you.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - This repository is not starred by you.
+     * @return 404|application/json - This repository is not starred by you.
      */
-    starred(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', none, 'application/json'>;
+    starred(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Star a repository.
      * @since v3
@@ -3271,12 +4607,17 @@ export interface Service {
      * @param owner - Name of a repository owner.
      * @param repo - Name of a repository.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Repository starred.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Repository starred.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    starred(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    starred(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Unstar a repository
      * @since v3
@@ -3284,23 +4625,34 @@ export interface Service {
      * @param owner - Name of a repository owner.
      * @param repo - Name of a repository.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Unstarred.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Unstarred.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    starred(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    starred(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List repositories being watched by the authenticated user.
      * @since v3
      * @http GET /user/subscriptions
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    subscriptions(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    subscriptions(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: repos;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Check if you are watching a repository.
      * @since v3
@@ -3309,13 +4661,21 @@ export interface Service {
      * @param owner - Name of the owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Repository is watched by you.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Repository is watched by you.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - Repository is not watched by you.
+     * @return 404|application/json - Repository is not watched by you.
      */
-    subscriptions(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', none, 'application/json'>;
+    subscriptions(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Watch a repository.
      * @since v3
@@ -3324,12 +4684,17 @@ export interface Service {
      * @param owner - Name of the owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Repository is watched.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Repository is watched.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    subscriptions(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    subscriptions(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Stop watching a repository
      * @since v3
@@ -3338,23 +4703,34 @@ export interface Service {
      * @param owner - Name of the owner.
      * @param repo - Name of repository.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Unwatched.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Unwatched.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    subscriptions(owner: Http.Path<string>, repo: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    subscriptions(owner: string, repo: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List all of the teams across all of the organizations to which the authenticated user belongs. This method requires user or repo scope when authenticating via OAuth.
      * @since v3
      * @http GET /user/teams
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    teams(Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    teams(Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: teams_list;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get all users.
      * This provides a dump of every user, in the order that they signed up for GitHub.
@@ -3365,58 +4741,82 @@ export interface Service {
      * @http GET /users
      * @param since - The integer ID of the last user that you've seen.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    users(since?: Http.Query<int64>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    users(since?: Query<int64>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: users;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Get a single user.
      * @since v3
      * @http GET /users/{username}
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    users(username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    users(username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: user;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description If you are authenticated as the given user, you will see your private events. Otherwise, you'll only see public events.
      * @since v3
      * @http GET /users/{username}/events
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    events(username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'403', none, 'application/json'>;
+    events(username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description This is the user's organization dashboard. You must be authenticated as the user to view this.
      * @since v3
      * @http GET /users/{username}/events/orgs/{org}
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    orgs(username: Http.Path<string>, org: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'403', none, 'application/json'>;
+    orgs(username: string, org: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List a user's followers
      * @since v3
      * @http GET /users/{username}/followers
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    followers(username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    followers(username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: users;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description Check if one user follows another.
      * @since v3
@@ -3424,13 +4824,21 @@ export interface Service {
      * @param username - Name of user.
      * @param targetUser - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 204 - Response if user follows target user.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 204|application/json - Response if user follows target user.
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
-     * @return 404 - Response if user does not follow target user.
+     * @return 404|application/json - Response if user does not follow target user.
      */
-    following(username: Http.Path<string>, targetUser: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'204', none, 'application/json'> | Http.Response<'403', none, 'application/json'> | Http.Response<'404', none, 'application/json'>;
+    following(username: string, targetUser: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 204, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }, (code: 404, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List a users gists.
      * @since v3
@@ -3440,12 +4848,18 @@ export interface Service {
      * Example: "2012-10-09T23:39:01Z".
      *
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    gists(username: Http.Path<string>, since?: Http.Query<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    gists(username: string, since?: Query<string>, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: gists;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List public keys for a user.
      * Lists the verified public keys for a user. This is accessible by anyone.
@@ -3454,78 +4868,108 @@ export interface Service {
      * @http GET /users/{username}/keys
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    keys(username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    keys(username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: gitignore;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List all public organizations for a user.
      * @since v3
      * @http GET /users/{username}/orgs
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    orgs(username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    orgs(username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: gitignore;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description These are events that you'll only see public events.
      * @since v3
      * @http GET /users/{username}/received_events
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    received_events(username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'403', none, 'application/json'>;
+    received_events(username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List public events that a user has received
      * @since v3
      * @http GET /users/{username}/received_events/public
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    public(username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'403', none, 'application/json'>;
+    public(username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List public repositories for the specified user.
      * @since v3
      * @http GET /users/{username}/repos
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 200 - OK
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 200|application/json - OK
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    repos(username: Http.Path<string>, type?: Http.Query<"all" | "public" | "private" | "forks" | "sources" | "member">, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'403', none, 'application/json'>;
+    repos(username: string, type?: Query<"all" | "public" | "private" | "forks" | "sources" | "member">, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: repos;
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+    }, (code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List repositories being starred by a user.
      * @since v3
      * @http GET /users/{username}/starred
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    starred(username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'403', none, 'application/json'>;
+    starred(username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
     /**
      * @description List repositories being watched by a user.
      * @since v3
      * @http GET /users/{username}/subscriptions
      * @param username - Name of user.
      * @param Accept - Is used to set specified media type.
-     * @return 403 - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
+     * @return 403|application/json - API rate limit exceeded. See http://developer.github.com/v3/#rate-limiting
      * for details.
      *
      */
-    subscriptions(username: Http.Path<string>, Accept?: Http.Header<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'403', none, 'application/json'>;
+    subscriptions(username: string, Accept?: Header<string>, body?: Body<file, 'application/json'>): [(code: 403, mediaType: "application/json") => {
+        headers: [Header<string, "X-GitHub-Media-Type">, Header<int64, "X-GitHub-Request-Id">, Header<int64, "X-RateLimit-Limit">, Header<int64, "X-RateLimit-Remaining">, Header<int64, "X-RateLimit-Reset">];
+        isException: true;
+    }];
 }

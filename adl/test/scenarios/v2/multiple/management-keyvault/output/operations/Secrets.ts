@@ -9,9 +9,11 @@ export interface Secrets {
      * @param secretName - The name of the secret.
      * @param api_version - Client Api Version.
      * @param subscriptionId - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
-     * @return 200 - Retrieved secret
+     * @return 200|application/json - Retrieved secret
      */
-    Get(resourceGroupName: Http.Path<string>, vaultName: Http.Path<string>, secretName: Http.Path<string>, api_version: Http.Query<string, 'api-version'>, subscriptionId: Http.Path<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'>;
+    Get(resourceGroupName: string, vaultName: string, secretName: string, api_version: Query<string, 'api-version'>, subscriptionId: string, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: Secret;
+    }];
     /**
      * @description Create or update a secret in a key vault in the specified subscription.  NOTE: This API is intended for internal use in ARM deployments. Users should use the data-plane REST service for interaction with vault secrets.
      * @since 2019-09-01
@@ -23,10 +25,14 @@ export interface Secrets {
      * @param api_version - Client Api Version.
      * @param subscriptionId - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      * @param parameters - Parameters to create or update the secret
-     * @return 200 - Created or updated secret
-     * @return 201 - Created or updated vault
+     * @return 200|application/json - Created or updated secret
+     * @return 201|application/json - Created or updated vault
      */
-    CreateOrUpdate(resourceGroupName: Http.Path<string>, vaultName: Http.Path<string & RegularExpression<'^[a-zA-Z0-9-]{3,24}$'>>, secretName: Http.Path<string & RegularExpression<'^[a-zA-Z0-9-]{1,127}$'>>, api_version: Http.Query<string, 'api-version'>, subscriptionId: Http.Path<string>, parameters: Http.Body<SecretCreateOrUpdateParameters, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'201', [object, Object], 'application/json'>;
+    CreateOrUpdate(resourceGroupName: string, vaultName: string & RegularExpression<'^[a-zA-Z0-9-]{3,24}$'>, secretName: string & RegularExpression<'^[a-zA-Z0-9-]{1,127}$'>, api_version: Query<string, 'api-version'>, subscriptionId: string, parameters: Body<SecretCreateOrUpdateParameters, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: Secret;
+    }, (code: 201, mediaType: "application/json") => {
+        body: Secret;
+    }];
     /**
      * @description Update a secret in the specified subscription.  NOTE: This API is intended for internal use in ARM deployments.  Users should use the data-plane REST service for interaction with vault secrets.
      * @since 2019-09-01
@@ -38,10 +44,14 @@ export interface Secrets {
      * @param api_version - Client Api Version.
      * @param subscriptionId - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
      * @param parameters - Parameters to patch the secret
-     * @return 200 - Patched secret
-     * @return 201 - Patched secret
+     * @return 200|application/json - Patched secret
+     * @return 201|application/json - Patched secret
      */
-    Update(resourceGroupName: Http.Path<string>, vaultName: Http.Path<string & RegularExpression<'^[a-zA-Z0-9-]{3,24}$'>>, secretName: Http.Path<string & RegularExpression<'^[a-zA-Z0-9-]{1,127}$'>>, api_version: Http.Query<string, 'api-version'>, subscriptionId: Http.Path<string>, parameters: Http.Body<SecretPatchParameters, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'> | Http.Response<'201', [object, Object], 'application/json'>;
+    Update(resourceGroupName: string, vaultName: string & RegularExpression<'^[a-zA-Z0-9-]{3,24}$'>, secretName: string & RegularExpression<'^[a-zA-Z0-9-]{1,127}$'>, api_version: Query<string, 'api-version'>, subscriptionId: string, parameters: Body<SecretPatchParameters, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: Secret;
+    }, (code: 201, mediaType: "application/json") => {
+        body: Secret;
+    }];
     /**
      * @description The List operation gets information about the secrets in a vault.  NOTE: This API is intended for internal use in ARM deployments. Users should use the data-plane REST service for interaction with vault secrets.
      * @since 2019-09-01
@@ -52,7 +62,9 @@ export interface Secrets {
      * @param __top - Maximum number of results to return.
      * @param api_version - Client Api Version.
      * @param subscriptionId - Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
-     * @return 200 - Get information about secrets in the specified vault.
+     * @return 200|application/json - Get information about secrets in the specified vault.
      */
-    List(resourceGroupName: Http.Path<string>, vaultName: Http.Path<string>, __top?: Http.Query<int32, '$top'>, api_version: Http.Query<string, 'api-version'>, subscriptionId: Http.Path<string>, body?: Http.Body<file, 'application/json'>): Http.Response<'200', [object, Object], 'application/json'>;
+    List(resourceGroupName: string, vaultName: string, __top?: Query<int32, '$top'>, api_version: Query<string, 'api-version'>, subscriptionId: string, body?: Body<file, 'application/json'>): [(code: 200, mediaType: "application/json") => {
+        body: SecretListResult;
+    }];
 }

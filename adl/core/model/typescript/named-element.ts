@@ -1,8 +1,8 @@
 import { anonymous, isAnonymous } from '@azure-tools/sourcemap';
 import { BindingName, Identifier, NamedNodeSpecificBase, Node, PropertyName, ReferenceFindableNode, RenameableNode } from 'ts-morph';
 import { getFirstDoc, getTagValue, setTag } from '../../support/doc-tag';
-import { RemovableNode } from '../schema/schemas';
 import { Identity } from '../types';
+import { RemovableNode } from './removable-node';
 import { TSElement } from './typescript-element';
 
 export class NamedElement<TNode extends Node & NamedNodeSpecificBase<Identifier | PropertyName | BindingName> & ReferenceFindableNode & RenameableNode & RemovableNode> extends TSElement<TNode> {

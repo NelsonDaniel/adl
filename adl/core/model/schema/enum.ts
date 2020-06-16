@@ -1,12 +1,14 @@
 import { isAnonymous } from '@azure-tools/sourcemap';
+import { EnumDeclaration, EnumMember } from 'ts-morph';
 import { literal, normalizeIdentifier } from '../../support/codegen';
 import { createDocs } from '../../support/doc-tag';
 import { ApiModel } from '../api-model';
 import { Collection, Identity } from '../types';
-import { Schema } from './schema';
+import { NamedElement } from '../typescript/named-element';
+import { SchemaInitializer } from '../typescript/schema';
 import { TypeReference } from './type';
 
-export interface Enum extends Schema {
+export interface EnumInitializer extends SchemaInitializer {
   extensible?: boolean;
   readonly values: Collection<EnumValue>;
 }
@@ -17,8 +19,7 @@ export interface EnumValue {
   value: any;
 }
 
-
-export function createEnum(api: ApiModel, identity: Identity, values: Array<EnumValue>, initializer?: Partial<Enum>): TypeReference {
+export function createEnum(api: ApiModel, identity: Identity, values: Array<EnumValue>, initializer?: Partial<EnumInitializer>): TypeReference {
   if (!isAnonymous(identity)) {
     const { name, file } = api.getNameAndFile(identity, 'enum');
 
@@ -62,4 +63,31 @@ export function createEnum(api: ApiModel, identity: Identity, values: Array<Enum
     declaration: values.map(v => literal(v.value)).join(' | '),
     requiredReferences: [],
   };
+}
+
+export class EnumElement extends NamedElement<EnumMember> {
+  constructor(node: EnumMember) {
+    super(node);
+  }
+}
+
+export class EnumType extends NamedElement<EnumDeclaration> implements TypeReference {
+  readonly isInline = false;
+  readonly requiredReferences = [];
+
+  constructor(node: EnumDeclaration) {
+    super(node);
+  }
+
+  get declaration() {
+    return this.node.getName();
+  }
+
+  get values(): Array<EnumElement> {
+    return this.node.getMembers().map(each => new EnumElement(each));
+  }
+
+  createValue() {
+    // shh
+  }
 }
